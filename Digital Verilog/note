@@ -1,0 +1,30 @@
+Fedora
+sudo dnf install iverilog
+sudo dnf install gtkwave
+
+Compile the Verilog Files:
+Save the Verilog files: Save your Verilog design file (e.g., four_bit_adder.v) and the testbench file (e.g., testbench.v) in a directory.
+
+Compilation: Open the terminal, navigate to the directory containing your Verilog files, and compile them using iverilog:
+
+iverilog -o simulation_tb four_bit_adder.v testbench.v
+Replace four_bit_adder.v and testbench.v with your actual Verilog file names.
+
+Simulation Execution:
+Run Simulation: Run the simulation using vvp (Verilog VPI) on the compiled output file:
+
+vvp simulation_tb
+Replace simulation_tb with the name provided using -o in the compilation step.
+
+View Simulation Output: The simulation output will be displayed in the terminal if you've included display statements ($display) in your testbench code.
+
+Waveform Viewing (Optional):
+View Waveforms: If your testbench includes $dumpfile and $dumpvars commands, it generates a VCD file with waveform data. Open the generated VCD file in GTKWave for waveform viewing:
+
+gtkwave waveform_output.vcd
+Replace waveform_output.vcd with the name of your VCD file.
+
+Notes:
+Adjust the file names and paths according to your project structure.
+Ensure your testbench has $dumpfile and $dumpvars commands to generate the waveform output file if you intend to view waveforms.
+Check the terminal for any simulation output or errors after running each command.
