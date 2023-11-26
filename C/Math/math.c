@@ -127,7 +127,7 @@ void create_matrix(int y, int z) {
         matrix_dis(matrix_1, 1, 1);
         matrix_dis(matrix_1, 3, 1);
         matrix_dis(matrix_2, 1, 2);
-        matrix_dis(matrix_1, 3, 2);
+        matrix_dis(matrix_2, 3, 2);
         switch (z) {
             case 1:
                 printf("\nMatrix Addition:\n");

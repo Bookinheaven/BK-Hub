@@ -3,7 +3,9 @@
 #define PI 3.14
 
 void matrix_dis(int matrix[3][3],int z){// z=0 display
+    
     for (int i = 0; i < 3; i++) {
+        if(z==0) printf("|");
         for (int j = 0; j < 3; j++) {
             if(z==0){
                 printf("%3d", matrix[i][j]);
@@ -12,11 +14,11 @@ void matrix_dis(int matrix[3][3],int z){// z=0 display
                 printf("( %dx%d ): ", i+1, j+1);
                 if (scanf("%3d", &matrix[i][j]) != 1) {
                     printf("Invalid input.\n");
-                    return; // Handle input error
+                    return;
                 }
             }
         }
-        if(z ==0) printf("\n");
+        if(z ==0) printf("|\n");
     }
 }
 
