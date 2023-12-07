@@ -18,7 +18,7 @@ int main(){
     }
 */
     while (fgets(data, sizeof(data), data_pointer) != NULL) {
-        printf("%s", data); // Print each line of the file
+        printf("%s", data);
     }
     
     fclose(data_pointer);
