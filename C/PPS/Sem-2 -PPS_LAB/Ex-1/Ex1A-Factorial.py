@@ -9,4 +9,5 @@ def factorial(num):
 
 num = int(input("Enter the value: "))
 fact = factorial(num)
+print(f"Factorial: {fact}")
 print("╔═════════════╗\n║   Tanvik    ║\n║ URK23CS1261 ║\n╚═════════════╝")
