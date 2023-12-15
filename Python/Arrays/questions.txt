@@ -1,0 +1,27 @@
+List Operations:
+
+Create a program that merges two lists and removes duplicates.
+Implement a program that reverses a list without using built-in reverse functions.
+Write a program that finds the second largest number in a list.
+
+Searching and Sorting:
+
+Develop a program that searches for an element in a list and returns its index.
+Create a sorting algorithm (like bubble sort) and use it to sort a list of integers.
+Dictionaries:
+
+Dictionary Operations:
+Write a program that merges two dictionaries without losing any key-value pairs.
+Create a program that checks if a key exists in a dictionary and handles the case where it doesn't exist.
+Develop a dictionary that stores words as keys and their frequencies in a given text.
+
+Tuples:
+Tuple Operations:
+Implement a program that swaps the values of two tuples.
+Write a program that converts a tuple into a string.
+Create a program that compares two tuples element-wise.
+Sets:
+Set Operations:
+Develop a program that performs set operations (union, intersection, difference) between two sets.
+Write a program that removes duplicate elements from a list using sets.
+Create a program that checks if one set is a subset or superset of another set.
