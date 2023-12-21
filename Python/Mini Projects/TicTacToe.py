@@ -1,3 +1,5 @@
+from colorama import init
+init()
 from colorama import Fore
 class TicTacToe:
     def __init__(self):
@@ -38,10 +40,13 @@ class TicTacToe:
     def validate_choices(self):
         while True:
             choice = self.choices_inputs()
-            if len(choice) != 2:
+            if len(choice) != 2 :
                 print("Please enter x o (or) o x.")
-            else:
+            if (choice[0] == "x" and choice[1] == "o") or (choice[0] == "o" and choice[1] == "x"):
                 return choice
+            else:
+                print("Wrong Choice! Try Again")
+            
 
     def names_inputs(self):
         names = input("Enter Players Names [ex tan dhar]: ").split(" ")
@@ -82,7 +87,7 @@ class TicTacToe:
                         self.tictactoe_board_start(self.z)
                         self.turns += 1
                     value = self.turner(self.turns)
-                    current_player = self.search_player(players,value)
+                    current_player = self.search_player(players, value)
                     print(f"Turn -> Current Player: {current_player} ({value})")
                     c, d = input("Coordinates (x,y): ").split(" ")
                     c = int(c) - 1
@@ -107,9 +112,10 @@ class TicTacToe:
                         elif win == "o":
                             print(Fore.YELLOW, f"{current_player} (O) won!")
                             exit()
-                        elif tr == self.rows * self.columns - 1:
-                            print(Fore.RED ,"It's a draw!")
+                        elif win == " " and self.turns == 9:
+                            print(Fore.RED, "It's a draw!")
                             exit()
+
                         else:
                             self.turns += 1
                             continue
