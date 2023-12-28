@@ -42,7 +42,9 @@ class TicTacToe:
             choice = self.choices_inputs()
             if len(choice) != 2 :
                 print("Please enter x o (or) o x.")
-            if (choice[0] == "x" and choice[1] == "o") or (choice[0] == "o" and choice[1] == "x"):
+                choice = self.choices_inputs()
+                return self.validate_choices()
+            elif (choice[0] == "x" and choice[1] == "o") or (choice[0] == "o" and choice[1] == "x"):
                 return choice
             else:
                 print("Wrong Choice! Try Again")
