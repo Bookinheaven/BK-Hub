@@ -33,6 +33,7 @@ def logo():
     logo_label.place(x=-188, y=-220)
     logo_window.after(4000, close_window)
     logo_window.mainloop() 
+
 def reset_window(data):
     for widget in main_window.winfo_children():
         widget.destroy()
@@ -102,11 +103,14 @@ def reset_window(data):
             return " "    
         row, col = event.widget.grid_info()["row"] - 1, event.widget.grid_info()["column"]
         if event.widget["text"] == " ":
-            if turn % 2 == 0:
+            if scores["trigger"] == 0:
                 event.widget.configure(text="X")
             else:
                 event.widget.configure(text="O")
-            turn += 1
+            if scores["trigger"] == 0 :
+                scores["trigger"] = 1
+            else: 
+                scores["trigger"] = 0
             data_board[row][col] = event.widget["text"]        
             result = check_chance()
             if data[1].lower() == 'x':
@@ -128,22 +132,19 @@ def reset_window(data):
                 ans = messagebox.askyesno("Result", f"{winner} ({result}) Won! 🏆, Want to play again?")
                 if ans:
                     data_board = [[' ' for _ in range(columns)] for _ in range(rows)]
-                    turn = 0
                     reset_window(data)
                 else:
                     main_window.destroy()
-            
                 return
             elif " " not in data_board[0] and " " not in data_board[1] and " " not in data_board[2]:
                 scores["tie"] += 1
                 ans = messagebox.askyesno("Result", "Its A Tie 🟡, Want to play again?")
                 if ans:
-                    
                     data_board = [[' ' for _ in range(columns)] for _ in range(rows)]
-                    turn = 0
                     reset_window(data)
                 else:
                     main_window.destroy()
+                return
 
     main_window.title("Tic Tac Toe")
     center_window(main_window, 625, 635)
@@ -319,7 +320,6 @@ def initial_window():
 
     def players_frames(num):
         player_frame = tk.Frame()
-
         player_Label = tk.Label(
             master=player_frame,
             text=f"Player {num}:",
@@ -381,13 +381,13 @@ def initial_window():
 
     main_window.bind("<Control-z>", close_window)
     main_window.mainloop()
-turn = 0
 rows = 3
 columns = 3
 scores = {
     "x": 0,
     "o": 0,
-    "tie": 0
+    "tie": 0,
+    "trigger": 0
 }
 data_board = [[' ' for _ in range(columns)] for _ in range(rows)]
 logo()
