@@ -22,7 +22,7 @@ def center_window(window, width, height):
 def logo():
     def close_window():
         logo_window.destroy()
-    logo_path = "FIle--_-/My_Work/Python/Mini Projects/logo_1071x1080.png"
+    logo_path = "FIle--_-/My_Work/Python/Mini-Projects/logo_1071x1080.png"
     logo_window = tk.Tk()
     logo_window.overrideredirect(True)
     center_window(logo_window, 700,600)
@@ -63,15 +63,20 @@ def reset_window(data):
             x_coordinate = int((screen_width / 2) - (width / 2) + x)
             y_coordinate = int((screen_height / 2) - (height / 2) - y)
             scores_window.geometry(f'{width}x{height}+{x_coordinate}+{y_coordinate}')
-
+            if data[1].lower() == 'x':
+                player_x = data[0]
+                player_y = data[2]
+            else:
+                player_x = data[2]
+                player_y = data[0]
             x_score_label = tk.Label(
                 scores_window,
-                text=f"{data[0]} (X): {scores['x']}",
+                text=f"{player_x} (X): {scores['x']}",
                 font=("Helvetica", 24)
             )
             o_score_label = tk.Label(
                 scores_window,
-                text=f"{data[2]} (O): {scores['o']}",
+                text=f"{player_y} (O): {scores['o']}",
                 font=("Helvetica", 24)
             )
             tie_score_label = tk.Label(
@@ -104,15 +109,24 @@ def reset_window(data):
             turn += 1
             data_board[row][col] = event.widget["text"]        
             result = check_chance()
+            if data[1].lower() == 'x':
+                player_x = data[0]
+                player_o = data[2]
+            else:
+                player_x = data[2]
+                player_o = data[0]
             if result != " ":
-                if data[1] == result.lower() :
-                    i = 0
-                if data[3] == result.lower() :
-                    i = 2
+                if data[1].lower() == result.lower() and data[1].lower() == 'x':
+                    winner = player_x
+                if data[3].lower() == result.lower() and data[3].lower() == 'o':
+                    winner = player_o
+                if data[1].lower() == result.lower() and data[1].lower() == 'o':
+                    winner = player_o
+                if data[3].lower() == result.lower() and data[3].lower() == 'x':
+                    winner = player_x
                 scores[f"{result.lower()}"] += 1
-                ans = messagebox.askyesno("Result", f"{data[i]} ({result}) Won! 🏆, Want to play again?")
+                ans = messagebox.askyesno("Result", f"{winner} ({result}) Won! 🏆, Want to play again?")
                 if ans:
-                    
                     data_board = [[' ' for _ in range(columns)] for _ in range(rows)]
                     turn = 0
                     reset_window(data)
