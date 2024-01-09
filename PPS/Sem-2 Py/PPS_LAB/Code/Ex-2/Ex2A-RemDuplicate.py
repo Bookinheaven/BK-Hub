@@ -2,7 +2,6 @@
 Write a Python program to remove duplicate elements in a list.
 """
 
-list1 = []
 list1 = input("Enter the Numbers: ").split(" ")
 for x in list1:
     if x == ' ':

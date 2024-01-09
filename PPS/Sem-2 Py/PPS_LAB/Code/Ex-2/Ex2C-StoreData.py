@@ -2,10 +2,11 @@
 Develop a Python program to input and store the provided five student details such as name, regno, cgpa as tuples in a list. Provide a menu driven option to sort the student details by name , regno and cgpa and display the appropriate sorted student details.
 """
 student_data = []
-for x in range(1,3):
+for x in range(1,6):
     name = input(f"Enter The Name of Student ({x}): ")
     regno = input(f"Enter The regno of Student ({x}): ")
     cgpa = input(f"Enter The cgpa of Student ({x}): ")
+    print("\n")
     tuple_data = (name, regno, cgpa)
     student_data.append(tuple_data)
 print(f"Student Data: {student_data}\n\n")
@@ -26,6 +27,6 @@ try :
 except ValueError:
     print("Please enter a valid menu option.")
 except Exception as e:
-    print(e)
+    print(f"Error : {e}")
 
 print("╔═════════════╗\n║   Tanvik    ║\n║ URK23CS1261 ║\n╚═════════════╝")
