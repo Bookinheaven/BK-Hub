@@ -105,7 +105,7 @@ for student in students:
 # 2
 def average(num_list):
     total = sum(num_list)
-    total = float(total/len(num_list)) # for extra chech : if len(num_list)> 0 else 0)
+    total = float(total/len(num_list)) # for extra check: if len(num_list)> 0 else 0)
     return total
 # 3
 def get_average(student):
