@@ -24,7 +24,7 @@ inventory = {
 # 1
 inventory.update(
     {
-        "pocket": ['flint', 'twine', 'gemstone']
+        "pocket": ['seashell', 'strange berry', 'lint']
     }
 )
 print(f"Created new key: {inventory}")
