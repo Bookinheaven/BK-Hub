@@ -1,0 +1,1 @@
+Write a Python Program to read a file’s entire content and store it back in another file 
