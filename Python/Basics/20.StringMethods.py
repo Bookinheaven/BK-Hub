@@ -14,7 +14,7 @@ print(find)
 print(string[find])
 print(string.isalpha())
 print(string.isdigit())
-seq = [" Hero ", "  Pro "]
+seq = ["Hero ", " Pro "]
 print(string.join(seq))
 print(string.lower())
 print(string.upper())
