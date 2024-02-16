@@ -1,0 +1,6 @@
+Write a Python function that accepts a file and performs the following operation,
+• calculate the number of upper-case letters and lower-case letters
+from the entire content of the file.
+• Search a word in a particular line
+• Search a word in the range of lines
+• Replace a word in the file
