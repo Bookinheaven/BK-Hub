@@ -3,7 +3,7 @@ def factorial(num):
     fact = 1
     i = num-1
     while i > 0:
-        fact *= num-i+1
+        fact *= num
         i-=1
     return fact
 
