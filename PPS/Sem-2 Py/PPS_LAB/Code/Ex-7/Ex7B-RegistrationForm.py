@@ -61,6 +61,6 @@ def getvalues():
 
     print(f"Fullname: {full_name}\nEmail: {email}\nGender: {gender}\nCountry: {country}\nProgramming: {lang}")
 
-sumbit = Button(master=main, text="Select", fg='red',bg= 'white', command=getvalues)
+sumbit = Button(master=main, text="Select", bg='red',fg= 'white', command=getvalues)
 sumbit.grid(row=7, column=0, padx=40, pady=5)
 main.mainloop()

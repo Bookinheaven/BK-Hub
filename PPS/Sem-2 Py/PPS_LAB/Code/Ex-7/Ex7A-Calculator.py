@@ -9,15 +9,7 @@ def add():
     var1 = int(labl2_var.get())
     var2 = int(labl3_var.get())
     result_var = var1+var2
-    entr3.delete(0, END)
-    entr3.insert(0, result_var)
-
-def add():
-    print('add')
-    var1 = int(labl2_var.get())
-    var2 = int(labl3_var.get())
-    result_var = var1+var2
-    entr3.delete(0, END)
+    entr3.delete(10, END)
     entr3.insert(0, result_var)
 
 def sub():
