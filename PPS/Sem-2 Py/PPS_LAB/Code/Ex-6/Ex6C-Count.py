@@ -1,8 +1,6 @@
 """
-Write a Python program to find characters count of a string
-
-which are passed as list.
-Input: St=”hello welcome” lst=[“l‟, ‟w‟, ‟m‟, ‟e‟]
+Write a Python program to find characters count of a string which are passed as list.
+Input: St="hello welcome" lst=[“l", "w", "m", "e"]
 Output:
 l 3
 w 1
