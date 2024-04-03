@@ -1,1 +1,0 @@
-C:\Users\burnk\Downloads\spell.jpg
