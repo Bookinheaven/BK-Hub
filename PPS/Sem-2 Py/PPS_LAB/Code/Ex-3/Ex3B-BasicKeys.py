@@ -45,7 +45,7 @@ stock = {
 # 3 and 4
 total = 0
 for key, value in prices.items():
-    for stock_name, stock_value in prices.items():
+    for stock_name, stock_value in stock.items():
         if key == stock_name:
             total += value * stock_value
             print(f"{key}\nprices: {value}\nStock: {stock_value}\n")

@@ -7,8 +7,7 @@ for x in range(1,6):
     regno = input(f"Enter The regno of Student ({x}): ")
     cgpa = input(f"Enter The cgpa of Student ({x}): ")
     print("\n")
-    tuple_data = (name, regno, cgpa)
-    student_data.append(tuple_data)
+    student_data.append((name, regno, cgpa))
 print(f"Student Data: {student_data}\n\n")
 try :
     while True:

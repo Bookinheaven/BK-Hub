@@ -5,7 +5,6 @@ main = Tk()
 main.geometry("400x400")
 
 def add():
-    print('add')
     var1 = int(labl2_var.get())
     var2 = int(labl3_var.get())
     result_var = var1+var2

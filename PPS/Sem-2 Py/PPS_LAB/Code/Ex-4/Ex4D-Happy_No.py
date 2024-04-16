@@ -20,9 +20,10 @@ def happy_check(num):
 
         
 check_num = int(input("Enter the no: "))
-if happy_check(check_num) == True:
+check = happy_check(check_num)
+if check == True:
     print(f"{check_num} is a Happy Number")
-elif happy_check(check_num) == False:
+elif check == False:
     print(f"{check_num} is not a Happy Number")
 else:
     print("Error")
