@@ -26,6 +26,7 @@ pen = turtle.Turtle()
 # pen.right(60)
 # pen.forward(100)
 
+# Method 2
 for _ in range(3):
     pen.forward(300)
     pen.left(120)
@@ -52,6 +53,5 @@ pen.left(120)
 pen.forward(50)
 pen.left(60)
 pen.forward(100)
-
 
 turtle.done()
