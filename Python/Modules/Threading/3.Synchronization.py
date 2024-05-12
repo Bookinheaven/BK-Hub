@@ -10,9 +10,8 @@ class MyThread(Thread):
         super().__init__()
         self.tableobj=tableobj
         self.number=number
-        self.lock=Lock()
     def run(self):
-        threadlock.acquire() #synchronization
+        threadlock.acquire()
         self.tableobj.printTable(self.number)
         threadlock.release()
 

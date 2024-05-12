@@ -8,8 +8,6 @@ class mythread(Thread):
         for i in range(1, 6):
             print(i)
             sleep(1)
-
-
 t1 = mythread()
 t1.setName("BK")
 t1.start()
