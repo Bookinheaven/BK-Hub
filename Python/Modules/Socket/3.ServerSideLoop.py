@@ -4,8 +4,8 @@ server = socket(AF_INET, SOCK_STREAM)
 server.bind(('localhost', 12000))
 server.listen()
 print('Listening To Requests')
+connection, address = server.accept()
 while True:
-    connection, address = server.accept()
     text = input("Type: ")
     if text == 'exit':
         connection.close()
