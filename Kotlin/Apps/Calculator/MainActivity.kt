@@ -1,17 +1,16 @@
 package com.example.calculator
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.isDigitsOnly
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
-import android.util.Log
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,46 +40,52 @@ class MainActivity : AppCompatActivity() {
         val addbutton: Button = findViewById(R.id.addButton)
         val subbutton: Button = findViewById(R.id.subButton)
         val mulbutton: Button = findViewById(R.id.mulButton)
+        val parcent: Button = findViewById(R.id.perButton)
+        val point: Button = findViewById(R.id.pointButton)
+        val plusminus : Button = findViewById(R.id.plusOrMinusButton)
         val divbutton: Button = findViewById(R.id.divButton)
         val acbutton: Button = findViewById(R.id.acButton)
         val equalButton : Button = findViewById(R.id.equalButton)
-
-        var pastResult: String
+        var pastResult = ""
         val listNum = listOf(
             num0Button, num1Button, num2Button, num3Button, num4Button,
             num5button, num6button, num7button, num8button, num9button
         )
-        val operators = listOf(addbutton, subbutton, mulbutton, divbutton)
+        val operators = listOf(addbutton, subbutton, mulbutton, divbutton, parcent, point)
 
-
-        equalButton.setOnClickListener {
-            val currentString = textfield?.text.toString().trim()
-//            Toast.makeText(this, currentString, Toast.LENGTH_LONG).show()
-            if (result != null) {
-                result.text= currentString
+        fun preprocessPercentageExpression(expression: String): String {
+            val regex = Regex("""(\d+(\.\d+)?)%""")
+            var results = expression
+            regex.findAll(expression).forEach { matchResult ->
+                val percentageValue = matchResult.value.dropLast(1).toDouble() / 100
+                val previousValue = expression.substring(0, matchResult.range.first).trim().split(' ').last().toDoubleOrNull() ?: 1.0
+                val replacement = (percentageValue * previousValue).toString()
+                results = results.replaceRange(matchResult.range, replacement)
             }
+            return results
         }
+
         fun findResult(): String {
             var currentString = textfield?.text.toString().trim()
                 .replace('−', '-')
                 .replace('×', '*')
                 .replace('÷', '/')
                 .replace('+', '+')
-
+//                .replace("%", "/100")
+                .replace(")", ")*")
             if (currentString.isEmpty()) {
                 Log.e("JavaScript", "Input string is empty")
                 return "0"
             }
-
-            if (currentString.last() in listOf('+', '-', '*', '/')) {
+            if (currentString.last() in listOf('+', '-', '*', '/','.')) {
                 currentString = currentString.substring(0, currentString.length - 1)
             }
-
+            if (currentString.contains('%')){
+                Toast.makeText(this, currentString, Toast.LENGTH_SHORT).show()
+                currentString = preprocessPercentageExpression(currentString)
+            }
             val engineManager = ScriptEngineManager()
             val engine = engineManager.getEngineByName("js")
-
-            Toast.makeText(this, currentString, Toast.LENGTH_SHORT).show()
-
             return try {
                 when (val fresult = engine.eval(currentString)) {
                     is Number -> {
@@ -108,14 +113,31 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        equalButton.setOnClickListener {
+            textfield?.text.toString().trim()
+//            pastResult = findResult()
 
+//            Toast.makeText(this, pastResult, Toast.LENGTH_LONG).show()
+            if (result != null) {
+                if (pastResult != "") {
+                    textfield?.text = pastResult
+                    result.text= ""
+//                    result.setTextColor(ContextCompat.getColor(this, R.color.white))
+//                    result.setTextSize(TypedValue.COMPLEX_UNIT_SP, 59f)
+                }
+                else {
+                    result.text = ""
+                    textfield?.text = ""
+                }
 
+            }
+        }
         for (item in operators) {
             item.setOnClickListener {
                 var currentString = textfield?.text.toString().trim()
                 if (currentString.isNotEmpty()) {
                     if (currentString.last() != item.text.last()) {
-                        if (currentString.last() !in listOf('+', '−', '×', '÷') ){
+                        if (currentString.last() !in listOf('+', '−', '×', '÷', '.') ){
                             if (textfield != null) {
                                 textfield.text = currentString.plus(item.text.last())
                             }
@@ -136,11 +158,12 @@ class MainActivity : AppCompatActivity() {
         for (item in listNum) {
             item.setOnClickListener {
                 if (item.text != null) {
-                    if (item.text.isDigitsOnly()) {
-                        textfield?.append(item.text)
-                        pastResult = findResult()
-                        result?.text = pastResult
-                    }
+//                    result?.setTextColor(ContextCompat.getColor(this, R.color.gray_text))
+//                    result?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30f)
+                    textfield?.append(item.text)
+                    pastResult = findResult()
+                    result?.text = pastResult
+
                 }
             }
         }
@@ -164,5 +187,32 @@ class MainActivity : AppCompatActivity() {
                 result.text=""
             }
         }
+        point.setOnClickListener {
+            val currents = textfield?.text.toString().trim()
+            if (currents.isEmpty() || currents.last() in listOf('+', '−', '×', '÷')) {
+                textfield?.append("0.")
+            } else {
+                val lastNumber = currents.split('+', '−', '×', '÷').last()
+                if (!lastNumber.contains('.')) {
+                    textfield?.append(".")
+                }
+            }
+            pastResult = findResult()
+            result?.text = pastResult
+//            result?.setTextColor(ContextCompat.getColor(this, R.color.gray_text))
+//            result?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30f)
+        }
+        plusminus.setOnClickListener{
+            val currents = textfield?.text.toString().trim()
+            val lastNumber = currents.split('+', '−', '×', '÷').last()
+            if (!lastNumber.contains(')')) {
+                val otherNumbers = currents.substring(0, lastNumber.length+1)
+                textfield?.text = otherNumbers
+                textfield?.append("(−$lastNumber)")
+                pastResult = findResult()
+                result?.text = pastResult
+            }
+        }
+
     }
 }
