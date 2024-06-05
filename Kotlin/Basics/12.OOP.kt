@@ -1,5 +1,5 @@
 fun main() {
-    var a = Dumper(fist = "false", kick = "true", dump = "true")
+    val a = Dumper(fist = "false", kick = "true", dump = "true")
     a.meth1()
     println()
 }

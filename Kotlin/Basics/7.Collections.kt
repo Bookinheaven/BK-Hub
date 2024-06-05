@@ -1,7 +1,7 @@
 fun main() {
     // Read Only
     var list1 = listOf("Apple", "Banana", "Cherry")
-    println(list1)
+    println(list1.size)
     println(list1[0])
     // Mutable
     var list2 = mutableListOf("Apple", "Banana", "Cherry", "Burn")
@@ -20,4 +20,15 @@ fun main() {
     val fs = mutableSetOf("Apple", "Banana", "Cherry")
     println(fs)
 
+    // Array
+    val nm = arrayOf(1,2,3,4,5,6)
+    println(nm.contentToString())
+
+    println()
+    for (x in nm){
+        print("$x")
+    }
+    for (x in nm.indices){
+        print(x)
+    }
 }
