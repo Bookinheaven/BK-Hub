@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PracticeApp</string>
+    <string name="basic_data">  </string>
+    <string name="dob">What is your dob?</string>
+    <string name="basicname">BurnKnuckle</string>
+    <string name="name">What is your name?</string>
+    <string name="welcome">Welcome Buddy</string>
+    <string name="dob_button">DOB</string>
+    <string name="StartButton">Set Up</string>
+</resources>
