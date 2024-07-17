@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:backgroundTint="@android:color/transparent"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/ripple_effect_song_item"
+        android:foreground="@drawable/ripple_effect_song_item"
+        android:padding="10dp"
+        android:paddingEnd="0dp">
+        <androidx.cardview.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            card_view:cardCornerRadius="6dp">
+            <ImageView
+                android:id="@+id/albumArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/noimage"
+                android:scaleType="centerCrop"
+                android:alpha="1.0"
+                android:adjustViewBounds="true"
+                android:padding="1dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
+                android:outlineProvider="background"
+                android:clipToOutline="true" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:layout_marginStart="3dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent">
+
+            <TextView
+                android:id="@+id/songTitle"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:text="Title"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:alpha="1.0"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:ignore="NestedWeights"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/songDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center"
+                android:gravity="start"
+                android:text="Song Description"
+                android:textColor="#BBBBBBBB"
+                android:textSize="11sp"
+                android:alpha="1.0"
+                android:textStyle="normal"
+                android:background="@android:color/transparent"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:backgroundTint="@android:color/transparent" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/songMenu"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_margin="1dp"
+            android:layout_weight="0"
+            android:background="@android:color/transparent"
+            android:foreground="@drawable/ripple_effect"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_gravity="end|center"
+            android:alpha="1.0"
+            android:tint="@drawable/selector_song_menu"
+            android:src="@drawable/more_vert"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

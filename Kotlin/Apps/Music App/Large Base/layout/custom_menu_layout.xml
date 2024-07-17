@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/outArea"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    android:backgroundTint="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@color/semi_intro"
+        android:layout_centerInParent="true"
+        android:backgroundTint="@android:color/transparent"
+        >
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            app:cardCornerRadius="50dp">
+
+        <ImageView
+            android:id="@+id/menuBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:src="@drawable/menu"
+            />
+        <ImageView
+            android:id="@+id/inDeviceSongs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:padding="10dp"
+            android:layout_margin="40dp"
+            android:src="@drawable/library_music"
+            />
+        <ImageView
+            android:id="@+id/playLists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:padding="10dp"
+            android:layout_margin="40dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/playlist"/>
+        </androidx.cardview.widget.CardView>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/inDeviceSongs"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerVertical="false"-->
+<!--            android:src="@drawable/library_music"-->
+<!--            />-->
+<!--        <ImageView-->
+<!--            android:id="@+id/playLists"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:src="@drawable/playlist"-->
+<!--            />-->
+
+    </RelativeLayout>
+</RelativeLayout>

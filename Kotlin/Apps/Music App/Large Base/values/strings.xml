@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MBox</string>
+    <string name="search">Search</string>
+    <string name="menu_controller">Menu Controller</string>
+    <string name="settings_controller">Settings Controller</string>
+    <string name="welcome_buddy_nmy_name_is_mbox_ni_m_your_personal_music_player">Welcome buddy!\nMy name is MBox\nI\'m your personal music player</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="request_permissions">Open Settings</string>
+    <string name="permissions_required_description">To listen music, you need to\n\n   Open Settings\n   Tap Permissions\n   Turn on Music and audio</string>
+    <string name="permissions_required_header">Permissions Required!</string>
+    <string name="album_art">ArtWork</string>
+</resources>
