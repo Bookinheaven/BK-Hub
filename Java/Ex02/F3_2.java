@@ -1,5 +1,3 @@
-package Ex02;
-
 import java.util.Scanner;
 public class F3_2 {
 	public static void main(String[] args) {
@@ -7,23 +5,31 @@ public class F3_2 {
         System.out.println("Enter the string:");
         String input = inputScan.nextLine();
         inputScan.close();
-         hO(input);
-
-     
+        char ans = hO(input.toCharArray());
+        if (ans != 0) {
+        	System.out.println("char: "+ans);
+        }     
     }
 
-    public static int[] hO(char[] array) {
-        int[] occCounter = new int[array.length];
+    public static char hO(char[] array) {
+    	char higOcChar = 0;
+    	int higOcNum =0;
+    	int index= 0;
         for (int x = 0; x < array.length; x++) {
         	int count = 0;
-        	for (int y = 0; y < array.length; j++) {
-        		if (x != y && array[x] == array[y]) {
+        	for (int y = 0; y < array.length; y++) {
+        		if (array[x] == array[y]) {
         			count++;
+        			index = x;
         		}
+   
         	}
-        	occCounter[x] = count;
+        	if(higOcNum < count) {
+        		higOcNum = count;
+        		higOcChar = array[index];
+        	}	
         }
-        
-        return occCounter;
+        System.out.println("char num: "+higOcNum);	
+        return higOcChar;
     }
 }
