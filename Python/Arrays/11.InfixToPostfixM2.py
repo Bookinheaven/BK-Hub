@@ -3,12 +3,10 @@
 class Main:
     def __init__(self):
         self.expression = (input("Enter the expressions: ")).replace(" ","")
-        self.stack = []
         self.operators = ['+', "-", "/","*", "^"]
+        self.stack = []
         self.output = []
     def InfixToPostfix(self):
-        def is_empty():
-            return len(self.stack) == 0
         def precedence(element: str):
             if element == '^':
                 return 3
@@ -44,7 +42,8 @@ class Main:
             self.output.append(self.stack[-1])    
             self.stack.pop()
         print(*self.output, sep='')
-instance = Main()#A+ (B*C-(D/E^F)*G)*H 
+instance = Main()
+#A+ (B*C-(D/E^F)*G)*H 
 #"A+B-(C*D-E)+F"
 instance.InfixToPostfix()
 # ABC*DEF^/G*-H*+

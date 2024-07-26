@@ -7,8 +7,11 @@ public class F3_2 {
         inputScan.close();
         char ans = hO(input.toCharArray());
         if (ans != 0) {
-        	System.out.println("char: "+ans);
-        }     
+        	System.out.println("Char: "+ans);
+        }
+		else {
+			System.out.println("No Char found");
+		}
     }
 
     public static char hO(char[] array) {
