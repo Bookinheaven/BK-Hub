@@ -45,9 +45,38 @@ class Stack:
         print(f"Stack limit: [{self.Max}] data => {self.stack}")
 
 stack = Stack()
-stack.create([10, 20], 5)
-stack.display()
-stack.push(30)
-stack.pop()
-stack.peek()
-stack.display()
+while True:
+    print("\nMenu:")
+    print("1. Create Stack")
+    print("2. Push Element")
+    print("3. Pop Element")
+    print("4. Peek Element")
+    print("5. Display Stack")
+    print("6. Exit")
+    
+    choice = int(input("Enter your choice: "))
+    
+    if choice == 1:
+        array = list(map(int, input("Enter elements to initialize the stack (space-separated): ").split()))
+        Max = int(input("Enter the maximum size of the stack: "))
+        stack.create(array, Max)
+    
+    elif choice == 2:
+        value = int(input("Enter the value to push onto the stack: "))
+        stack.push(value)
+    
+    elif choice == 3:
+        stack.pop()
+    
+    elif choice == 4:
+        stack.peek()
+    
+    elif choice == 5:
+        stack.display()
+    
+    elif choice == 6:
+        print("Exiting...")
+        break
+    
+    else:
+        print("Invalid choice. Please try again.")
