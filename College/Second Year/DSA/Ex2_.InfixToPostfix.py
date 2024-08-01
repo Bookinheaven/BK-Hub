@@ -1,11 +1,16 @@
-
-
+print("╔═════════════╗\n║   Tanvik    ║\n║ URK23CS1261 ║\n╚═════════════╝")
 class Main:
     def __init__(self):
-        self.expression = (input("Enter the expressions: ")).replace(" ","")
+        self.expression = ""
         self.operators = ['+', "-", "/","*", "^"]
         self.stack = []
         self.output = []
+
+    def input_expression(self):
+        self.expression = (input("Enter the Expression: ")).replace(" ", "")
+        self.stack = []
+        self.output = []
+
     def InfixToPostfix(self):
         def precedence(element: str):
             if element == '^':
@@ -41,9 +46,34 @@ class Main:
         while self.stack:
             self.output.append(self.stack[-1])    
             self.stack.pop()
-        print(*self.output, sep='')
+        print("Postfix Expression: ",*self.output, sep='')
+    def EvaluatePostfix(self):
+        for char in self.expression:
+            if char.isdigit():
+                self.stack.append(int(char))
+            elif char in self.operators:
+                if len(self.stack) < 2:
+                    print("Error: Invalid expression")
+                    return
+                op1 = self.stack.pop()
+                op2 = self.stack.pop()
+                if char == '+':
+                    self.stack.append(op2 + op1)
+                elif char == '-':
+                    self.stack.append(op2 - op1)
+                elif char == '*':
+                    self.stack.append(op2 * op1)
+                elif char == '/':
+                    self.stack.append(op2 / op1)
+                elif char == '^':
+                    self.stack.append(op2 ** op1)
+        print("Postfix Expression Evaluation:", self.stack[0])
 instance = Main()
-#A+ (B*C-(D/E^F)*G)*H 
-#"A+B-(C*D-E)+F"
-instance.InfixToPostfix()
-# ABC*DEF^/G*-H*+
+# instance.InfixToPostfix()
+instance.input_expression()
+#231*+9-
+#100 200 + 2 / 5 * 7 +
+instance.EvaluatePostfix()
+#A+ (B*C-(D/E^F)*G)*H == ABC*DEF^/G*-H*+
+#A+B-(C*D-E)+F == AB+CD*E--F+
+
