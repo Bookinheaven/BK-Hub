@@ -69,11 +69,31 @@ class Main:
                     self.stack.append(op2 ** op1)
         print("Postfix Expression Evaluation:", self.stack[0])
 instance = Main()
-# instance.InfixToPostfix()
-instance.input_expression()
+while True:
+    print("\nMenu:")
+    print("1. Infix to Postfix")
+    print("2. Evaluate Postfix Expression")
+    print("3. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        instance.input_expression()
+        instance.InfixToPostfix()
+
+    elif choice == 2:
+        instance.input_expression()
+        instance.EvaluatePostfix()
+
+    elif choice == 3:
+        print("Exiting...")
+        break
+
+    else:
+        print("Invalid choice. Please try again.")
+
 #231*+9-
 #100 200 + 2 / 5 * 7 +
-instance.EvaluatePostfix()
 #A+ (B*C-(D/E^F)*G)*H == ABC*DEF^/G*-H*+
 #A+B-(C*D-E)+F == AB+CD*E--F+
 
