@@ -16,6 +16,7 @@ class Queue:
                 self.front = 0
             self.rear += 1
             self.queue[self.rear] = value
+            print("Enqueued:", value)
         else:
             print("Queue Overflow")
 
@@ -45,7 +46,7 @@ while True:
     if choice == 1:
         value = input("Enter the value: ")
         instance.enqueue(value)
-        print("Enqueued:", value)
+        
     elif choice == 2:
         x = instance.dequeue()
         if x is not None:
