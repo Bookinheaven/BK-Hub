@@ -8,7 +8,7 @@ public class _12_PalindromeChecker {
     public static void main(String[] args) {
         Scanner sn = new Scanner(System.in);
         System.out.print("Enter a word: ");
-        String word = sn.nextLine().trim().strip().split(" ")[0];
+        String word = sn.nextLine().strip().split(" ")[0];
         char finalword[] = new char[word.length()];
         int i = word.length() - 1; 
         for (char letter : word.toCharArray()){
