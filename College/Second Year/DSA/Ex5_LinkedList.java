@@ -10,7 +10,7 @@ class Node {
     }
 }
 
-public class LinkedList {
+public class Ex5_LinkedList {
     Node start;
 
     public void addToEmpty(int data) {
@@ -102,7 +102,7 @@ public class LinkedList {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        LinkedList list = new LinkedList();
+        Ex5_LinkedList list = new Ex5_LinkedList();
         System.out.println("╔═════════════╗\n║   Tanvik    ║\n║ URK23CS1261 ║\n╚═════════════╝");
 
         while (true) {
