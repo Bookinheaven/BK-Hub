@@ -37,7 +37,7 @@ class ATM {
 }
 
 public class F5 {
-    private static ATM atm = new ATM(1000, "1234"); 
+    private static ATM atm = new ATM(1000, "1234");
     private static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         System.out.println("Tanvik Sri Ram .R => URK23CS1261");
@@ -59,9 +59,15 @@ public class F5 {
         }
     }
     private static void withdrawMoney() {
+    System.out.print("Enter the pin: ");
+    String Pin = scanner.nextLine();
+    if(!Pin.equals(atm.getPin()) ) {
+    System.out.println("Invalid pin!");
+    return;
+    }
         System.out.print("Enter amount to withdraw: ");
         double amount = scanner.nextDouble();
-        scanner.nextLine(); 
+        scanner.nextLine();
         atm.withdraw(amount);
     }
     private static void changePin() {

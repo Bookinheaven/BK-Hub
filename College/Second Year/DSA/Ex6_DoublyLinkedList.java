@@ -102,7 +102,6 @@ public class Ex6_DoublyLinkedList {
     public static void main(String args[]){
         Scanner sc = new Scanner(System.in);
         Ex6_DoublyLinkedList list = new Ex6_DoublyLinkedList();
-        System.out.println("╔═════════════╗\n║   Tanvik    ║\n║ URK23CS1261 ║\n╚═════════════╝");
         while (true) {
             System.out.print("\nMenu:\n1. Add at Beginning\n2. Add at Position\n3. Add at End\n4. Delete Element\n5. Display List\n6. Exit\nEnter your choice: ");
             int choice = sc.nextInt();
