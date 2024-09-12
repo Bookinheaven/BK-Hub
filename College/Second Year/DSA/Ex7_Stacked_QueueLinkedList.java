@@ -1,28 +1,21 @@
-
 import java.util.Scanner;
 
 class Node {
-
     Node next;
     int data;
-
     Node(int data, Node next) {
         this.data = data;
         this.next = next;
     }
 }
-
 class Stacklinkedlist {
-
     Node top;
-
     public void push(int item) {
         Node temp = new Node(item, top);
         temp.data = item;
         temp.next = top;
         top = temp;
     }
-
     public int pop() {
         if (top == null) {
             System.out.println("Stack is empty.");
@@ -32,11 +25,9 @@ class Stacklinkedlist {
         top = top.next;
         return item;
     }
-
     public int peek() {
         return top.data;
     }
-
     public void display() {
         if (top == null) {
             System.out.println("Stack is empty.");
@@ -51,12 +42,9 @@ class Stacklinkedlist {
         System.out.println();
     }
 }
-
 class Queuelinkedlist {
-
     Node rear;
     Node front;
-
     public void enqueue(int item) {
         Node temp = new Node(item, null);
         if (front == null) {
@@ -77,10 +65,9 @@ class Queuelinkedlist {
         }
         return 0;
     }
-
     public void display() {
         if (front == null) {
-            System.out.println("Stack is empty.");
+            System.out.println("Queue is empty.");
             return;
         }
         Node temp = front;
@@ -92,9 +79,7 @@ class Queuelinkedlist {
         System.out.println();
     }
 }
-
 public class Ex7_Stacked_QueueLinkedList {
-
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
         System.out.println("╔═════════════╗\n║   Tanvik    ║\n║ URK23CS1261 ║\n╚═════════════╝");
@@ -123,7 +108,6 @@ public class Ex7_Stacked_QueueLinkedList {
                                 int top = stack.peek();
                                 System.out.printf("Peek: %d", top);
                                 break;
-
                             case 5:
                                 System.out.println("Exiting...");
                                 sc.close();
