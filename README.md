@@ -6,12 +6,12 @@ Welcome to **BK-Hub**! This repository contains my projects and code snippets ac
 
 ## Table of Contents
 
-- [C Programming 🖥️](#c-programming)
-- [College Projects 🎓](#college-projects)
-- [Front-End Development 🌐](#front-end-development)
-- [Java ☕](#java)
-- [Kotlin 🏗️](#kotlin)
-- [Python 🐍](#python)
+- [C Programming 🖥️](#c-programming-)
+- [College Projects 🎓](#college-projects-)
+- [Front-End Development 🌐](#front-end-development-)
+- [Java ☕](#java-)
+- [Kotlin 🏗️](#kotlin-)
+- [Python 🐍](#python-)
 
 ## C Programming 🖥️
 
