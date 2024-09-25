@@ -28,7 +28,7 @@ class BinarySearch {
         int first = 0;
         int last = array.size() - 1;
         while (first <= last) {
-            int mid = (first + last) / 2;
+            int mid = first + (first + last) / 2;
             if (array.get(mid) == num) {
                 return mid + 1; 
             } else if (array.get(mid) < num) {
