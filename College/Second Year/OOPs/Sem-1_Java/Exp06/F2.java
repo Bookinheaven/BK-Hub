@@ -1,5 +1,3 @@
-package BurnKnuckle.Ex6;
-
 import java.util.Scanner;
 
 interface MathsOperable {
@@ -80,6 +78,7 @@ class Operation extends Calculator implements TrigonometricOperable, MathsOperab
 
 public class F2 {
     public static void main(String[] args) {
+        System.out.println("Tanvik Sri Ram .R => URK23CS1261");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter value for a: ");
         double a = sc.nextDouble();
