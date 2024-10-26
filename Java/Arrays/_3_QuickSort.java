@@ -1,11 +1,9 @@
 
 class _3_QuickSort{
     public static void main(String[] args) {
-        int[] arr = {10, 7, 8, 9, 1, 5};
+        int[] arr = {5, 3, 2, 6, 4, 1, 3, 7};
         int n = arr.length;
-      
         quickSort(arr, 0, n - 1);
-        
         for (int val : arr) {
             System.out.print(val + " ");  
         }
@@ -20,7 +18,6 @@ class _3_QuickSort{
     private static int partition(int arr[], int low, int high){
         int pivot = arr[high];
         int i = low -1;
-
         for(int j = low; j < high; j++){
             if(arr[j]<pivot){
                 i++;

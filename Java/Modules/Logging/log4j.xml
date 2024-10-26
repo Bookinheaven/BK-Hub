@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <!-- Appenders Section -->
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ISO8601} [%t] %-5p %c{1} - %m%n"/>
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+
+        <!-- Rolling File Appender -->
+        <RollingFile name="RollingFileAppender" fileName="logs/app.log" filePattern="logs/app-%d{MM-dd-yyyy}.log.gz">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
+
+        <!-- Async Appender for High Performance -->
+        <Async name="AsyncAppender">
+            <AppenderRef ref="RollingFileAppender"/>
+        </Async>
+    </Appenders>
+
+    <!-- Loggers Section -->
+    <Loggers>
+        <!-- Application-specific Logger -->
+        <Logger name="com.example" level="DEBUG" additivity="false">
+            <AppenderRef ref="RollingFileAppender"/>
+        </Logger>
+
+        <!-- Database-specific Logger -->
+        <Logger name="com.example.database" level="WARN">
+            <AppenderRef ref="AsyncAppender"/>
+        </Logger>
+
+        <!-- Root Logger Configuration -->
+        <Root level="WARN">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="AsyncAppender"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
