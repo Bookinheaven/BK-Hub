@@ -1,0 +1,9 @@
+Write a Java program to do the following operations:
+
+a) Write the following content into a file named first.txt. “A stream is a
+communication channel that a program has with the outside world. It is used to
+transfer data items in succession.”
+b) Create another file named second.txt which contains the following content. “An
+Input/Output (I/O) Stream represents an input source or an output destination.
+A stream can represent many different kinds of sources and destinations,
+including disk files, devices, other programs, and memory arrays.”
