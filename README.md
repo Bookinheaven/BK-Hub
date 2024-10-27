@@ -50,12 +50,15 @@ Kotlin applications and projects:
 Python projects and tutorials:
 
 - **Basics & Advanced**: Arrays, Classes, Data Structures, File Handling, Intern Projects, Lambda, Mini Projects, Modules (Tkinter, NumPy, etc.).
-- **Mini Projects**: Includes:
-  - **[Water Intake](https://github.com/Bookinheaven/Water-Intake-For-Efficient-Hydration.git)**: A project with over 3,000 lines of code using various modules (Python).
-  - **[ResQit](https://github.com/Bookinheaven/ResQit.git)**: A project with over 7,000 lines of code using various modules (Java).
-  - **TicTacToe.py**: Implementation of the classic game Tic-Tac-Toe.
-  - **TicTacToeGUI.py**: GUI implementation of Tic-Tac-Toe.
-  - **YT_Downloader_GUI.py**: GUI-based YouTube Downloader.
-  - **YTdownloader.py**: Console-based YouTube Downloader.
+  
+## Mini Projects:
+  - **Java**:
+      - **[ResQit](https://github.com/Bookinheaven/ResQit.git)**: A project with over 7,000 lines of code using various modules.
+  - **Python**:    
+      - **[Water Intake](https://github.com/Bookinheaven/Water-Intake-For-Efficient-Hydration.git)**: A project with over 3,000 lines of code using various modules.
+      - **TicTacToe.py**: Implementation of the classic game Tic-Tac-Toe.
+      - **TicTacToeGUI.py**: GUI implementation of Tic-Tac-Toe.
+      - **YT_Downloader_GUI.py**: GUI-based YouTube Downloader.
+      - **YTdownloader.py**: Console-based YouTube Downloader.
 
 ---
