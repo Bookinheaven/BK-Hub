@@ -1,0 +1,5 @@
+
+
+Q1: Implement a stack using an array. Write functions for push, pop, peek, and isEmpty operations.
+Q2: Reverse a string using stack.
+Q3: Palindrome checker using stack
