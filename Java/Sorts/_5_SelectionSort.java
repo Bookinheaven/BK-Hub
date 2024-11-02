@@ -1,4 +1,4 @@
-public class _7_SelectionSort {
+public class _5_SelectionSort {
     private static void selectionSort(int[] arr){
         for(int i = 0; i < arr.length - 1; i++){
             int min = i;

@@ -1,4 +1,4 @@
-public class _6_InsertionSort {
+public class _4_InsertionSort {
     private static void insertionSort(int[] arr){
         for (int i = 1; i < arr.length; i++) {
             int temp = arr[i];

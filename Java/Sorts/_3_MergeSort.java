@@ -1,4 +1,4 @@
-public class _5_MergeSort {
+public class _3_MergeSort {
     public static void main(String[] args) {
         int [] arr = {1,5,3,7,9,2,4,8};
         mergeSort(arr);

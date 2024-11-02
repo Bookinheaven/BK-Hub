@@ -10,7 +10,7 @@ class BinaryTree {
     }
 }
 
-public class _4_BinarySearchTree {
+public class _2_BinarySearchTree {
     private BinaryTree root;
 
     public void insert(int data) {
@@ -55,7 +55,7 @@ public class _4_BinarySearchTree {
     }
 
     public static void main(String[] args) {
-        _4_BinarySearchTree bst = new _4_BinarySearchTree();
+        _2_BinarySearchTree bst = new _2_BinarySearchTree();
         bst.insert(50);
         bst.insert(30);
         bst.insert(20);
