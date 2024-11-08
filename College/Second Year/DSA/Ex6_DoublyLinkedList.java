@@ -43,19 +43,30 @@ public class Ex6_DoublyLinkedList {
 		end.next = temp;
 		List.lastNode = temp;
 	}
-	public void insertAtPos(int data, int pos) {
-		Node temp = new Node(null, data, null);
-		if (pos == 1) {
-			insertAtBeg(data);
-			return;
-		}
-		Node posNode = List.firstNode;
-		for(int i = 1; i < pos-1 && posNode != null ; i++) {
-			posNode = posNode.next;
-		}
-		temp.next = posNode.next;
-		posNode.next = temp;
-	}
+    public void insertAtPos(int data, int pos) {
+        Node temp = new Node(null, data, null);
+        if (pos == 1) {
+            insertAtBeg(data);
+            return;
+        }
+        Node posNode = List.firstNode;
+        for (int i = 1; i < pos - 1 && posNode != null; i++) {
+            posNode = posNode.next;
+        }
+        if (posNode == null) {
+            System.out.println("Position out of bounds.");
+            return;
+        }   
+        if (posNode.next == null) {
+            insertAtEnd(data);
+            return;
+        }
+        temp.next = posNode.next;
+        temp.before = posNode;
+        posNode.next.before = temp;
+        posNode.next = temp;
+    }
+
 	public void delete(int data) {
 		if (List.firstNode == null) {
             System.out.println("List is empty");
