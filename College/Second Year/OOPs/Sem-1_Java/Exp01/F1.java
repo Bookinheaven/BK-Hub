@@ -1,5 +1,3 @@
-package Exp01;
-
 import java.util.Scanner;
 /*
  * Write a java program to read the age of a candidate and determine whether he is eligible to cast his/her own vote.

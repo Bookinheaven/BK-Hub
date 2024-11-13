@@ -1,5 +1,3 @@
-package Exp01;
-
 /*
  * Write a java program to find first 10 prime numbers from natural numbers.
  */

@@ -1,5 +1,3 @@
-package Exp01;
-
 import java.util.Scanner;
 
 public class F5 {
@@ -14,33 +12,33 @@ public class F5 {
             int choice = scanner.nextInt();
 
             switch (choice) {
-                case 1:
+                case 1 -> {
                     if (isBuzzNumber(number)) {
                         System.out.println(number + " is a Buzz number.");
                     } else {
                         System.out.println(number + " is not a Buzz number.");
                     }
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     if (isEven(number)) {
                         System.out.println(number + " is even.");
                     } else {
                         System.out.println(number + " is odd.");
                     }
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     if (isPositive(number)) {
                         System.out.println(number + " is positive.");
                     } else {
                         System.out.println(number + " is negative.");
                     }
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.println("Exiting...");
                     scanner.close();
                     return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }

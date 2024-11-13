@@ -1,5 +1,3 @@
-package Ex02;
-
 import java.util.Scanner;
 
 public class F2 {

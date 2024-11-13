@@ -1,10 +1,8 @@
-package Ex02;
-
 public class F1 {
     public static void main(String[] args) {
         int[] numbers = new int[100];
         
-        for (int num = 1; num <= 100; num++) {
+        for (int num = 2; num <= 100; num++) {
             numbers[num - 1] = num;
         }
         

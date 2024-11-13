@@ -1,4 +1,3 @@
-package Exp01;
 /*
  * Write a java program to find the following pattern:
 
