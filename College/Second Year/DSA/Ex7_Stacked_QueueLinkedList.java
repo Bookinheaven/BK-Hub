@@ -19,6 +19,7 @@ class Stacklinkedlist {
     public int pop() {
         if (top == null) {
             System.out.println("Stack is empty.");
+            return -1;
         }
         Node temp = top;
         int item = temp.data;
@@ -26,6 +27,10 @@ class Stacklinkedlist {
         return item;
     }
     public int peek() {
+        if (top == null) {
+            System.out.println("Stack is empty.");
+            return -1;
+        }
         return top.data;
     }
     public void display() {

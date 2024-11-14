@@ -28,7 +28,7 @@ public class Ex2_InfixToPostfix {
                 operatorStack.push(current);
             } else if (operators.indexOf(current) != -1) {
                 while (!operatorStack.isEmpty() && operatorStack.peek() != '('
-                        && precedence(operatorStack.peek()) >= precedence(current)) {
+                && ((precedence(operatorStack.peek()) > precedence(current)) || (precedence(operatorStack.peek()) == precedence(current) && current != '^'))) {
                     output.append(operatorStack.pop());
                 }
                 operatorStack.push(current);

@@ -25,8 +25,12 @@ class HashTable {
 
     public void insert(int regNumber, long mobileNumber) {
         int index = hashFunction(regNumber);
+        int startIndex = index;
         while (table[index] != null && table[index].regNumber != regNumber) {
             index = (index + 1) % size;
+            if (index == startIndex) {
+                break;
+            }
         }
         table[index] = new HashEntry(regNumber, mobileNumber);
         System.out.println("Inserted successfully.");
@@ -34,17 +38,22 @@ class HashTable {
 
     public long search(int regNumber) {
         int index = hashFunction(regNumber);
+        int startIndex = index;
         while (table[index] != null) {
             if (table[index].regNumber == regNumber) {
                 return table[index].mobileNumber;
             }
             index = (index + 1) % size;
+            if (index == startIndex) {
+                break;
+            }
         }
         return -1;
     }
 
     public void delete(int regNumber) {
         int index = hashFunction(regNumber);
+        int startIndex = index;
         while (table[index] != null) {
             if (table[index].regNumber == regNumber) {
                 table[index] = null;
@@ -52,6 +61,9 @@ class HashTable {
                 return;
             }
             index = (index + 1) % size;
+            if (index == startIndex) {
+                break;
+            }
         }
         System.out.println("Student not found.");
     }
