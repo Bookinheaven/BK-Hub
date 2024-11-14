@@ -9,7 +9,7 @@ class Airport {
             System.out.println(airplane + " is waiting for a runway to be available for takeoff.");
             wait();
         }
-        availableRunways--;  // Reserve a runway
+        availableRunways--; 
         System.out.println(airplane + " is taking off. Runways available: " + availableRunways);
         Thread.sleep(2000);
         System.out.println(airplane + " has taken off.");
@@ -21,14 +21,14 @@ class Airport {
             System.out.println(airplane + " is waiting for a runway to be available for landing.");
             wait();
         }
-        availableRunways--;  // Reserve a runway
+        availableRunways--;  
         System.out.println(airplane + " is landing. Runways available: " + availableRunways);
         Thread.sleep(2000);
         System.out.println(airplane + " has landed.");
         releaseRunway();
     }
     private synchronized void releaseRunway() {
-        availableRunways++;  // Release a runway
+        availableRunways++;
         System.out.println("Runway released. Runways available: " + availableRunways);
         notifyAll();
     }
@@ -65,8 +65,6 @@ public class _5_AirportSimulation {
         Airplane airplane2 = new Airplane(airport, "Airplane 2", false);
         Airplane airplane3 = new Airplane(airport, "Airplane 3", true);
         Airplane airplane4 = new Airplane(airport, "Airplane 4", false);
-
-        // Start the airplanes (threads)
         airplane1.start();
         airplane2.start();
         airplane3.start();
