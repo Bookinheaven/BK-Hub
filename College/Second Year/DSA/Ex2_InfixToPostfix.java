@@ -28,7 +28,7 @@ public class Ex2_InfixToPostfix {
                 operatorStack.push(current);
             } else if (operators.indexOf(current) != -1) {
                 while (!operatorStack.isEmpty() && operatorStack.peek() != '('
-                && ((precedence(operatorStack.peek()) > precedence(current)) || (precedence(operatorStack.peek()) == precedence(current) && current != '^'))) {
+                && ((precedence(operatorStack.peek()) >= precedence(current)) && current != '^')) {
                     output.append(operatorStack.pop());
                 }
                 operatorStack.push(current);
@@ -80,16 +80,22 @@ public class Ex2_InfixToPostfix {
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); 
-            System.out.print("Enter the Expression: ");
-            String expression = scanner.nextLine();
-            Ex2_InfixToPostfix instance = new Ex2_InfixToPostfix(expression);
             switch (choice) {
-                case 1 -> instance.infixToPostfix();
+                case 1 -> {
+                    System.out.print("Enter the Expression: ");
+                    String expression = scanner.nextLine();
+                    Ex2_InfixToPostfix instance = new Ex2_InfixToPostfix(expression);
+                    instance.infixToPostfix();
+                }
                 case 2 -> {
+                    System.out.print("Enter the Expression: ");
+                    String expression = scanner.nextLine();
+                    Ex2_InfixToPostfix instance = new Ex2_InfixToPostfix(expression);
                     instance.evaluatePostfix();
                 }
                 case 3 -> {
                     System.out.println("Exiting...");
+                    System.exit(0);
                     return;
                 }
                 default -> System.out.println("Invalid choice. Please try again.");
