@@ -10,38 +10,31 @@ class Node {
 		this.next = next;
 	}		
 }
-class DoublyLinkedList{
-	Node firstNode;
-	Node lastNode;
-	DoublyLinkedList(Node firstNode, Node lastNode){
-		this.firstNode = firstNode;
-		this.lastNode =lastNode;
-	}
-}	
 public class Ex6_DoublyLinkedList {
-	public static DoublyLinkedList List = new DoublyLinkedList(null, null);
+    Node firstNode;
+    Node lastNode;
 	public void insertAtBeg(int data) {
 		Node temp = new Node(null, data, null);
-		if (List.firstNode == null) {
-			List.firstNode = temp;
-			List.lastNode = temp;
+		if (firstNode == null) {
+			firstNode = temp;
+			lastNode = temp;
 			return;
 		}
-		Node first = List.firstNode;
+		Node first = firstNode;
 		first.before = temp;
 		temp.next = first;
-		List.firstNode = temp;
+		firstNode = temp;
 	}
 	public void insertAtEnd(int data) {
 		Node temp = new Node(null, data, null);
-		if (List.lastNode == null) {
-			List.firstNode = temp;
-			List.lastNode = temp;
+		if (lastNode == null) {
+			firstNode = temp;
+			lastNode = temp;
 			return;
 		}
-		Node end = List.lastNode;
+		Node end = lastNode;
 		end.next = temp;
-		List.lastNode = temp;
+		lastNode = temp;
 	}
     public void insertAtPos(int data, int pos) {
         Node temp = new Node(null, data, null);
@@ -49,7 +42,7 @@ public class Ex6_DoublyLinkedList {
             insertAtBeg(data);
             return;
         }
-        Node posNode = List.firstNode;
+        Node posNode = firstNode;
         for (int i = 1; i < pos - 1 && posNode != null; i++) {
             posNode = posNode.next;
         }
@@ -68,19 +61,19 @@ public class Ex6_DoublyLinkedList {
     }
 
 	public void delete(int data) {
-		if (List.firstNode == null) {
+		if (firstNode == null) {
             System.out.println("List is empty");
             return;
         }
-        if (List.firstNode.data == data) {
-        	List.firstNode = List.firstNode.next;
-        	if (List.firstNode == null) {
-        		List.lastNode = null;
+        if (firstNode.data == data) {
+        	firstNode = firstNode.next;
+        	if (firstNode == null) {
+        		lastNode = null;
 	        }
             System.out.printf("Element %d deleted.", data);
             return;
         }
-        Node temp = List.firstNode;
+        Node temp = firstNode;
         while (temp != null && temp.data != data) {
             temp = temp.next;
         }
@@ -88,7 +81,7 @@ public class Ex6_DoublyLinkedList {
             System.out.printf("Element %d not found.", data);
         } else {
         	if (temp.next == null) {
-	            List.lastNode = temp.before;
+	            lastNode = temp.before;
 	        }
             temp.before.next = temp.next;
             if (temp.next != null) {
@@ -98,11 +91,11 @@ public class Ex6_DoublyLinkedList {
         }
     }
 	public void display() {
-        if (List.firstNode == null) {
+        if (firstNode == null) {
             System.out.println("List is empty.");
             return;
         }
-        Node temp = List.firstNode;
+        Node temp = firstNode;
         System.out.print("List elements: ");
         while (temp != null) {
             System.out.print(temp.data + " ");
