@@ -1,0 +1,1 @@
+A stream is a communication channel that a program has with the outside world. It is used to transfer data items in succession.

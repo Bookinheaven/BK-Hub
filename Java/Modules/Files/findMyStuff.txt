@@ -1,0 +1,7 @@
+A thread in Java is the direction or path that is taken while a program is being executed. Generally, all the programs have at least one thread, known as the main thread, that is provided by the JVM or Java Virtual Machine at the starting of the program’s execution. At this point, when the main thread is provided, the main() method is invoked by the main thread.
+
+A thread is an execution thread in a program. Multiple threads of execution can be run concurrently by an application running on the Java Virtual Machine. The priority of each thread varies. Higher priority threads are executed before lower priority threads.
+
+Thread is critical in the program because it enables multiple operations to take place within a single method. Each thread in the program often has its own program counter, stack, and local variable.
+
+Thread in Java enables concurrent execution, dividing tasks for improved performance. It's essential for handling operations like I/O and network communication efficiently. Understanding threads is crucial for responsive Java applications. Enroll in a Java Course to master threading and create efficient multithreaded programs.
