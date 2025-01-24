@@ -60,5 +60,6 @@ Python projects and tutorials:
       - **TicTacToeGUI.py**: GUI implementation of Tic-Tac-Toe.
       - **YT_Downloader_GUI.py**: GUI-based YouTube Downloader.
       - **YTdownloader.py**: Console-based YouTube Downloader.
+      - **YTDownloader_Advanced.py**: GUI-based YouTube Downloader with advanced options (Future development is possible).
 
 ---
