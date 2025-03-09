@@ -1,5 +1,26 @@
-
-
+Stack Based
+------------
 Q1: Implement a stack using an array. Write functions for push, pop, peek, and isEmpty operations.
+
 Q2: Reverse a string using stack.
+
 Q3: Palindrome checker using stack
+
+Q4: Write a program using stack operations to check whether the expression has balanced parenthesis or not.
+
+Queue Based
+------------
+Q5: Implement linear and circular queue using an array.
+
+Q6: Implementation of Beauty Salon Service using Circular Queue, Total capacity of the salon is 20 and 2 people can be serviced at a time. 
+Use queue data structure for allocating service.
+
+Q7: Implementation of railway ticket reservation using Circular Queue, Assume there are 100 seats available in ABC Express from DEST1 to 
+DEST2 and all the tickets are booked. If any more passenger wants to book a ticket, let them be added to the RAC queue, which can hold a
+maximum of 5. Any more reservations can be added to Waiting List (WL) queue. If any cancellation is done, accordingly the reservation can
+be moved from RAC to Confirmed and WL to RAC.
+
+Q8: Implementation of the double-ended queue (Insertion and deletion can be done at both ends) for the Security Services Company’s employee 
+promotion/layoff.Create a temporary_appointed_employee queue and add employee names in the order of their recruitment. When the company is 
+in the absence of permanent employees, take the most experienced person from the temporary_appointed_employee queue and if the company goes
+down and wants to lay off, choose the latest employee who joined the company.
