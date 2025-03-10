@@ -1,0 +1,97 @@
+@font-face {
+    font-family: Punishment;
+    src: url(Punishment-DPwE.ttf);
+}
+@font-face {
+    font-family: DragonHunter;
+    src: url(DragonHunter-9Ynxj.otf);
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: black;
+    color: white;
+    background-image: url("./bg_1.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+h1 {
+    color: #ff9800;
+    font-family: DragonHunter;
+    font-size: 50px;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+p {
+    width: 22%;
+    font-size: 2rem;
+    text-align: right;
+    font-family: Punishment;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);  
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding: 15px; 
+    border-left: 5px solid #ff9800; 
+    margin-left: 20px; 
+    border-radius: 6px; 
+    box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9); 
+    line-height: 1.5; 
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+#portal {
+    font-style: italic;
+    font-weight: 800;
+    font-size: 40px;
+}
+
+#flag {
+    width: 29%;
+    display: none;
+    font-family: monospace;
+    color: #00ff00;
+    font-size: 27px;
+    border-left: 5px solid #2bff00; 
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.6); 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);  
+    box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9); 
+    word-wrap: break-word;
+}
+.main_frame {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+#hidden-btn {
+    position: absolute;
+    bottom: 10px; 
+    right: 10px;
+    opacity: 0;
+    font-family: Punishment;
+    background-color: #ff9800;
+    color: black;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.7s ease-in-out, opacity 0.5s;
+}
+
+#hidden-btn:hover {
+    transform: scale(1.2);
+}
