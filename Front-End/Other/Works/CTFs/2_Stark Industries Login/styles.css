@@ -1,0 +1,203 @@
+@font-face {
+    font-family: FarenheightPersonal;
+    src: url(./FarenheightPersonalUseRegular-9YdJ7.ttf);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: #121212;
+    color: white;
+    background-image: url(./bg_2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden; 
+    background-position: center;
+    margin: 0;
+    padding: 0;    
+    height: 100vh;
+}
+
+h1 {
+    color: #ffffff;
+    font-family: FarenheightPersonal;
+    font-size: 50px;
+    text-shadow: 2px 2px 4px #34e9f0c0; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(38, 187, 247, 0.6);
+    margin-bottom: 30px;
+}
+
+#center-frame {
+    height: 70%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    align-content: center;
+}
+#firewall {
+    padding: 4rem 1rem 4rem 1rem;
+    border: 2px solid #ff9800;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 15px rgba(255, 152, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: space-around;
+    width: 24%;
+    transition: transform 0.3s ease;
+}
+
+#firewall:focus-within {
+    border-color: #01eeff;
+}
+#firewall:hover {
+    transform: scale(1.03); 
+}
+#firewall label {
+    font-size: 20px;
+    padding-left: 10%;
+    font-weight: 900;
+    padding-bottom: 0;
+    bottom: 0;
+ }
+#firewall hr {
+    padding: 0;
+    align-self: flex-start;
+    width: 70%;
+    font-size: 20px;
+    padding-left: 8%;
+}
+#username {
+    margin: 0.7rem;
+}
+#password {
+    width: 100%;
+    /* margin: 0.7rem; */
+}
+.input_details {
+    align-self: center;
+    width: 90%;
+    padding: 0.7rem 0rem 2rem 0rem;
+    margin: 0;
+}
+
+#togglePassword {
+    transform: translateY(-50%); 
+    cursor: pointer;
+}
+
+#firewall input {
+    align-self: center;
+    width: 70%;
+    padding: 1rem;
+    border-radius: 2px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #ff9800;
+    font-size: 18px;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+    transition: background-color 0.3s ease;
+}
+
+#firewall input:focus {
+    background-color: #444;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 1);
+}
+
+#firewall input:focus {
+    border-color: #01eeff;
+    background-color: #222;
+}
+
+.input_details input {
+    width: 10rem;
+    margin: 0;
+}
+
+
+.sys-message {
+    position: fixed;
+    width: 22%;
+    font-size: 25px;
+    text-align: right;
+    font-family: monospace;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);  
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding: 15px; 
+    border-left: 5px solid #ff9800; 
+    margin-left: 20px; 
+    border-radius: 6px; 
+    box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9); 
+    line-height: 1.5; 
+    transition: transform 0.3s ease;
+}
+.sys-message:hover {
+    transform: scale(1.03);
+}
+
+button {
+    align-self: center;
+    padding: 12px 25px;
+    background-color: #ff9800;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.8);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #ffcc00;
+    transform: scale(1.1);
+}
+
+#flag {
+    align-self: center;
+    font-size: 24px;
+    color: #ff0000;
+    background-color: rgba(0, 0, 0, 0.8); 
+    padding: 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    transition: transform 0.3s ease;
+}
+#flag:hover {
+    transform: scale(1.03);
+}
+
+#error-message {
+    color: red;
+    font-size: 18px;
+    margin-top: 20px;
+    bottom: 1rem;
+    animation: shake 0.3s ease-out; 
+    position: fixed;
+
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+.sys-message,#firewall label, h1 { 
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
