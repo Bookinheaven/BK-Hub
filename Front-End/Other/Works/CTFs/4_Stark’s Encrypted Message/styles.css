@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+    font-family: 'VT323', monospace;
+    background: black;
+    color: #00ff00;
+    padding: 20px;
+    text-align: left;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: black;
+    border: 2px solid #00ff00;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    height: 500px;
+    overflow-y: auto;
+    box-shadow: 0 0 10px #00ff00;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#output {
+    white-space: pre-line;
+    font-size: 18px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+#cursor {
+    display: inline-block;
+    width: 8px;
+    height: 18px;
+    background: #00ff00;
+    animation: blink 0.8s steps(2) infinite;
+    margin-left: 5px;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+::-webkit-scrollbar {
+    width: 8px;  
+}
+
+::-webkit-scrollbar-track {
+    background: #000;  
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00ff00;  
+    border-radius: 10px;
+    box-shadow: 0 0 5px #00ff00; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #33ff33;  
+    box-shadow: 0 0 10px #33ff33;
+}
+
+@media (max-width: 600px) {
+    .container {
+        height: 70vh;
+    }
+}
