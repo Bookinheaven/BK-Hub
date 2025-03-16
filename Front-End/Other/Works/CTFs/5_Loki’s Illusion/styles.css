@@ -1,0 +1,73 @@
+@font-face {
+    font-family: 'LokiFont';
+    src: url('Loki.ttf');
+}
+
+body {
+    font-family: 'LokiFont', serif;
+    height: 100vh;
+    background-image: url("./bg_image.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    background-color: #0a0a0a;
+    color: #00ff00;
+    padding: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+.head1 {
+    font-size: 1.4rem;
+}
+
+.container h1 {
+    font-size: 6rem;
+    padding-bottom: 0rem;
+    margin-bottom: 1rem;
+    padding-top: 0rem;
+    margin-top: 1rem;
+}
+.container {
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.glow {
+    font-size: 2em;
+    text-shadow: 0 0 5px #00ff00, 0 0 20px #00ff00, 0 0 40px #008000;
+}
+
+.subtitle {
+    font-style: italic;
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+.flag-box {
+    background: rgba(0, 255, 0, 0.1);
+    padding: 1rem;
+    border-radius: 10px;
+    position: absolute;
+    right: 0%;
+    /* bottom: 5%; */
+    font-size: 1.2rem;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+    text-align: left;
+}
+
+.flag {
+    color: red;
+    font-weight: bold;
+}
+
+.invisible {
+    font-size: 0;
+    color: transparent;
+}
