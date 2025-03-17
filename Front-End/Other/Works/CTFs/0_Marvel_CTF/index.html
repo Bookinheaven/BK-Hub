@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Man Sys-Lock</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="outer">
+        <p id="outer-title">🔔 SYSTEM <span id="outer-span">ALERT!</span></p>
+        <div class="right-tip">
+            <p>Iron Man forgot his access code. Can you unlock it?</p>
+        </div>
+        <div class="inner">
+        </div>
+    
+    </div>    
+    <div class="container">
+        <h1>System Lock</h1>
+        <p>Enter the 8-digit activation code to unlock.</p>
+
+        <div id="pin-display">🔒 ○ ○ ○ ○ ○ ○ ○ ○</div>
+
+        <div class="keypad">
+            <button onclick="enterDigit(1)">1</button>
+            <button onclick="enterDigit(2)">2</button>
+            <button onclick="enterDigit(3)">3</button>
+            <button onclick="enterDigit(4)">4</button>
+            <button onclick="enterDigit(5)">5</button>
+            <button onclick="enterDigit(6)">6</button>
+            <button onclick="enterDigit(7)">7</button>
+            <button onclick="enterDigit(8)">8</button>
+            <button onclick="enterDigit(9)">9</button>
+            <button onclick="clearPin()">❌</button>
+            <button onclick="enterDigit(0)">0</button>
+            <button onclick="checkPin()">✔️</button>
+        </div>
+
+        <p id="message"></p>
+
+        <button id="hint-btn" onclick="showHint()">💡 Need a hint?</button>
+        <p id="hint-box" class="hidden">Hint: A special date in Tony Stark's life.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
