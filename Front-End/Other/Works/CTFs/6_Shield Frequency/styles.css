@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+body {
+    height: 100vh;
+    background-image: url("./agent_bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    color: #000000;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: flex-end;
+}
+
+.glow {
+    font-size: 2.2em;
+    text-shadow: 0 0 10px #b7cfb7, 0 0 20px #b2b9b2, 0 0 40px #3d423d;
+}
+
+.subtitle {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.terminal {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    text-align: left;
+    /* width: 500px; */
+    font-size: 1.2em;
+}
+
+.bold {
+    font-weight: bold;
+}
