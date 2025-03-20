@@ -1,0 +1,73 @@
+body {
+    background-image: url("./wakanda_bg_img.jpg");
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 4em;
+    text-shadow: 0 0 10px #1a29fad7, 0 0 20px #003cff;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.subtitle {
+    margin-top: 0;
+}
+#first_m {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.1em;
+}
+
+.terminal {
+    white-space: pre-line;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.4;
+}
+
+#wakandanMessage {
+    margin: 0;
+    padding: 0;
+}
+.container {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #0077ff2c;
+    width: 70%;
+    /* max-width: 800px; */
+    height: 65%;
+    overflow-y: auto;
+    box-shadow: 0 0 10px #7700ff;
+    margin: auto;
+    margin-top: 5%;
+    text-align: left;
+    position: relative;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #7700ff;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #7700ffd7;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6704da;
+    box-shadow: 0 0 10px #7700ffe0;
+}
