@@ -1,0 +1,142 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    /* background-color: #121212; */
+    background-image: url(../images/download.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    overflow: hidden;
+}
+
+header {
+    /* width: 100%; */
+    background-color: rgba(82, 81, 80, 0.439);
+    backdrop-filter: blur(10px);
+    margin: 1rem;
+}
+
+nav {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+}
+
+nav ul li {
+    display: flex;
+    align-items: center;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 10px;
+    transition: color 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+    color: white;
+}
+
+#menu-button {
+    cursor: pointer;
+}
+
+#user_dp {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+main {
+    width: 100%;
+    padding: 20px;
+}
+#suggestions_div {
+    margin-bottom: 2rem;
+}
+#suggestions_div, #new-releases_div {
+    background-color: rgba(82, 81, 80, 0.439);
+    padding: 2rem;
+    border-radius: 10px;
+    
+}
+
+#suggestions_div h2, #new-releases_div h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+#suggestions_inner_div {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 1rem;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+#suggestions_inner_div::-webkit-scrollbar {
+    display: none;
+}
+
+#new-releases_inner_div {
+    height: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: flex-start;
+    overflow-y: scroll;
+    scrollbar-color: red rgba(0, 0, 0, 0);
+    scrollbar-width: thin;
+}
+
+
+#suggestions_inner_div > div,
+#new-releases_inner_div > div {
+    flex-shrink: 0;
+    width: 280px;
+    height: 350px;
+    /* background-color: #333; */
+    border-radius: 8px;
+    overflow: hidden;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
+}
+
+#filter_suggestions {
+    cursor: pointer;
+    margin-left: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+#filter_suggestions:hover {
+    transform: scale(1.1);
+}
+
+.suggestion-title h2 {
+    display: inline;
+}
+main {
+    /* height: min-content; */
+}

@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="/styles/style.css">
+
+<header>
+  <nav>
+      <ul>
+          <li><a id="menu-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+          </a></li>
+          <li><a href="./company.html">Company</a></li>
+          <li><a id="status">Status</a></li> <!-- Set by JS -->
+          <li><a id="current-city">City</a></li> <!-- Opens dropdown -->
+          <li><a><img id="user_dp" src="./image1.jpg" alt="User Profile"></a></li> <!-- Set by JS -->
+      </ul>
+  </nav>
+</header>
+
+<main>
+  <section id="suggestions_div">
+      <div class="suggestion-title">
+          <h2>Suggestions</h2>
+          <svg id="filter_suggestions" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>
+      </div>
+      <div id="suggestions_inner_div"></div>
+  </section>
+
+  <section id="new-releases_div">
+      <h2>New Releases</h2>
+      <div id="new-releases_inner_div"></div>
+  </section>
+</main>
+
+<script src="/scripts/index.js"></script>
+
+</body>
