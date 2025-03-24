@@ -39,18 +39,37 @@ body {
     padding: 0;
 }
 .container {
-    background: rgba(0, 0, 0, 0.7);
-    border: 2px solid #0077ff2c;
+    background: rgba(0, 0, 0, 0.85); 
+    border: 2px solid rgba(0, 119, 255, 0.2); 
     width: 70%;
-    /* max-width: 800px; */
     height: 65%;
     overflow-y: auto;
-    box-shadow: 0 0 10px #7700ff;
+    box-shadow: 0 0 15px rgba(119, 0, 255, 0.7); 
     margin: auto;
     margin-top: 5%;
     text-align: left;
     position: relative;
     border-radius: 10px;
+    transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out;
+    animation: vibranium-pulse 3s infinite alternate ease-in-out;
+}
+
+.container:hover {
+    box-shadow: 0 0 25px rgba(119, 0, 255, 1), 0 0 50px rgba(0, 119, 255, 0.8);
+    transform: scale(1.02);
+    border-color: rgba(0, 119, 255, 0.5);
+}
+
+@keyframes vibranium-pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(119, 0, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(119, 0, 255, 0.8), 0 0 35px rgba(0, 119, 255, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(119, 0, 255, 0.5);
+    }
 }
 
 ::-webkit-scrollbar {
