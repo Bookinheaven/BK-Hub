@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-image: url('bg-img.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #ff0800;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 255, 204, 0.5);
+    width: 80%;
+    max-width: 600px;
+}
+
+.glitch {
+    font-size: 2.5em;
+    text-transform: uppercase;
+    animation: glitch 1.5s infinite;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 3px 3px red; }
+    25% { text-shadow: -3px -3px cyan; }
+    50% { text-shadow: 2px -2px magenta; }
+    75% { text-shadow: -2px 2px lime; }
+    100% { text-shadow: 3px 3px white; }
+}
+
+.subtitle {
+    font-style: italic;
+    font-size: 1.2em;
+    opacity: 0.8;
+}
+
+.image-container {
+    margin-top: 20px;
+}
+
+.distorted {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    filter: contrast(110%) brightness(90%);
+    animation: distortion 3s infinite alternate;
+}
+
+@keyframes distortion {
+    0% { transform: skewX(0deg); }
+    50% { transform: skewX(3deg); }
+    100% { transform: skewX(-3deg); }
+}
+
+.download-btn {
+    background-color: #ff0000;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.download-btn:hover {
+    background-color: #800000;
+    color: white;
+}
+
+.terminal::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.terminal::-webkit-scrollbar-track {
+    background: rgba(0, 255, 204, 0.1); 
+    border-radius: 10px;
+}
+
+.terminal::-webkit-scrollbar-thumb {
+    background: #00ffcc; 
+    border-radius: 10px;
+    border: 2px solid rgba(0, 255, 204, 0.3);
+}
+
+.terminal::-webkit-scrollbar-thumb:hover {
+    background: #00b3a0; 
+}
+
+.terminal {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 0.9em;
+    height: 150px; 
+    overflow-y: auto;
+    border-radius: 5px;
+    border: 1px solid #00ffcc;
+    box-shadow: 0px 0px 10px rgba(0, 255, 204, 0.5);
+}
+
+.log {
+    color: #ffcc00;
+    font-family: monospace;
+}
