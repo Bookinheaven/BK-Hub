@@ -1,0 +1,94 @@
+body {
+    height: 100vh;
+    background-image: url(./image-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    background-color: #0a0a23;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.container {
+    z-index: 2;
+    position: fixed;
+    right: 0;
+    max-width: 600px;
+    margin: 1rem;
+    padding: 20px;
+    background: rgba(85, 31, 31, 0.85);
+    border-radius: 10px;
+    border: 1px solid orange;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.8);
+    animation: flyIn 1.5s ease-out, floating 3s infinite ease-in-out;
+}
+
+h1, h2 {
+    color: #ffcc00;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+h1 {
+    animation-delay: 0.5s;
+}
+h2 {
+    animation-delay: 1s;
+}
+
+.download-btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background: #ff5733;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    animation: fadeIn 2s ease-in-out forwards, pulse 2s infinite;
+}
+
+.download-btn:hover {
+    background: #ff8143;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 87, 51, 0.9);
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes flyIn {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 10px rgba(255, 87, 51, 0.6); }
+    50% { box-shadow: 0 0 20px rgba(255, 87, 51, 0.9); }
+    100% { box-shadow: 0 0 10px rgba(255, 87, 51, 0.6); }
+}
+
+#star_bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    background-image: url(./stars.gif);
+    backdrop-filter: blur(2px);
+    -webkit-mask-image: radial-gradient(ellipse 50% 80% at center, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 50%);
+    mask-image: radial-gradient(ellipse 50% 100% at center, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 50%);
+}
