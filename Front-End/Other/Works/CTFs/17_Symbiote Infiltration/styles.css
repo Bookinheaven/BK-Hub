@@ -1,0 +1,104 @@
+body {
+    height: 100vh;
+    background-image: url('./bg_image.jpg');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.container {
+    position: fixed;
+    right: 0;
+    margin: 1rem;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 10px;
+    border: 2px solid red;
+    box-shadow: 0 0 10px red;
+    animation: float 4s ease-in-out infinite, pulse 2s infinite alternate;
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: red;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.download-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px red;
+}
+
+.hidden {
+    display: none;
+}
+
+#tauntBox {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2rem;
+    position: fixed;
+    right: 50%;
+    top: 10%;
+    transform: translate(50%, -50%) scale(0.95);
+    background: rgba(0, 0, 0, 0.9);
+    color: #ff0000;
+    padding: 20px 40px;
+    border: 3px solid red;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 8px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+#tauntBox.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(50%, -50%) scale(1);
+}
+
+#revealBtn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #8b0000;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 2px solid red;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+#revealBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px red;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 5px red; }
+    to { box-shadow: 0 0 20px red; }
+}
