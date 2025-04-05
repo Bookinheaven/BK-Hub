@@ -1,0 +1,140 @@
+@font-face {
+    font-family: top_secret;
+    src: url(./top-secret-stamp.regular.ttf);
+}
+
+html, body {
+    height: 100vh;
+    overflow: hidden;
+    background-image: url(./image-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    background-color: rgba(48, 48, 48, 0.9);
+    color: rgb(177, 149, 88);
+    border: 2px solid rgba(114, 114, 114, 0.9);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.5);
+    animation: fadeIn 2s ease-in-out;
+}
+
+#header_d {
+    font-family: top_secret, Courier, monospace;
+    color: rgba(255, 0, 0, 0.8);
+    font-size: 3rem;
+    text-transform: uppercase;
+}
+
+#header_d::after {
+    content: '';
+    background-color: white;
+    display: block;
+    width: 100%;
+    height: 3px;
+    margin-top: 5px;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 2px 2px 0px red, -2px -2px 0px blue; }
+    25% { text-shadow: -2px -2px 0px red, 2px 2px 0px blue; }
+    50% { text-shadow: 2px -2px 0px red, -2px 2px 0px blue; }
+    75% { text-shadow: -2px 2px 0px red, 2px -2px 0px blue; }
+    100% { text-shadow: 2px 2px 0px red, -2px -2px 0px blue; }
+}
+.glitch {
+    animation: glitch 0.2s infinite alternate;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.access-box {
+    margin-top: 20px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    animation: fadeIn 3s;
+}
+
+button {
+    padding: 10px 15px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    animation: pulse 1.5s infinite alternate;
+}
+
+button:hover {
+    background: darkred;
+    transform: scale(1.1);
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 5px red; }
+    to { box-shadow: 0 0 20px red; }
+}
+
+.hidden {
+    display: none;
+}
+
+#download-section {
+    margin-top: 20px;
+}
+
+#download-btn1, #download-btn2 {
+    padding: 10px 20px;
+    background: green;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+    margin: 5px;
+}
+
+#download-btn1:hover, #download-btn2:hover {
+    background: darkgreen;
+    transform: scale(1.1);
+}
+
+.distorted {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    filter: contrast(120%) brightness(80%);
+    animation: distortion 3s infinite alternate;
+}
+
+.image-container {
+    margin-top: 20px;
+    padding-bottom: 1rem;
+}
+
+@keyframes distortion {
+    0% { transform: skewX(0deg); }
+    50% { transform: skewX(5deg); }
+    100% { transform: skewX(-5deg); }
+}

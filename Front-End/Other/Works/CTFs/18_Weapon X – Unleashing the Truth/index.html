@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weapon X - Classified</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="header_d" class="glitch">Classified Documentation</h1>
+        <p id="description"></p>
+
+        <div class="image-container">
+            <img class="distorted" id="wolverineImage" src="./wolverine.jpg" alt="Wolverine Image">
+        </div>
+        <button id="download-image">Download Image</button>
+
+        <div id="access-box_id" class="access-box hidden">
+            <label for="accessCode">Access Code:</label>
+            <input type="text" id="accessCode" placeholder="Enter Code">
+            <button id="verifyBtn">Verify</button>
+        </div>
+
+        <div id="download-section" class="hidden">
+            <p>Access Granted. Download the classified files below:</p>
+            <a id="download-btn1" href="hide1.jpg" download>Download Document</a>
+            <a id="download-btn2" href="a.out" download>Download Executable</a>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
