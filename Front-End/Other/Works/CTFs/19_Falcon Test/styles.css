@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&family=Space+Grotesk:wght@300..700&family=Tektur:wght@400..900&display=swap');
+
+body {
+    height: 100vh;
+    background-image: url(./bg-image.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow: hidden;   
+}
+.container {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: red;
+    position: fixed;
+    bottom: 1rem;
+    padding: 2rem;
+    margin: 2rem;
+    left: 1rem;
+    background-color: rgba(255, 255, 255, 0.651);
+    border: white solid 1px;
+    box-shadow: 2px 3px 20px whitesmoke;
+    border-radius: 0.5em;
+    transition: box-shadow 0.3s ease, font-size 0.3s ease;
+    animation: swing 2s ease-in-out infinite alternate;
+
+
+}
+.container:hover {
+    transform: translateX(1.1);
+    box-shadow: 0 0 15px red;
+    font-size: 1.5rem;
+}
+#header_line {
+    font-weight: bold;
+    font-family: "Space Grotesk", "Rock Salt", sans-serif;
+}
+#header_line::after {
+    content: "";
+    display: block;
+    width:90%;
+    height: 2px;
+    margin-top: 0.5rem;
+    border-radius: 2rem;
+    background-color: rgb(255, 247, 247);
+}
+#download-btn {
+    font-size: 1.3em;
+    background: rgb(255, 0, 0);
+    padding: 1rem;
+    margin: 1rem;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    border: 2px solid red;
+    box-shadow: 0 0 10px red;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, font-size 0.3s ease;
+}
+
+#download-btn:hover {
+    transform: scale(1.1);
+    font-size: 1.5rem;
+    box-shadow: 0 0 15px red;
+}
+
+.hidden {
+    display: none;
+}
+
+#description {
+    font-size: 2rem;
+    margin: 0;
+    color: black;
+    padding: 0;
+    font-family: "Space Grotesk", sans-serif;
+}
+@keyframes swing {
+    0% { transform: rotate(2deg); }
+    100% { transform: rotate(-2deg); }
+}
