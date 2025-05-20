@@ -1,65 +1,85 @@
----
-
 # BK-Hub
 
-Welcome to **BK-Hub**! This repository contains my projects and code snippets across various programming languages and technologies. Navigate the sections below to explore different categories.
-
-## Table of Contents
-
-- [C Programming 🖥️](#c-programming-)
-- [College Projects 🎓](#college-projects-)
-- [Front-End Development 🌐](#front-end-development-)
-- [Java ☕](#java-)
-- [Kotlin 🏗️](#kotlin-)
-- [Python 🐍](#python-)
-
-## C Programming 🖥️
-
-Explore various C programming topics:
-
-- **Basics & Advanced**: Algorithms, Dynamic Allocation, File Handling, Functions, Pointers, Searching, Sorting, Structures.
-
-## College Projects 🎓
-
-Projects and coursework from college:
-
-- **First Year**: Digital Verilog, PPS.
-- **Second Year**: DSA, OOPs.
-
-## Front-End Development 🌐
-
-Projects related to web development:
-
-- **FreeCodeCamp**: HTML, CSS, Responsive Design.
-- **Other**: Various front-end projects.
-
-## Java ☕
-
-Java-related projects and resources:
-
-- **Basics & Advanced**: Arrays, OOPs, Modules (Collections, JavaFX, Swing).
-
-## Kotlin 🏗️
-
-Kotlin applications and projects:
-
-- **Apps & Projects**: Music App, Calculator, Jetpack Compose (Navigation, Unit Converter).
-
-## Python 🐍
-
-Python projects and tutorials:
-
-- **Basics & Advanced**: Arrays, Classes, Data Structures, File Handling, Intern Projects, Lambda, Mini Projects, Modules (Tkinter, NumPy, etc.).
-  
-## Mini Projects:
-  - **Java**:
-      - **[ResQit](https://github.com/Bookinheaven/ResQit.git)**: A project with over 7,000 lines of code using various modules.
-  - **Python**:    
-      - **[Water Intake](https://github.com/Bookinheaven/Water-Intake-For-Efficient-Hydration.git)**: A project with over 3,000 lines of code using various modules.
-      - **TicTacToe.py**: Implementation of the classic game Tic-Tac-Toe.
-      - **TicTacToeGUI.py**: GUI implementation of Tic-Tac-Toe.
-      - **YT_Downloader_GUI.py**: GUI-based YouTube Downloader.
-      - **YTdownloader.py**: Console-based YouTube Downloader.
-      - **YTDownloader_Advanced.py**: GUI-based YouTube Downloader with advanced options (Future development is possible).
+Welcome to my personal GitHub repository! This is my sandbox for **continuous learning**, **practice**, and **exploration** across a wide range of topics including systems programming, web development, data structures, and more.
 
 ---
+
+## 🎯 About This Repository
+
+This repository serves as a **central hub** for my independent learning outside academics. It contains categorized code, experiments, and mini-projects across:
+
+* ⚙️ **C Programming** – Algorithms, Pointers, Structures, File Handling, Hackerrank solutions, and more
+* 🌐 **Front-End Web Dev** – HTML, CSS, JavaScript, Projects, Flexbox, FreeCodeCamp certifications
+* ☕ **Java** – Basics, OOP, DSA, Swing, JavaFX, JDBC, Files, JUnit, Mini Projects
+* 🐍 **Python** – Practice scripts and concept demos
+* 📦 **Kotlin**, **JavaScript**, **Node.js**, and Express-based applications
+
+> Looking for my academic work? ➡️ Check out my [Academic Learnings Repository](https://github.com/Bookinheaven/KWork)
+
+---
+
+## 🧱 Project Categories
+
+### 🔧 C Programming
+
+* Basics, Math, File Handling, Dynamic Allocation
+* Hackerrank Practice (Bash + C)
+* Searching & Sorting Algorithms
+* Modular Functions, Structures, Linked Lists
+
+### 💻 Front-End Development
+
+* Personal Web Projects (HTML, CSS, JS)
+* Bootcamp projects: Full Stack applications with Express.js
+* Flexbox Froggy, CSS Art, and freeCodeCamp challenges
+
+### ☕ Java & OOP
+
+* Java Fundamentals, Arrays, Loops, Exception Handling
+* Modules: JDBC, Swing, JavaFX, Networking, Logging
+* DSA implementations & Mini-Projects
+
+### 🐍 Python & More
+
+* Python practice problems
+* Backend logic in full-stack bootcamps
+
+---
+
+## 🌟 Highlighted Projects
+
+| Language/Category | Project Name               | Description                                                                             | Link                                                                                              |
+| ----------------- | -------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 🐍 Python         | **TicTacToe.py**           | Implementation of the classic game Tic-Tac-Toe in console.                              | [View File](https://github.com/Bookinheaven/BK-Hub/blob/main/Python/Mini%20Projects/TicTacToe.py)             |
+| 🐍 Python         | **TicTacToeGUI.py**        | GUI version of Tic-Tac-Toe using Tkinter.                                               | [View File](https://github.com/Bookinheaven/BK-Hub/blob/main/Python/Mini%20Projects/TicTacToeGUI.py)          |
+| 🐍 Python         | **YTdownloader.py**        | Console-based YouTube video downloader.                                                 | [View File](https://github.com/Bookinheaven/BK-Hub/blob/main/Python/Mini%20Projects/YTdownloader.py)          |
+| 🐍 Python         | **YT\_Downloader\_GUI.py** | GUI-based YouTube video downloader.                                                     | [View File](https://github.com/Bookinheaven/BK-Hub/blob/main/Python/Mini%20Projects/YT_Downloader_GUI.py)     |
+| 🐍 Python         | **YTDownloader\_Advanced** | Advanced GUI YouTube downloader with future extensibility.                              | [View File](https://github.com/Bookinheaven/BK-Hub/blob/main/Python/Mini%20Projects/YTDownloader_Advanced.py) |
+| ☕ Java            | **ResQit**                 | Disaster management system using Java, JDBC, and PostgreSQL.                            | [View ResQit](https://github.com/Bookinheaven/ResQit)                                             |
+| 🌐 Web            | **BioDiversity**           | Interactive platform raising awareness on biodiversity with HTML, CSS, JS & Express.    | [View BioDiversity](https://github.com/Bookinheaven/BioDiversity)                                 |
+| 📱 App/System     | **AquaTrack**              | Hydration tracking app with reminders, dashboards, and error logging.                   | [View AquaTrack](https://github.com/Bookinheaven/AquaTrack)                                       |
+| 📱 App/System     | **InsightEX**              | AI-powered system for optimizing retail layouts, surveillance, and customer experience. | [View InsightEX](https://github.com/Bookinheaven/InsightEX)                                       |
+| 🛡️ Cybersecurity | **Marvel CTF Challenge**   | A Marvel-themed Capture The Flag challenge for ethical hacking practice.                | [View CTF](https://github.com/Bookinheaven/Bookinheaven.github.io)                                |
+
+---
+
+## 🧠 Why This Exists
+
+This space exists for:
+
+* Practicing and refining my technical skills
+* Tracking learning progress outside university
+* Experimenting with concepts & tools hands-on
+* Building a coding habit and project portfolio
+
+---
+
+## 🧾 Notes
+
+* Folders are organized by topic and language.
+* Contains working code, partial implementations, and references.
+* Updated regularly based on what I'm learning next.
+
+---
+
+> ⭐ If you find this interesting or helpful, consider leaving a star or visiting my academic repo!
