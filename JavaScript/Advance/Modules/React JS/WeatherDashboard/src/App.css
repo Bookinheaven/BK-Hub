@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 #initial-loading-container {
   position: absolute;
   width: 100%;
@@ -6,10 +7,80 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   background-color: #0C0C0D;
   z-index: 1022;
   color: white;
   font-family: 'Inter', sans-serif;
+}
+
+#initial-header-span{
+  z-index: 1000;
+  font-size: 5rem;
+  color: white;
+  display: block;
+}
+
+#ls12 {
+  display: block;
+  font-size: 2rem;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  
+}
+
+#initial-button {
+  width: 10rem;
+  height: 4rem;
+  background-color: #0C0C0D;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  padding: 1rem 2rem;
+}
+
+#initial-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+#initial-button:active {
+  transform: scale(0.95);
+}
+#initial-button svg {
+  width: 100%;
+  height: 100%;
+}
+#initial-button:hover {
+  color: #ff0000;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+#blinker {
+  animation: blinker 1s forwards infinite ease-in-out;
+  color: white;
+  font-size: 2rem;
+  font-family: 'Inter', sans-serif;
+  position: fixed;
+  top: 2%;
+  left: 2%;
+}
+#blinker svg {
+  width: 4rem;
+  height: 4rem;
+}
+#blinker svg path {
+   fill: rgba(252, 101, 0, 0.781); 
+  }
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+
 }
 
 #app-container {

@@ -80,9 +80,9 @@ function App() {
   return (
     <>
       <div id="initial-loading-container">
-          <h1>Hi, I'm Wrap.</h1>
-          <p>Turn Me On!</p>
-          <button onClick={async () => {
+          <div id="blinker"><svg viewBox="0 0 32 32"><path fill="none" d="M9.012,2H22.979q-2.787,5.6-5.593,11.194,2.8.014,5.6.009-4.9,8.4-9.794,16.8c-.019-4.192-.009-8.375-.009-12.567-1.391,0-2.782,0-4.1.00973-Z" /></svg></div>
+          <p id="ls12"><span id="initial-header-span">Hi, I'm <strong>Wrap</strong>.</span><br/>Power up to get started </p>
+          <button id="initial-button" onClick={async () => {
             getCurrentLocation(setWeather, setCity)
             setIsFocused(true);
             }}>
@@ -260,14 +260,6 @@ function App() {
           <div id="weather-info-container">
             {weather && (
               <div>
-                <h3>More Info</h3>
-                <ul>
-                  <li><strong>Feels Like:</strong> {weather.main.feels_like} °C</li>
-                  <li><strong>Min Temp:</strong> {weather.main.temp_min} °C</li>
-                  <li><strong>Max Temp:</strong> {weather.main.temp_max} °C</li>
-                  <li><strong>Cloudiness:</strong> {weather.clouds.all}%</li>
-                  <li><strong>Visibility:</strong> {weather.visibility} m</li>
-                </ul>
               </div>
             )}
           </div>  
