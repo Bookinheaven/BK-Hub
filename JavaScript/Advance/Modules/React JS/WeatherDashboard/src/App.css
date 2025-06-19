@@ -1,13 +1,15 @@
-
-.weather-card {
-  background: white;
-  display: inline-block;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  max-width: 300px;
-  margin: 0 auto;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+#initial-loading-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0C0C0D;
+  z-index: 1022;
+  color: white;
+  font-family: 'Inter', sans-serif;
 }
 
 #app-container {
@@ -22,30 +24,10 @@
   height: 100vh;
   background-image: url(./assets/);
   font-family: 'Segoe UI', sans-serif;
-
-}
-
-#overlay-box {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  /* background-image: url('./assets/images/bg2.jpg'); */
-  /* background-size: cover; */
-  /* background-position: center; */
-  /* background-repeat: no-repeat; */
-  /* filter: blur(8px); */
   background-color: color-mix(in oklch, #0C0C0D 100%, transparent);  z-index: -1;
-  
-}
-#overlay-maincontainer {
-  position: absolute;
-  width: 90%;
-  height: 90%;
-  /* background-color: rgba(24, 24, 24, 0.479); */
-  border-radius: 20px;
-  z-index: 2;
 
 }
+
 #search-box {
   position: absolute;
   top: 20px;
@@ -67,7 +49,6 @@
   outline: none;
   width: 0;
 }
-
 
 #search-box::after {
   content: "";
@@ -105,22 +86,23 @@
   gap: 1em;
 }
 
-#home-button {
+#home-button , #shuffle-button{
   width: 2rem;
   height: 2rem;
   outline: none;
   border: none;
   background-color: transparent;
 }
-#home-button svg {
+#home-button svg, #shuffle-button svg {
   width: 1.5rem;
   height: 1.5rem;
   fill: white;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
-
-
+#home-button:hover svg, #shuffle-button:hover svg {
+  transform: scale(1.2);
+}
 #color-mode-box {
   position: absolute;
   top: 20px;
@@ -136,3 +118,58 @@
   display: flex;
     
 }
+
+#current-weather-container {
+  background: white;
+  display: inline-block;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+#overlay-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;  
+}
+
+#recent-container {
+  display: none;
+  width: 100%;
+  height: 15%;
+  margin: 1rem auto;
+}
+
+#overlay-maincontainer {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  bottom: 0;
+  border-radius: 20px;
+  z-index: 2;
+
+}
+#current-weather-container {
+  width: 100%;
+  height: 50%;
+  position: relative;
+  background: rgb(34, 34, 36);
+  padding: 0rem 1rem 1rem 1rem;
+  max-width: 100%;
+  color:#fff;
+}
+#current-weather {
+  width: 100%;
+  position: relative;
+}
+#city-heading {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-family:  ui-sans-serif, "Roboto", "Inter", "Montserrat", sans-serif;
+}
+
