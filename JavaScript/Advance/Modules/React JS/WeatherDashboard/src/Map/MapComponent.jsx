@@ -3,6 +3,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 const OpenCageAPIKEY = import.meta.env.VITE_WEATHER_GEOCAGE_KEY;
 import { fetchWeatherUsingLL } from "../utils/FetchWeather";
+import "./MapComponent.css";
 
 export default function MapComponent({ city, setCity, setWeather, setInputValue }) {
   const mapContainerRef = useRef(null);

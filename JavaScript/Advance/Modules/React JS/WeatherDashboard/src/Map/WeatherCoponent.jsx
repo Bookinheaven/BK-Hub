@@ -1,6 +1,6 @@
 import { normalizeName } from "../utils/general";  
 import { Tooltip as ReactTooltip } from 'react-tooltip'
-
+import "./WeatherComponent.css";
 export default function WeatherComponent({ weather }) {
     const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 

@@ -14,7 +14,6 @@ function App() {
 
   // const [cityList, setCityList] = useState([]);
 
-
   return (
     <>
       <div id="initial-loading-container">

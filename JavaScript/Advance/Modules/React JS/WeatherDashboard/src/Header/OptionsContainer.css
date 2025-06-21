@@ -1,0 +1,37 @@
+#options-container {
+  position: absolute;
+  top: 20px;
+  left: 10%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 1em;
+}
+
+#home-button , #shuffle-button{
+  width: 2rem;
+  height: 2rem;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+#home-button svg, #shuffle-button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: white;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+#home-button:hover svg, #shuffle-button:hover svg {
+  transform: scale(1.2);
+}
+#color-mode-box {
+  position: absolute;
+  top: 20px;
+  right: 10%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 1rem;
+  border: 1px solid #fff;
+}

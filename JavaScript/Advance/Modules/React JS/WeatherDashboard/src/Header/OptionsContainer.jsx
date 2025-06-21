@@ -1,5 +1,7 @@
 import cities from "../assets/data/cities.json";
 import { fetchWeatherUsingName } from "../utils/FetchWeather.js";
+import "./OptionsContainer.css";
+
 export default function OptionsContainer({ setCity, setWeather, setIsFocused, setInputValue }) {
     return (
         <div id="options-container">
