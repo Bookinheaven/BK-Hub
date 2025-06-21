@@ -38,8 +38,8 @@ function App() {
             <input
               type="text"
               value={inputValue}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              onFocus={() => { setIsFocused(true);}}
+              onBlur={() => { setIsFocused(false);}}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -50,6 +50,8 @@ function App() {
                 width: isFocused || city ? '200px' : '0.5rem',
                 transition: 'width 0.3s ease',
                 borderRadius: '25px',
+                backgroundColor:  isFocused ? '#fff' : '#333',
+                color:  isFocused ? '#333' : '#fff',
                 border: '1px solid #ccc',
                 padding: '0.5rem 2.3rem 0.5rem 1rem',
                 paddingLeft: isFocused || city ? '2.3rem' : '0rem',

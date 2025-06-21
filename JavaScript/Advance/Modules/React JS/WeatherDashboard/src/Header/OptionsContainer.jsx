@@ -9,6 +9,7 @@ export default function OptionsContainer({ setCity, setWeather, setIsFocused, se
                   setCity("");
                   setWeather(null);
                   setIsFocused(false);
+                  setInputValue("");
                 }}
                 >
                 <svg viewBox="0 0 24 24">
