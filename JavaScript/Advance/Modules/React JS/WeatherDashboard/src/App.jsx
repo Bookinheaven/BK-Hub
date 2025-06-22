@@ -1,21 +1,24 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import "./App.css";
 import MapComponent from "./Map/MapComponent.jsx";
 import OptionsContainer from "./Header/OptionsContainer.jsx";
-import WeatherComponent from "./Map/WeatherCoponent.jsx";
+import WeatherComponent from "./Map/WeatherComponent.jsx";
 import { fetchWeatherUsingName, getCurrentLocation } from "./utils/FetchWeather.js";
-
+import NetworkStatus from "./assets/NetworkComponent/NetworkStatus.jsx";
 function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null); 
   const [isFocused, setIsFocused] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [recentCities, setRecentCities] = useState([]);
 
-  // const [cityList, setCityList] = useState([]);
+  const [forecast, setForecast] = useState([]); 
+  const [cityList, setCityList] = useState([]);
 
   return (
     <>
+      <NetworkStatus />
       <div id="initial-loading-container">
           <div id="blinker"><svg viewBox="0 0 32 32"><path fill="none" d="M9.012,2H22.979q-2.787,5.6-5.593,11.194,2.8.014,5.6.009-4.9,8.4-9.794,16.8c-.019-4.192-.009-8.375-.009-12.567-1.391,0-2.782,0-4.1.00973-Z"/></svg></div>
           <p id="ls12"><span id="initial-header-span">Hi, I'm <strong>Wrap</strong>.</span><br/>Power up to get started </p>
@@ -46,7 +49,7 @@ function App() {
                 }
               }}
               style={{
-                width: isFocused || city ? '200px' : '0.5rem',
+                width: isFocused || city ? '200px' : '0.7rem',
                 transition: 'width 0.3s ease',
                 borderRadius: '25px',
                 backgroundColor:  isFocused ? '#fff' : '#333',
@@ -96,12 +99,13 @@ function App() {
           
           <WeatherComponent weather={weather} />
           
-          {/* <div id="forecast-container">
-          </div> */}
+          <div id="forecast-container">
+            {/* {getForecastUsingLL(forecast, setForecast, cityList)} */}
+            
+          </div>
           
         </div>
       </div>
-      
     </>
   );
 }

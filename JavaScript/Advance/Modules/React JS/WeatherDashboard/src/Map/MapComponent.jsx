@@ -18,6 +18,12 @@ export default function MapComponent({ city, setCity, setWeather, setInputValue 
       style: "/public-assets/toner.json",
       center: [77.5946, 12.9716],
       zoom: 10,
+      minZoom: 2,
+      maxZoom: 18,
+      pitchWithRotate: false,
+      dragRotate: false,
+      pitch: 0,
+      bearing: 0,
     });
 
     mapRef.current.on("load", () => {
@@ -27,6 +33,7 @@ export default function MapComponent({ city, setCity, setWeather, setInputValue 
     mapRef.current.on("click", (e) => {
       const { lng, lat } = e.lngLat;
       placeMarker([lng, lat]);
+      setWeather(null);
       fetchWeatherUsingLL(lat, lng, setWeather, setCity, setInputValue);
     });
 

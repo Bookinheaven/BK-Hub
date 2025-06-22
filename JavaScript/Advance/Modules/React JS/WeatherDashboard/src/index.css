@@ -41,8 +41,23 @@ body {
     border-color: #ffb300;
     animation: slideIn 1s ease-in-out, glow-warning 1s ease-in-out infinite alternate;
     display: none;
-
+    transition: opacity 0.5s, transform 0.5s;
 }
+
+#warning-message.slide-out,
+#error-message.slide-out {
+    animation: slideOut 0.5s forwards;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#error-message {
+    border-color: #ff4e4e;
+    animation: slideIn 1s ease-in-out, glow-error 1s ease-in-out infinite alternate;
+    display: none;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
 #warning-message-header, #error-message-header{
     position: relative;
     top: 0rem;
@@ -55,6 +70,12 @@ body {
     padding: 0;
     display: block;
 }
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(25rem); opacity: 0; }
+}
+
 
 @keyframes slideIn {
     from { transform: translateX(25rem); opacity: 0; }
@@ -88,4 +109,53 @@ body {
         box-shadow: 0 0 2px #ffb300, 0 0 4px #ffb300;
         color: #ffb300;
     }
+}
+
+#loader-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1099;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+#loader {
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    left: 50%;
+  aspect-ratio: 1;
+  color: #f03355;
+  position: fixed;
+  background: radial-gradient(10px,currentColor 94%,#0000);
+  z-index: 1100;
+}
+#loader:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(9px at bottom right,#0000 94%,currentColor) top    left,
+    radial-gradient(9px at bottom left ,#0000 94%,currentColor) top    right,
+    radial-gradient(9px at top    right,#0000 94%,currentColor) bottom left,
+    radial-gradient(9px at top    left ,#0000 94%,currentColor) bottom right;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  animation: l18 1.5s infinite cubic-bezier(0.3,1,0,1);
+  ;
+}
+@keyframes l18 {
+   33%  {inset:-10px;transform: rotate(0deg)}
+   66%  {inset:-10px;transform: rotate(90deg)}
+   100% {inset:0    ;transform: rotate(90deg)}
+}
+.hidden {
+    display: none !important;
 }

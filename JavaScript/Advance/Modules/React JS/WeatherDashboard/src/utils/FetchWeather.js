@@ -1,49 +1,69 @@
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 const baseUrl = import.meta.env.VITE_WEATHER_API_BASE;
-import { normalizeName } from "./general";
+import { sendWarning, sendError, normalizeName } from "./general";
+
 
 const fetchWeatherUsingName = async (city, setWeather, setCity, setInputValue) => {
   if (!city || city.trim() === "" || city === "Search") {
     setWeather(null);
     return;
   }
-      console.log(city)
-
   try {
     const response = await fetch(
       `${baseUrl}/weather?q=${city}&appid=${apiKey}&units=metric`
     );
-
-    if (!response.ok) throw new Error("City not found");
-
+    if (!response.ok) sendWarning("City not found");
+    
     const data = await response.json();
     setWeather(data);
     setCity(`${normalizeName(data.name)}`);
     setInputValue(`${normalizeName(data.name)}`);
-    console.log("✅ Weather data fetched successfully:", data);
   } catch (error) {
-    console.error("❌ Error fetching weather data:", error.message);
+    console.error("Error fetching weather data using name:", error.message);
     setWeather(null)
   }
 };
 
 const fetchWeatherUsingLL = async (lat, long, setWeather, setCity, setInputValue) => {
   try {
+    setWeather(null);
+    if (!lat || !long) sendWarning("Location not found");
+    if (isNaN(lat) || isNaN(long)) sendWarning("Invalid coordinates");
     const response = await fetch(
       `${baseUrl}/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`
     );
-    if (!response.ok) throw new Error("Location not found");
+    if (!response.ok) sendWarning("Location not found");
     const data = await response.json();
     setWeather(data);
-    setCity(`${normalizeName(data.name)}`);
-    setInputValue(`${normalizeName(data.name)}`);
-    console.log("Weather data fetched successfully:", data);
+    if (data.name) {
+      setCity(`${normalizeName(data.name)}`);
+      setInputValue(`${normalizeName(data.name)}`);
+    }
   } catch (error) {
-    console.error("❌ Error fetching weather data:", error.message);
+    console.error("Error fetching weather data using lat:", error.message);
     setWeather(null);
   }
 
 };
+
+function getForecastUsingLL(lat, long, setForecast) {
+  if (!lat || !long) sendWarning("Location not found");
+  if (isNaN(lat) || isNaN(long)) sendWarning("Invalid coordinates");
+  fetch(
+    `${baseUrl}/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`
+  )
+    .then((response) => {
+      if (!response.ok) sendWarning("Location not found");
+      return response.json();
+    })
+    .then((data) => {
+      setForecast(data);
+    })
+    .catch((error) => {
+      console.error("Error fetching forecast data:", error.message);
+      setForecast(null);
+    });
+}
 
 
 function getCurrentLocation(setWeather, setCity, setInputValue) {
@@ -62,13 +82,11 @@ function getCurrentLocation(setWeather, setCity, setInputValue) {
       }
     );
   } else {
-    console.log("Geolocation is not supported by this browser.");
+    sendError("Geolocation is not supported by this browser.");
   }
   const loader = document.getElementById('initial-loading-container');
   if (loader) {
     loader.style.display = 'none';
-  } else {
-    console.error("Loader element not found");
   }
 }
 

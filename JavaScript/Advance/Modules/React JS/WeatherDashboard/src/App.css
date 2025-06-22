@@ -89,8 +89,6 @@
   transform: scale(1.2);
 }
 
-
-
 @keyframes lightning-flash {
   0%, 100% {
     opacity: 1;
