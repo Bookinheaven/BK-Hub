@@ -2,7 +2,7 @@ import cities from "../assets/data/cities.json";
 import { fetchWeatherUsingName } from "../utils/FetchWeather.js";
 import "./OptionsContainer.css";
 
-export default function OptionsContainer({ setCity, setWeather, setIsFocused, setInputValue }) {
+export default function OptionsContainer({ setCity, setWeather, setIsFocused, setInputValue, setForecast}) {
     return (
         <div id="options-container">
               <button
@@ -12,6 +12,7 @@ export default function OptionsContainer({ setCity, setWeather, setIsFocused, se
                   setWeather(null);
                   setIsFocused(false);
                   setInputValue("");
+                  setForecast(null)
                 }}
                 >
                 <svg viewBox="0 0 24 24">
@@ -25,6 +26,10 @@ export default function OptionsContainer({ setCity, setWeather, setIsFocused, se
                 onClick={() => {
                   const randomCity = cities[Math.floor(Math.random() * cities.length)];
                   fetchWeatherUsingName(randomCity, setWeather, setCity, setInputValue);
+                   const weatherContainer = document.getElementById("current-weather-container");
+                  if (weatherContainer) {
+                    weatherContainer.classList.remove("hidden");
+                  }
                 }}
                 >
                 <svg viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M560-160v-80h104L537-367l57-57 126 126v-102h80v240H560Zm-344 0-56-56 504-504H560v-80h240v240h-80v-104L216-160Zm151-377L160-744l56-56 207 207-56 56Z"/></svg>

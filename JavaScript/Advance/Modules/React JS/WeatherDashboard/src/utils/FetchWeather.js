@@ -2,83 +2,99 @@ const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 const baseUrl = import.meta.env.VITE_WEATHER_API_BASE;
 import { sendWarning, sendError, normalizeName } from "./general";
 
-
-const fetchWeatherUsingName = async (city, setWeather, setCity, setInputValue) => {
+const fetchWeatherUsingName = async (city, setWeather, setCity, setInputValue, setForecast) => {
   if (!city || city.trim() === "" || city === "Search") {
     setWeather(null);
     return;
   }
   try {
     const response = await fetch(
-      `${baseUrl}/weather?q=${city}&appid=${apiKey}&units=metric`
+      `${baseUrl}/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`
     );
-    if (!response.ok) sendWarning("City not found");
-    
+    if (!response.ok) {
+      sendWarning("City not found");
+      setWeather(null);
+      return;
+    }
     const data = await response.json();
     setWeather(data);
-    setCity(`${normalizeName(data.name)}`);
-    setInputValue(`${normalizeName(data.name)}`);
+    setCity(normalizeName(data.name));
+    getForecastUsingName(normalizeName(data.name), setForecast);
+    setInputValue(normalizeName(data.name));
   } catch (error) {
-    console.error("Error fetching weather data using name:", error.message);
-    setWeather(null)
+    setWeather(null);
+    console.error("Error fetching weather data using name:", error);
   }
 };
 
-const fetchWeatherUsingLL = async (lat, long, setWeather, setCity, setInputValue) => {
+const fetchWeatherUsingLL = async (lat, long, setWeather, setCity, setInputValue, setForecast) => {
   try {
     setWeather(null);
-    if (!lat || !long) sendWarning("Location not found");
-    if (isNaN(lat) || isNaN(long)) sendWarning("Invalid coordinates");
+    if (!lat || !long) {
+      sendWarning("Location not found");
+      setWeather(null);
+      return;
+    }
+    if (isNaN(lat) || isNaN(long)) {
+      sendWarning("Invalid coordinates");
+      setWeather(null);
+      return;
+    }
     const response = await fetch(
       `${baseUrl}/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`
     );
-    if (!response.ok) sendWarning("Location not found");
+    if (!response.ok) {
+      sendWarning("Location not found");
+      setWeather(null);
+      return;
+    }
     const data = await response.json();
     setWeather(data);
+    getForecastUsingName(normalizeName(data.name), setForecast);
     if (data.name) {
-      setCity(`${normalizeName(data.name)}`);
-      setInputValue(`${normalizeName(data.name)}`);
+      setCity(normalizeName(data.name));
+      setInputValue(normalizeName(data.name));
     }
   } catch (error) {
-    console.error("Error fetching weather data using lat:", error.message);
     setWeather(null);
+    console.error("Error fetching weather data using lat:", error);
   }
-
 };
 
-function getForecastUsingLL(lat, long, setForecast) {
-  if (!lat || !long) sendWarning("Location not found");
-  if (isNaN(lat) || isNaN(long)) sendWarning("Invalid coordinates");
-  fetch(
-    `${baseUrl}/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`
-  )
+function getForecastUsingName(city, setForecast) {
+  if (!city || city.trim() === "" || city === "Search") {
+    setForecast(null);
+    return;
+  }
+  fetch(`${baseUrl}/forecast?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
     .then((response) => {
-      if (!response.ok) sendWarning("Location not found");
+      if (!response.ok) {
+        sendWarning("City not found");
+        setForecast(null);
+        throw new Error("City not found");
+      }
       return response.json();
     })
     .then((data) => {
       setForecast(data);
     })
     .catch((error) => {
-      console.error("Error fetching forecast data:", error.message);
       setForecast(null);
+      console.error("Error fetching forecast data using name:", error);
     });
 }
 
-
-function getCurrentLocation(setWeather, setCity, setInputValue) {
-  let tempcity = "Andhra Pradesh";
+function getCurrentLocation(setWeather, setCity, setInputValue, setForecast) {
+  const tempcity = "Andhra Pradesh";
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        console.log("Current location:", latitude, longitude);
-        fetchWeatherUsingLL(latitude, longitude, setWeather, setCity, setInputValue);
+        fetchWeatherUsingLL(latitude, longitude, setWeather, setCity, setInputValue, setForecast);
       },
       (error) => {
-        console.error("Error getting location:", error.message);
-        fetchWeatherUsingName(tempcity, setWeather, setCity, setInputValue);
-
+        sendWarning("Unable to retrieve your location. Showing default city.");
+        fetchWeatherUsingName(tempcity, setWeather, setCity, setInputValue, setForecast);
       }
     );
   } else {

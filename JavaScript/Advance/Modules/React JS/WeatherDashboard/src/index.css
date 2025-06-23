@@ -16,8 +16,10 @@ body {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
+    width: auto;
     min-width: 320px;
     max-width: 400px;
+    max-height: 200px;
     padding: 1rem 1rem;
     border-radius: 1rem;
     box-shadow: 0 8px 32px rgba(0,0,0,0.35);
@@ -32,28 +34,28 @@ body {
 
 #error-message {
     border-color: #ff4e4e;
-    animation: slideIn 1s ease-in-out, glow-error 1s ease-in-out infinite alternate;
+    animation: slideInMessage 1s ease-in-out, glow-error 1s ease-in-out infinite alternate;
     display: none;
 
 }
 
 #warning-message {
     border-color: #ffb300;
-    animation: slideIn 1s ease-in-out, glow-warning 1s ease-in-out infinite alternate;
+    animation: slideInMessage 1s ease-in-out, glow-warning 1s ease-in-out infinite alternate;
     display: none;
     transition: opacity 0.5s, transform 0.5s;
 }
 
 #warning-message.slide-out,
 #error-message.slide-out {
-    animation: slideOut 0.5s forwards;
+    animation: slideOutMessage 0.5s forwards;
     opacity: 0;
     pointer-events: none;
 }
 
 #error-message {
     border-color: #ff4e4e;
-    animation: slideIn 1s ease-in-out, glow-error 1s ease-in-out infinite alternate;
+    animation: slideInMessage 1s ease-in-out, glow-error 1s ease-in-out infinite alternate;
     display: none;
     transition: opacity 0.5s, transform 0.5s;
 }
@@ -71,13 +73,13 @@ body {
     display: block;
 }
 
-@keyframes slideOut {
+@keyframes slideOutMessage {
     from { transform: translateX(0); opacity: 1; }
     to { transform: translateX(25rem); opacity: 0; }
 }
 
 
-@keyframes slideIn {
+@keyframes slideInMessage {
     from { transform: translateX(25rem); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }

@@ -2,11 +2,18 @@ import { normalizeName } from "../utils/general";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "./WeatherComponent.css";
 
+function handleClose() {
+  const weatherContainer = document.getElementById("current-weather-container");
+  if (weatherContainer) {
+    weatherContainer.classList.add("hidden");
+  }
+}
 export default function WeatherComponent({ weather }) {
   const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
   return (
     <div id="current-weather-container" className={weather ? "" : "hidden"}>
+        <button id="close-btn-mobile" onClick={handleClose}>✖</button>
       {weather && (
         <div id="current-weather">
           <h2 id="city-heading">
