@@ -1,0 +1,90 @@
+.movie-card {
+    position: relative;
+    width: 180px;
+    height: max-content;
+    background-color: #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    border-bottom: 2px solid #444;
+}
+
+.movie-title-scroll {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 1.5rem;
+}
+
+.movie-title-scroll h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 0.5rem;
+    animation: none;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.movie-title-scroll:hover h3 {
+    animation: scroll-title 5s linear infinite;
+}
+
+@keyframes scroll-title {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.movie-type {
+    margin: 0.25rem;
+    font-size: 0.9rem;
+    color: #cccccc;
+    text-transform: capitalize;
+}
+
+#fav-icon {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    /* height: 10%; */
+}
+
+.fav-btn {
+    margin-top: 0.5rem;
+    background-color: #ff3c00;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.fav-btn:hover {
+    background-color: #ffdb4d;
+}
