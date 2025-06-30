@@ -1,6 +1,6 @@
 import "../App.css";
 import "./MovieCard.css"
-export default function MovieCard({ movie }) {
+export default function MovieCard({ movie}) {
   return (
     <div className="movie-card" id={movie.id}>
         <div id="fav-icon">

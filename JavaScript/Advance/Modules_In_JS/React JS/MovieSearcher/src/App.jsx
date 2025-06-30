@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { fetchMovieBySearch, fetchPopularMovies, fetchTopRatedMovies } from "./api/apidb.js";
+import { fetchMovieBySearch, fetchPopularMovies, fetchTopRatedMovies, fetchUpcomingMovies } from "./api/apidb.js";
 import "./App.css";
 import CardManager from "./Components/CardManager.jsx";
 
@@ -9,6 +9,7 @@ function App() {
   const [searching, setSearching] = useState(false)
   const [Popularmovies, setPopularmovies] = useState([]);
   const [TopRatedmovies, setTopRatedmovies] = useState([]);
+  const [UpcomingMovies, setUpcomingMovies] = useState([]);
   const [PagesManager, setPagesManager] = useState([])
   const [isSearchHidden, setIsSearchHidden] = useState(false);
   const [allMoviesData, setAllMoviesData] = useState([]);
@@ -17,19 +18,19 @@ function App() {
   const searchContainerRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  // const pages = setPagesManager({
-  //   "TV": {
-  //     "Popular": 1,
-  //     "Top Rated": 1,
-  //     "UpComing": 1,  
-  //   },
-  //   "Series": {
-  //      "Popular": 1,
-  //     "Top Rated": 1,
-  //     "Airing": 1,
-  //   },
-  //   "Search": 1
-  // })
+  const pages = {
+    "TV": {
+      "Popular": 1,
+      "Top Rated": 1,
+      "UpComing": 1,  
+    },
+    "Series": {
+       "Popular": 1,
+      "Top Rated": 1,
+      "Airing": 1,
+    },
+    "Search": 1
+  }
 
   const fetchMovies = async () => {
     const data = await fetchMovieBySearch(query);
@@ -41,11 +42,14 @@ function App() {
     }
   };
   const fetchPopular = async () => {
-    const data = await fetchPopularMovies();
+    console.log("here")
+    const data = await fetchPopularMovies(pages.TV.Popular);
     if (data) {
       setPopularmovies(data)
       setAllMoviesData([...allMoviesData, ...data]);
     }
+    console.log(Popularmovies)
+    pages.TV.Popular = pages.TV.Popular++
   }
   const fetchTopRated = async () => {
     const data = await fetchTopRatedMovies();
@@ -54,11 +58,20 @@ function App() {
       setAllMoviesData([...allMoviesData, ...data]);
     }
   }
+  const fetchUpcoming = async () => {
+    const data = await fetchUpcomingMovies();
+      if (data) {
+        setUpcomingMovies(data);
+        setAllMoviesData([...allMoviesData, ...data])
+      }
+  }
 
   useEffect(() => {
     fetchPopular();
     fetchTopRated()
+    fetchUpcoming()
   }, []);
+
   const handleBlur = (e) => {
     if (e.target.value === "" || e.target.value === "Search" && !searching) {
       setQuery("Search");
@@ -158,7 +171,7 @@ function App() {
             {movies.length > 0 ? (
               <>
                 <h1 id="search-header"className="header-fields">Search Results</h1>
-                <div id="search-results">
+                <div className="search-results">
                   <CardManager movies={movies} id="search-results" />
                 </div>
               </>
@@ -172,13 +185,18 @@ function App() {
         )}
  
         <h1 className="header-fields">Popular Movies</h1>
-        <div class="extra-space">
-          <CardManager movies={Popularmovies} id="extra-space" />
+        <div className="extra-space">
+          <CardManager movies={Popularmovies} id="extra-space" onEndReached={fetchPopular}/>
         </div>
 
-         <h1 className="header-fields">Top Rated</h1>
-        <div class="extra-space">
+        <h1 className="header-fields">Top Rated</h1>
+        <div className="extra-space">
           <CardManager movies={TopRatedmovies} id="extra-space" />
+        </div>
+    
+        <h1 className="header-fields">Upcoming Movies</h1>
+        <div className="extra-space">
+          <CardManager movies={UpcomingMovies} id="extra-space" />
         </div>
     
 

@@ -11,14 +11,6 @@ const TMDB_HEADERS = {
   }
 };
 
-const OMDB_HEADERS = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json'
-  }
-};
-
-
 const fetchFromAPI = async (url, options) => {
   try {
     const response = await fetch(url, options);
@@ -40,16 +32,6 @@ const fetchFromAPI = async (url, options) => {
     console.error("Fetch failed:", err);
     return null;
   }
-};
-
-
-const formatOMDbMovies = (movies) => {
-  return movies.map(movie => ({
-    id: movie.imdbID || "",
-    title: movie.Title || "",
-    poster: movie.Poster || "",
-    year: movie.Year || ""
-  }));
 };
 
 const formatTMDbMovies = (movies) => {
@@ -77,9 +59,10 @@ export const fetchMovieBySearch = async (query) => {
 //   return await fetchFromAPI(url, OMDB_HEADERS);
 // };
 
-export const fetchPopularMovies = async () => {
-  const url = `${TMDB_BASE_URL}/movie/popular?language=en-US&page=1`;
+export const fetchPopularMovies = async (page=1) => {
+  const url = `${TMDB_BASE_URL}/movie/popular?language=en-US&page=${page}`;
   const json = await fetchFromAPI(url, TMDB_HEADERS);
+  console.log(json)
   return json?.results ? formatTMDbMovies(json.results) : [];
 };
 
