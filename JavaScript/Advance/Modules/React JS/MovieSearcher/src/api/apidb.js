@@ -53,8 +53,10 @@ const formatOMDbMovies = (movies) => {
 };
 
 const formatTMDbMovies = (movies) => {
+  const seenIds = new Set();
+
   return movies
-    .filter(movie => movie.poster_path)
+    .filter(movie => movie.poster_path && !seenIds.has(movie.id) && seenIds.add(movie.id))
     .map(movie => ({
       id: movie.id || "",
       title: movie.title || "",
@@ -63,10 +65,10 @@ const formatTMDbMovies = (movies) => {
     }));
 };
 
+
 export const fetchMovieBySearch = async (query) => {
   const url = `${TMDB_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`;
   const json = await fetchFromAPI(url, TMDB_HEADERS);
-  console.log("Here", json)
   return json?.results ? formatTMDbMovies(json.results) : [];
 };
 
@@ -77,7 +79,6 @@ export const fetchMovieBySearch = async (query) => {
 
 export const fetchPopularMovies = async () => {
   const url = `${TMDB_BASE_URL}/movie/popular?language=en-US&page=1`;
-  console.log(url)
   const json = await fetchFromAPI(url, TMDB_HEADERS);
   return json?.results ? formatTMDbMovies(json.results) : [];
 };

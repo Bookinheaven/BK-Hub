@@ -1,6 +1,6 @@
 #focus-area {
   width: 100%;
-  height: max-content;
+  height: 80%;
   background-color: #1f1f1f;
 }
 
@@ -16,12 +16,12 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  background-color: #1f1f1f;
+  /* background-color: #1f1f1f; */
   gap: 1rem;
   overflow-y: auto;
   scroll-behavior: smooth;
 }
-#extra-space {
+.extra-space {
   display: flex;
   height: max-content;
   flex-direction: row;
@@ -34,12 +34,12 @@
   scroll-behavior: smooth;
 }
 
-#extra-space::-webkit-scrollbar {
+.extra-space::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
 }
 
 
-#extra-space > * {
+.extra-space > * {
   flex: 0 0 auto; 
 }
 

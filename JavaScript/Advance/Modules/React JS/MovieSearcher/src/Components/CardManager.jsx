@@ -4,7 +4,7 @@ const MovieCard = lazy(() => import("./MovieCard"));
 
 export default function CardManager({ movies, id }) {
   return (
-    <div id={id}>
+    <div class={id}>
       {movies.length > 0 ? (
         <Suspense fallback={Loader}>
           {movies.map((movie) => (
