@@ -1,16 +1,15 @@
 .movie-card {
-    position: relative;
-    width: 180px;
-    height: max-content;
-    background-color: #2a2a2a;
-    border-radius: 12px;
-    overflow: hidden;
-    text-align: center;
-    font-family: "Inter", sans-serif;
-    color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
+  position: relative;
+  background-color: #2a2a2a;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 10px;
+  width: 200px; 
 }
 
 .movie-card:hover {
@@ -19,44 +18,39 @@
 }
 
 .movie-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 25 / 37; 
+  object-fit: cover; 
+  image-rendering: auto; 
+  display: block;
+}
+
+#title-wrapper {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 30%;
+  background-color: #050505bb;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+.movie-card:hover #title-wrapper {
+    display: flex;
+
+}
+
+#title-wrapper h3 {
     width: 100%;
-    height: 270px;
-    object-fit: cover;
-    border-bottom: 2px solid #444;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap:break-word;
 }
-
-.movie-title-scroll {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    height: 1.5rem;
-}
-
-.movie-title-scroll h3 {
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0;
-    white-space: nowrap;
-    display: inline-block;
-    padding-left: 0.5rem;
-    animation: none;
-    transform: translateX(0);
-    transition: transform 0.3s ease;
-}
-
-.movie-title-scroll:hover h3 {
-    animation: scroll-title 5s linear infinite;
-}
-
-@keyframes scroll-title {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
 .movie-type {
     margin: 0.25rem;
     font-size: 0.9rem;
@@ -68,10 +62,14 @@
     position: absolute;
     width: 100%;
     top: 0;
-    display: flex;
+    display: none;
     justify-content: end;
     align-items: end;
     /* height: 10%; */
+}
+
+.movie-card:hover #fav-icon {
+  display: flex;
 }
 
 .fav-btn {
@@ -88,3 +86,4 @@
 .fav-btn:hover {
     background-color: #ffdb4d;
 }
+

@@ -2,24 +2,25 @@ import { Suspense, lazy } from "react";
 import "./CardManager.css"
 const MovieCard = lazy(() => import("./MovieCard"));
 
-export default function CardManager({ movies }) {
+export default function CardManager({ movies, id }) {
   return (
-    <div id="search-results">
+    <div id={id}>
       {movies.length > 0 ? (
-        <Suspense fallback={loader}>
+        <Suspense fallback={Loader}>
           {movies.map((movie) => (
-            <MovieCard key={movie.imdbID} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} />
           ))}
         </Suspense>
       ) : (
-        <loader></loader>
+        // <Loader />
+        ""
       )}
     </div>
   );
 }
 
 
-function loader() {
+function Loader() {
     return (
         <div id="loader"></div>
     );
