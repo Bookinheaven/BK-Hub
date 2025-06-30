@@ -17,19 +17,19 @@ function App() {
   const searchContainerRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  const pages = setPagesManager({
-    "TV": {
-      "Popular": 1,
-      "Top Rated": 1,
-      "UpComing": 1,  
-    },
-    "Series": {
-       "Popular": 1,
-      "Top Rated": 1,
-      "Airing": 1,
-    },
-    "Search": 1
-  })
+  // const pages = setPagesManager({
+  //   "TV": {
+  //     "Popular": 1,
+  //     "Top Rated": 1,
+  //     "UpComing": 1,  
+  //   },
+  //   "Series": {
+  //      "Popular": 1,
+  //     "Top Rated": 1,
+  //     "Airing": 1,
+  //   },
+  //   "Search": 1
+  // })
 
   const fetchMovies = async () => {
     const data = await fetchMovieBySearch(query);

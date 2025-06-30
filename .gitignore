@@ -55,3 +55,6 @@ dkms.conf
 /Front-End/Workshop/Hack_AND_Build_FullStack_Bootcamp/node_modules
 JavaScript/Advance/Modules/React JS/WeatherDashboard/.env
 JavaScript/Advance/Modules/React JS/MovieSearcher/.env
+/JavaScript/Advance/Modules_In_JS/Express JS/node_modules
+JavaScript/Advance/Modules_In_JS/React JS/MovieSearcher/.env
+JavaScript/Advance/Modules_In_JS/React JS/WeatherDashboard/.env
