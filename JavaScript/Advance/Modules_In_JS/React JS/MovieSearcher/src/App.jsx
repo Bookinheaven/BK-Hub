@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { fetchMovieBySearch, fetchPopularMovies, fetchTopRatedMovies, fetchUpcomingMovies } from "./api/apidb.js";
 import "./App.css";
 import CardManager from "./Components/CardManager.jsx";
+import { deduplicateMovies } from "./utils/General.js";
 
 function App() {
   const [query, setQuery] = useState("Search");
@@ -10,7 +11,7 @@ function App() {
   const [Popularmovies, setPopularmovies] = useState([]);
   const [TopRatedmovies, setTopRatedmovies] = useState([]);
   const [UpcomingMovies, setUpcomingMovies] = useState([]);
-  const [PagesManager, setPagesManager] = useState([])
+  const [PagesManager, setPagesManager] = useState({})
   const [isSearchHidden, setIsSearchHidden] = useState(false);
   const [allMoviesData, setAllMoviesData] = useState([]);
   const [showNoResultsSVG, setShowNoResultsSVG] = useState(false);
@@ -33,38 +34,43 @@ function App() {
   }
 
   const fetchMovies = async () => {
-    const data = await fetchMovieBySearch(query);
-    if (data && data.length > 0) {
-      setMovies(data);
-      setAllMoviesData([...allMoviesData, ...data]);
-    } else {
-      setMovies([]);
+    const data = await fetchMovieBySearch(query, pages.Search);
+    if (data && Array.isArray(data)) {
+      const uniqueNew = deduplicateMovies(data);
+      setMovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      pages.Search++;
+      console.log("fetchMovies")
     }
   };
   const fetchPopular = async () => {
-    console.log("here")
     const data = await fetchPopularMovies(pages.TV.Popular);
-    if (data) {
-      setPopularmovies(data)
-      setAllMoviesData([...allMoviesData, ...data]);
+    if (data && Array.isArray(data)) {
+      const uniqueNew = deduplicateMovies(data);
+      setPopularmovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      pages.TV.Popular++;
     }
-    console.log(Popularmovies)
-    pages.TV.Popular = pages.TV.Popular++
-  }
+  };
+
   const fetchTopRated = async () => {
-    const data = await fetchTopRatedMovies();
-    if (data) {
-      setTopRatedmovies(data)
-      setAllMoviesData([...allMoviesData, ...data]);
+    const data = await fetchTopRatedMovies(pages.TV.Popular);
+    if (data && Array.isArray(data)) {
+      const uniqueNew = deduplicateMovies(data);
+      setTopRatedmovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      pages.TV.Popular++;
     }
-  }
+  };
   const fetchUpcoming = async () => {
-    const data = await fetchUpcomingMovies();
-      if (data) {
-        setUpcomingMovies(data);
-        setAllMoviesData([...allMoviesData, ...data])
-      }
-  }
+    const data = await fetchUpcomingMovies(pages.TV.Popular);
+    if (data && Array.isArray(data)) {
+      const uniqueNew = deduplicateMovies(data);
+      setUpcomingMovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
+      pages.TV.Popular++;
+    }
+  };
 
   useEffect(() => {
     fetchPopular();
@@ -172,7 +178,7 @@ function App() {
               <>
                 <h1 id="search-header"className="header-fields">Search Results</h1>
                 <div className="search-results">
-                  <CardManager movies={movies} id="search-results" />
+                  <CardManager movies={movies} id="search-results" onEndFetch={fetchMovies}/>
                 </div>
               </>
             ) : (
@@ -186,17 +192,17 @@ function App() {
  
         <h1 className="header-fields">Popular Movies</h1>
         <div className="extra-space">
-          <CardManager movies={Popularmovies} id="extra-space" onEndReached={fetchPopular}/>
+          <CardManager movies={Popularmovies} id="extra-space" onEndFetch={fetchPopular}/>
         </div>
 
         <h1 className="header-fields">Top Rated</h1>
         <div className="extra-space">
-          <CardManager movies={TopRatedmovies} id="extra-space" />
+          <CardManager movies={TopRatedmovies} id="extra-space" onEndFetch={fetchTopRated}/>
         </div>
     
         <h1 className="header-fields">Upcoming Movies</h1>
         <div className="extra-space">
-          <CardManager movies={UpcomingMovies} id="extra-space" />
+          <CardManager movies={UpcomingMovies} id="extra-space" onEndFetch={fetchUpcoming}/>
         </div>
     
 

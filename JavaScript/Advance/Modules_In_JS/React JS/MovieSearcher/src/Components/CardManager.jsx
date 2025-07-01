@@ -1,9 +1,9 @@
-import { Suspense, lazy, useRef, useEffect, Fragment, useCallback } from "react";
+import { Suspense, lazy, useRef, Fragment, useCallback } from "react";
 import "./CardManager.css";
 
 const MovieCard = lazy(() => import("./MovieCard"));
 
-export default function CardManager({ movies }) {
+export default function CardManager({ movies, onEndFetch }) {
   const observerRef = useRef(null);
 
   const endRefCallback = useCallback((node) => {
@@ -15,7 +15,8 @@ export default function CardManager({ movies }) {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
-            console.log("✅ Reached end");
+            onEndFetch();
+            console.log("reached end")
           }
         },
         { threshold: 0.1 }
@@ -32,7 +33,7 @@ export default function CardManager({ movies }) {
         <Suspense fallback={<Loader />}>
           {movies.map((movie, index) => (
             <Fragment key={movie.id}>
-              {index === movies.length - 1 ? (
+              {index === movies.length - 10 ? (
                 <div ref={endRefCallback} style={{ minHeight: "1px" }}>
                   <MovieCard movie={movie} />
                 </div>
@@ -50,5 +51,5 @@ export default function CardManager({ movies }) {
 }
 
 function Loader() {
-  return <div id="loader">Loading...</div>;
+  return <div id="loader"></div>;
 }

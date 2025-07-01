@@ -48,8 +48,9 @@ const formatTMDbMovies = (movies) => {
 };
 
 
-export const fetchMovieBySearch = async (query) => {
-  const url = `${TMDB_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`;
+export const fetchMovieBySearch = async (query,page=1) => {
+  const url = `${TMDB_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&include_adult=true&language=en-US&page=${page}`;
+  console.log(url)
   const json = await fetchFromAPI(url, TMDB_HEADERS);
   return json?.results ? formatTMDbMovies(json.results) : [];
 };
@@ -62,18 +63,17 @@ export const fetchMovieBySearch = async (query) => {
 export const fetchPopularMovies = async (page=1) => {
   const url = `${TMDB_BASE_URL}/movie/popular?language=en-US&page=${page}`;
   const json = await fetchFromAPI(url, TMDB_HEADERS);
-  console.log(json)
   return json?.results ? formatTMDbMovies(json.results) : [];
 };
 
-export const fetchTopRatedMovies = async () => {
-  const url = `${TMDB_BASE_URL}/movie/top_rated?language=en-US&page=1`;
+export const fetchTopRatedMovies = async (page=1) => {
+  const url = `${TMDB_BASE_URL}/movie/top_rated?language=en-US&page=${page}`;
   const json = await fetchFromAPI(url, TMDB_HEADERS);
   return json?.results ? formatTMDbMovies(json.results) : [];
 };
 
-export const fetchUpcomingMovies = async () => {
-  const url = `${TMDB_BASE_URL}/movie/upcoming?language=en-US&page=1`;
+export const fetchUpcomingMovies = async (page=1) => {
+  const url = `${TMDB_BASE_URL}/movie/upcoming?language=en-US&page=${page}`;
   const json = await fetchFromAPI(url, TMDB_HEADERS);
   return json?.results ? formatTMDbMovies(json.results) : [];
 };
