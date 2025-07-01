@@ -3,25 +3,23 @@ import "./CardManager.css";
 
 const MovieCard = lazy(() => import("./MovieCard"));
 
-export default function CardManager({ movies, onEndFetch }) {
+export default function CardManager({ movies, onEndFetch, type }) {
   const observerRef = useRef(null);
 
   const endRefCallback = useCallback((node) => {
     if (observerRef.current) {
-      observerRef.current.disconnect(); 
+      observerRef.current.disconnect();
     }
-
     if (node) {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
-            onEndFetch();
-            console.log("reached end")
+            onEndFetch(type);
+            console.log("reached end");
           }
         },
         { threshold: 0.1 }
       );
-
       observer.observe(node);
       observerRef.current = observer;
     }

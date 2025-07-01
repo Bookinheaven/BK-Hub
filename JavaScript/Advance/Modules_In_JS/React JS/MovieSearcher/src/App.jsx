@@ -1,85 +1,163 @@
 import { useRef, useState, useEffect } from "react";
-import { fetchMovieBySearch, fetchPopularMovies, fetchTopRatedMovies, fetchUpcomingMovies } from "./api/apidb.js";
+import {
+  fetchMovieBySearch,
+  fetchPopularMS,
+  fetchTopRatedMS,
+  fetchUpcomingMovies,
+} from "./api/apidb.js";
 import "./App.css";
 import CardManager from "./Components/CardManager.jsx";
 import { deduplicateMovies } from "./utils/General.js";
+import browserSvg from './assets/browser.svg';
 
 function App() {
   const [query, setQuery] = useState("Search");
   const [movies, setMovies] = useState([]);
-  const [searching, setSearching] = useState(false)
-  const [Popularmovies, setPopularmovies] = useState([]);
-  const [TopRatedmovies, setTopRatedmovies] = useState([]);
-  const [UpcomingMovies, setUpcomingMovies] = useState([]);
-  const [PagesManager, setPagesManager] = useState({})
-  const [isSearchHidden, setIsSearchHidden] = useState(false);
-  const [allMoviesData, setAllMoviesData] = useState([]);
-  const [showNoResultsSVG, setShowNoResultsSVG] = useState(false);
 
+  const [Popularmovies, setPopularmovies] = useState([]);
+  const [PopularSeries, setPopularSeries] = useState([]);
+  const [TopRatedMovies, setTopRatedMovies] = useState([]);
+  const [TopRatedSeries, setTopRatedSeries] = useState([]);
+  const [UpcomingMovies, setUpcomingMovies] = useState([]);
+
+  const [PagesManager, setPagesManager] = useState({});
+  const [allMoviesData, setAllMoviesData] = useState([]);
+  const [favoritesList, setFavoritesList] = useState({});
+
+  const [showNoResultsSVG, setShowNoResultsSVG] = useState(false);
+  const [prevSearch, setPrevSearch] = useState("");
+  const [isSearchHidden, setIsSearchHidden] = useState(false);
+  const [searching, setSearching] = useState(false);
+
+  const [inFavs, setInFavs] = useState(false)
+  
   const searchContainerRef = useRef(null);
   const timeoutRef = useRef(null);
+  const favRef = useRef(null);
 
   const pages = {
-    "TV": {
-      "Popular": 1,
+    Series: {
+      Popular: 1,
       "Top Rated": 1,
-      "UpComing": 1,  
+      Airing: 1,
     },
-    "Series": {
-       "Popular": 1,
+    Movies: {
+      Popular: 1,
       "Top Rated": 1,
-      "Airing": 1,
+      UpComing: 1,
     },
-    "Search": 1
-  }
+    Search: [1, 1],
+  };
+
+  const debounceRef = useRef(null);
+
+  const handleInput = (e) => {
+    setQuery(e.target.value);
+    if (e.target.value.trim() === "") {
+      setSearching(false);
+      setShowNoResultsSVG(false);
+    } else {
+      setSearching(true);
+    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      fetchMovies();
+    }, 500);
+  };
+
+  useEffect(() => {
+    if (searching) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [searching]);
+
+    useEffect(() => {
+    if (inFavs) {
+      document.body.classList.add("no-scroll");
+      document.getElementById("home-h").style.backgroundColor = "transparent"
+      document.getElementById("fav-h").style.backgroundColor = "rgba(240, 248, 255, 0.192)"
+
+    } else {
+      document.body.classList.remove("no-scroll");
+      document.getElementById("home-h").style.backgroundColor = "rgba(240, 248, 255, 0.192)"
+      document.getElementById("fav-h").style.backgroundColor = "transparent"
+
+    }
+  }, [inFavs]);
 
   const fetchMovies = async () => {
+    if (query !== prevSearch) {
+      setPrevSearch(query);
+      pages.Search[0] = 1;
+      setMovies([]);
+    }
     const data = await fetchMovieBySearch(query, pages.Search);
-    if (data && Array.isArray(data)) {
-      const uniqueNew = deduplicateMovies(data);
-      setMovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      pages.Search++;
-      console.log("fetchMovies")
+    pages.Search[1] = data[1];
+    if (
+      Array.isArray(data[0]) &&
+      data[0].length > 0 &&
+      pages.Search[0] <= pages.Search[1]
+    ) {
+      setShowNoResultsSVG(false);
+      const uniqueNew = deduplicateMovies(data[0]);
+      setMovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      pages.Search[0]++;
+    } else if (movies.length == 0) {
+      setShowNoResultsSVG(true);
+      setMovies([]);
     }
   };
-  const fetchPopular = async () => {
-    const data = await fetchPopularMovies(pages.TV.Popular);
+  const fetchPopular = async (type) => {
+    const data = await fetchPopularMS(pages[type]["Popular"], type);
     if (data && Array.isArray(data)) {
       const uniqueNew = deduplicateMovies(data);
-      setPopularmovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      pages.TV.Popular++;
+      if (type == "Movies") {
+        setPopularmovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      } else {
+        setPopularSeries((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      }
+      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      pages[type]["Popular"]++;
+    }
+  };
+  
+  const fetchTopRated = async (type) => {
+    const data = await fetchTopRatedMS(pages[type]["Top Rated"], type);
+    if (data && Array.isArray(data)) {
+      const uniqueNew = deduplicateMovies(data);
+      if (type == "Movies") {
+        setTopRatedMovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      } else {
+        setTopRatedSeries((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      }
+      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      pages[type]["Top Rated"]++;
     }
   };
 
-  const fetchTopRated = async () => {
-    const data = await fetchTopRatedMovies(pages.TV.Popular);
-    if (data && Array.isArray(data)) {
-      const uniqueNew = deduplicateMovies(data);
-      setTopRatedmovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      pages.TV.Popular++;
-    }
-  };
   const fetchUpcoming = async () => {
-    const data = await fetchUpcomingMovies(pages.TV.Popular);
+    const data = await fetchUpcomingMovies(pages.Movies.UpComing);
     if (data && Array.isArray(data)) {
       const uniqueNew = deduplicateMovies(data);
-      setUpcomingMovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      setAllMoviesData(prev => deduplicateMovies([...prev, ...uniqueNew]));
-      pages.TV.Popular++;
+      setUpcomingMovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
+      pages.Movies.UpComing++;
     }
   };
 
   useEffect(() => {
-    fetchPopular();
-    fetchTopRated()
-    fetchUpcoming()
+    fetchPopular("Movies");
+    fetchPopular("Series");
+    fetchTopRated("Movies");
+    fetchTopRated("Series");
+    fetchUpcoming();
   }, []);
 
   const handleBlur = (e) => {
-    if (e.target.value === "" || e.target.value === "Search" && !searching) {
+    if (e.target.value === "" || (e.target.value === "Search" && !searching)) {
       setQuery("Search");
       timeoutRef.current = setTimeout(() => {
         const el = searchContainerRef.current;
@@ -110,6 +188,25 @@ function App() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isSearchHidden]);
 
+  function toggleFavPage() {
+    const favArea = document.getElementById("fav-area");
+
+    if (inFavs) {
+      favArea.classList.remove("show");
+      favArea.classList.add("hide");
+      setInFavs(false);
+    } else {
+      favArea.classList.remove("hide");
+      favArea.classList.add("show");
+      setInFavs(true);
+    }
+  }
+  function onClickForHome() {
+    document.getElementById("fav-area").classList.remove("show")
+    document.getElementById("fav-area").classList.add("hide")
+    setInFavs(false)
+  }
+
   return (
     <div id="main-section">
       <div id="top-section">
@@ -119,7 +216,7 @@ function App() {
         <div id="tool-box-items">
           <div id="feature-box">
             <nav id="nav-content">
-              <button className="nav-item" id="home-h" aria-label="Home">
+              <button className="nav-item" id="home-h" aria-label="Home" onClick={onClickForHome} >
                 <svg viewBox="0 0 24 24" height="24px">
                   <path
                     fillRule="evenodd"
@@ -127,7 +224,7 @@ function App() {
                   />
                 </svg>
               </button>
-              <button className="nav-item" id="fav-h" aria-label="Favorites">
+              <button className="nav-item" id="fav-h" aria-label="Favorites" onClick={toggleFavPage}>
                 <svg
                   fill="#000000"
                   width="24px"
@@ -150,65 +247,111 @@ function App() {
               value={query}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              onChange={(e) => {
-                setQuery(e.target.value)
-                 if (e.target.value == ""){
-                  setSearching(false)
-                } else {
-                  setSearching(true)
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  fetchMovies();
-                  setShowNoResultsSVG(true);
-                } else {
-                    setShowNoResultsSVG(false);
-                }
-              }}
+              onChange={handleInput}
+              autoComplete="off"
             />
           </div>
-        </div>        
+        </div>
       </div>
       
+      <div id="fav-area" ref={favRef} className="hide">
+        <h1 className="header-fields">Favorites</h1>
+        
+      </div>
       <div id="focus-area">
         {searching && (
-          <div id="search-area">
-            {movies.length > 0 ? (
-              <>
-                <h1 id="search-header"className="header-fields">Search Results</h1>
-                <div className="search-results">
-                  <CardManager movies={movies} id="search-results" onEndFetch={fetchMovies}/>
-                </div>
-              </>
-            ) : (
-              <div id="no-results-found">
-                <h1 className="header-fields">Search Results</h1>
-                { (showNoResultsSVG && movies.length <= 0) && <svg width="125" height="125" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M21.5 14.75c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75m-11 0c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75" fill="#263238"/><g fill="none"><g stroke="#455A64"><path d="M21.5 1.5h-17v29h23v-23"/><path d="m21.5 1.5 5.979 6H21.5V4m-7 14.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5m3.25-3c0 .41.34.75.75.75s.75-.34.75-.75-.34-.75-.75-.75-.75.34-.75.75m-9.5 0c0 .41-.34.75-.75.75s-.75-.34-.75-.75.34-.75.75-.75.75.34.75.75"/></g><g stroke="#263238"><path d="M21.5 1.5h-17v29h23v-23"/><path d="m21.5 1.5 5.979 6H21.5V4m-7 14.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5m3.25-3c0 .41.34.75.75.75s.75-.34.75-.75-.34-.75-.75-.75-.75.34-.75.75m-9.5 0c0 .41-.34.75-.75.75s-.75-.34-.75-.75.34-.75.75-.75.75.34.75.75"/></g></g></svg>}
-              </div>
-            )}
-          </div>
+          <>
+            <div className="backdrop" />
+            <div id="search-area">
+              <h1 id="search-header" className="header-fields">
+                Search Results
+              </h1>
+
+              {movies.length > 0 ? (
+                <>
+                  <h1 className="header-fields" style={{margin:0}}>Movies</h1><br></br>
+                  <div className="search-results">
+                    <CardManager
+                      movies={movies}
+                      id="search-results"
+                      onEndFetch={fetchMovies}
+                    />
+                  </div>
+                </>
+
+              ) : showNoResultsSVG ? (
+                <>
+                  {console.log("Rendering: No Results Found block")}
+                  <div id="no-results-found">
+                    <h2 className="header-fields" style={{fontSize: "2rem"}}>Sorry I couldn't find "{query}" movie/series in the database. Please try something else.</h2>
+                      <img src={browserSvg} alt="Not Found" />
+                  </div>
+                </>
+              ) : (
+                  <dir id="loader"></dir>
+              )}
+            </div>
+          </>
         )}
- 
+        <h1 className="header-fields" style={{ fontSize: "3.5rem" }}>
+          Movies
+        </h1>
+
         <h1 className="header-fields">Popular Movies</h1>
         <div className="extra-space">
-          <CardManager movies={Popularmovies} id="extra-space" onEndFetch={fetchPopular}/>
+          <CardManager
+            movies={Popularmovies}
+            id="extra-space"
+            onEndFetch={fetchPopular}
+            type={"Movies"}
+          />
         </div>
 
-        <h1 className="header-fields">Top Rated</h1>
+        <h1 className="header-fields">Top Rated Movies</h1>
         <div className="extra-space">
-          <CardManager movies={TopRatedmovies} id="extra-space" onEndFetch={fetchTopRated}/>
+          <CardManager
+            movies={TopRatedMovies}
+            id="extra-space"
+            onEndFetch={fetchTopRated}
+            type={"Movies"}
+          />
         </div>
-    
+
         <h1 className="header-fields">Upcoming Movies</h1>
         <div className="extra-space">
-          <CardManager movies={UpcomingMovies} id="extra-space" onEndFetch={fetchUpcoming}/>
+          <CardManager
+            movies={UpcomingMovies}
+            id="extra-space"
+            onEndFetch={fetchUpcoming}
+          />
         </div>
-    
 
+        <h1 className="header-fields" style={{ fontSize: "3.5rem" }}>
+          Series
+        </h1>
+        <h1 className="header-fields">Popular Series</h1>
+        <div className="extra-space">
+          <CardManager
+            movies={PopularSeries}
+            id="extra-space"
+            onEndFetch={fetchPopular}
+            type={"Series"}
+          />
+        </div>
+        <h1 className="header-fields">Top Rated Series</h1>
+        <div className="extra-space">
+          <CardManager
+            movies={TopRatedSeries}
+            id="extra-space"
+            onEndFetch={fetchTopRated}
+            type={"Series"}
+          />
+        </div>
+
+        <footer id="footer">
+            <p className="footer-text">© 2025 BookInHeaven. All rights reserved.</p>
+        </footer>
       </div>
-
-      
     </div>
   );
 }

@@ -8,4 +8,8 @@ const deduplicateMovies = (movies) => {
 };
 
 
-export {deduplicateMovies}
+function saveDataLocally(data, name, type) {
+  
+}
+
+export {deduplicateMovies, saveDataLocally}
