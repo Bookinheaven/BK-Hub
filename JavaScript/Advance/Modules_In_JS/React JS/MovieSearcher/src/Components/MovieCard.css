@@ -41,7 +41,6 @@
 }
 .movie-card:hover #title-wrapper {
     display: flex;
-
 }
 
 #title-wrapper h3 {
@@ -65,6 +64,12 @@
 .movie-card:hover #fav-icon {
   display: flex;
 }
+
+#fav-icon:has(.fav-btn.isfav) {
+  display: flex;
+}
+
+
 
 .fav-btn {
   background-color: transparent;
@@ -90,9 +95,32 @@
   background-color: rgba(255, 60, 0, 0.1);
   transform: scale(1.1);
 }
-
+/* 
 .fav-btn:hover svg {
   fill: #ff3c00;
   stroke: #fff;
 }
 
+.fav-btn svg, .isfav{
+  fill: #ff3c00;
+  stroke: #fff;
+}
+
+.fav-btn svg, .isNTfav{
+  fill: transparent;
+  stroke: #ff3c00;
+} */
+
+.fav-btn.isfav svg {
+  fill: red;
+  transition: fill 0.3s ease;
+}
+
+.fav-btn.isNTfav svg {
+  fill: none;
+  transition: fill 0.3s ease;
+}
+
+.fav-btn:hover svg {
+  fill: crimson;
+}

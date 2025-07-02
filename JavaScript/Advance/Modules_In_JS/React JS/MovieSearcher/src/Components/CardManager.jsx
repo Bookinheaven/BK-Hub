@@ -3,7 +3,7 @@ import "./CardManager.css";
 
 const MovieCard = lazy(() => import("./MovieCard"));
 
-export default function CardManager({ movies, onEndFetch, type }) {
+export default function CardManager({ movies, onEndFetch, type, favoritesList, setFavoritesList }) {
   const observerRef = useRef(null);
 
   const endRefCallback = useCallback((node) => {
@@ -33,16 +33,25 @@ export default function CardManager({ movies, onEndFetch, type }) {
             <Fragment key={movie.id}>
               {index === movies.length - 10 ? (
                 <div ref={endRefCallback} style={{ minHeight: "1px" }}>
-                  <MovieCard movie={movie} />
+                  <MovieCard 
+                    movie={movie} 
+                    favoritesList={favoritesList}
+                    setFavoritesList={setFavoritesList}
+                    />
                 </div>
               ) : (
-                <MovieCard movie={movie} />
+                <MovieCard 
+                  movie={movie}
+                  favoritesList={favoritesList}
+                  setFavoritesList={setFavoritesList}
+                />
               )}
             </Fragment>
           ))}
         </Suspense>
       ) : (
-        <Loader />
+        ""
+        // <Loader />
       )}
     </>
   );

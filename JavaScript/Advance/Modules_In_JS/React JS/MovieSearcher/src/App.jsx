@@ -1,14 +1,16 @@
 import { useRef, useState, useEffect } from "react";
-import {
-  fetchMovieBySearch,
-  fetchPopularMS,
-  fetchTopRatedMS,
-  fetchUpcomingMovies,
-} from "./api/apidb.js";
+
 import "./App.css";
 import CardManager from "./Components/CardManager.jsx";
-import { deduplicateMovies } from "./utils/General.js";
 import browserSvg from './assets/browser.svg';
+import { fetchLocalData } from "./utils/General.js";
+import {
+  loadPopular,
+  loadTopRated,
+  loadUpcoming,
+  loadSearchResults
+} from "./utils/dataLoaders";
+
 
 function App() {
   const [query, setQuery] = useState("Search");
@@ -25,16 +27,16 @@ function App() {
   const [favoritesList, setFavoritesList] = useState({});
 
   const [showNoResultsSVG, setShowNoResultsSVG] = useState(false);
-  const [prevSearch, setPrevSearch] = useState("");
   const [isSearchHidden, setIsSearchHidden] = useState(false);
   const [searching, setSearching] = useState(false);
-
+  const [prevSearch, setPrevSearch] = useState("")
   const [inFavs, setInFavs] = useState(false)
   
   const searchContainerRef = useRef(null);
   const timeoutRef = useRef(null);
   const favRef = useRef(null);
 
+  const debounceRef = useRef(null);
   const pages = {
     Series: {
       Popular: 1,
@@ -48,9 +50,6 @@ function App() {
     },
     Search: [1, 1],
   };
-
-  const debounceRef = useRef(null);
-
   const handleInput = (e) => {
     setQuery(e.target.value);
     if (e.target.value.trim() === "") {
@@ -64,6 +63,44 @@ function App() {
       fetchMovies();
     }, 500);
   };
+  const fetchMovies = async () => {
+    if (query !== prevSearch) {
+      setPrevSearch(query);
+      pages.Search[0] = 1;
+      setMovies([]);
+    }
+    await loadSearchResults(query, pages.Search, setMovies, setAllMoviesData, setShowNoResultsSVG);
+  };
+
+  const fetchPopular = async (type) => {
+    await loadPopular(
+      type,
+      pages[type]["Popular"],
+      type === "Movies" ? setPopularmovies : setPopularSeries,
+      setAllMoviesData
+    );
+    pages[type]["Popular"]++;
+  };
+
+  const fetchTopRated = async (type) => {
+    await loadTopRated(
+      type,
+      pages[type]["Top Rated"],
+      type === "Movies" ? setTopRatedMovies : setTopRatedSeries,
+      setAllMoviesData
+    );
+    pages[type]["Top Rated"]++;
+  };
+
+  const fetchUpcoming = async () => {
+    await loadUpcoming(
+      pages.Movies.UpComing,
+      setUpcomingMovies,
+      setAllMoviesData
+    );
+    pages.Movies.UpComing++;
+  };
+
 
   useEffect(() => {
     if (searching) {
@@ -72,9 +109,9 @@ function App() {
       document.body.classList.remove("no-scroll");
     }
   }, [searching]);
-
-    useEffect(() => {
-    if (inFavs) {
+  
+  useEffect(() => {
+     if (inFavs) {
       document.body.classList.add("no-scroll");
       document.getElementById("home-h").style.backgroundColor = "transparent"
       document.getElementById("fav-h").style.backgroundColor = "rgba(240, 248, 255, 0.192)"
@@ -83,70 +120,8 @@ function App() {
       document.body.classList.remove("no-scroll");
       document.getElementById("home-h").style.backgroundColor = "rgba(240, 248, 255, 0.192)"
       document.getElementById("fav-h").style.backgroundColor = "transparent"
-
     }
   }, [inFavs]);
-
-  const fetchMovies = async () => {
-    if (query !== prevSearch) {
-      setPrevSearch(query);
-      pages.Search[0] = 1;
-      setMovies([]);
-    }
-    const data = await fetchMovieBySearch(query, pages.Search);
-    pages.Search[1] = data[1];
-    if (
-      Array.isArray(data[0]) &&
-      data[0].length > 0 &&
-      pages.Search[0] <= pages.Search[1]
-    ) {
-      setShowNoResultsSVG(false);
-      const uniqueNew = deduplicateMovies(data[0]);
-      setMovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      pages.Search[0]++;
-    } else if (movies.length == 0) {
-      setShowNoResultsSVG(true);
-      setMovies([]);
-    }
-  };
-  const fetchPopular = async (type) => {
-    const data = await fetchPopularMS(pages[type]["Popular"], type);
-    if (data && Array.isArray(data)) {
-      const uniqueNew = deduplicateMovies(data);
-      if (type == "Movies") {
-        setPopularmovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      } else {
-        setPopularSeries((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      }
-      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      pages[type]["Popular"]++;
-    }
-  };
-  
-  const fetchTopRated = async (type) => {
-    const data = await fetchTopRatedMS(pages[type]["Top Rated"], type);
-    if (data && Array.isArray(data)) {
-      const uniqueNew = deduplicateMovies(data);
-      if (type == "Movies") {
-        setTopRatedMovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      } else {
-        setTopRatedSeries((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      }
-      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      pages[type]["Top Rated"]++;
-    }
-  };
-
-  const fetchUpcoming = async () => {
-    const data = await fetchUpcomingMovies(pages.Movies.UpComing);
-    if (data && Array.isArray(data)) {
-      const uniqueNew = deduplicateMovies(data);
-      setUpcomingMovies((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      setAllMoviesData((prev) => deduplicateMovies([...prev, ...uniqueNew]));
-      pages.Movies.UpComing++;
-    }
-  };
 
   useEffect(() => {
     fetchPopular("Movies");
@@ -154,6 +129,9 @@ function App() {
     fetchTopRated("Movies");
     fetchTopRated("Series");
     fetchUpcoming();
+    const favMovies = fetchLocalData("Movies") || [];
+    const favSeries = fetchLocalData("Series") || [];
+    setFavoritesList({ Movies: favMovies, Series: favSeries });
   }, []);
 
   const handleBlur = (e) => {
@@ -161,9 +139,11 @@ function App() {
       setQuery("Search");
       timeoutRef.current = setTimeout(() => {
         const el = searchContainerRef.current;
-        el.classList.remove("slide-in");
-        void el.offsetWidth;
-        el.classList.add("slide-out");
+        if (!el.classList.contains("slide-out")) {
+          el.classList.remove("slide-in");
+          void el.offsetWidth;
+          el.classList.add("slide-out");
+        }
         setIsSearchHidden(true);
       }, 1000);
     }
@@ -256,8 +236,20 @@ function App() {
       
       <div id="fav-area" ref={favRef} className="hide">
         <h1 className="header-fields">Favorites</h1>
-        
+        <h2 className="header-fields">Movies</h2>
+        <CardManager 
+          movies={favoritesList.Movies || []} 
+          favoritesList={favoritesList}
+          setFavoritesList={setFavoritesList}
+        />
+        <h2 className="header-fields">Series</h2>
+        <CardManager 
+          movies={favoritesList.Series || []} 
+          favoritesList={favoritesList}
+          setFavoritesList={setFavoritesList}
+          />
       </div>
+
       <div id="focus-area">
         {searching && (
           <>
@@ -275,6 +267,8 @@ function App() {
                       movies={movies}
                       id="search-results"
                       onEndFetch={fetchMovies}
+                      favoritesList={favoritesList}
+                      setFavoritesList={setFavoritesList}
                     />
                   </div>
                 </>
@@ -288,7 +282,8 @@ function App() {
                   </div>
                 </>
               ) : (
-                  <dir id="loader"></dir>
+                // ""
+                  <div id="loader"></div>
               )}
             </div>
           </>
@@ -304,6 +299,8 @@ function App() {
             id="extra-space"
             onEndFetch={fetchPopular}
             type={"Movies"}
+            favoritesList={favoritesList}
+            setFavoritesList={setFavoritesList}
           />
         </div>
 
@@ -314,6 +311,8 @@ function App() {
             id="extra-space"
             onEndFetch={fetchTopRated}
             type={"Movies"}
+            favoritesList={favoritesList}
+            setFavoritesList={setFavoritesList}
           />
         </div>
 
@@ -323,6 +322,8 @@ function App() {
             movies={UpcomingMovies}
             id="extra-space"
             onEndFetch={fetchUpcoming}
+            favoritesList={favoritesList}
+            setFavoritesList={setFavoritesList}
           />
         </div>
 
@@ -336,6 +337,8 @@ function App() {
             id="extra-space"
             onEndFetch={fetchPopular}
             type={"Series"}
+            favoritesList={favoritesList}
+            setFavoritesList={setFavoritesList}
           />
         </div>
         <h1 className="header-fields">Top Rated Series</h1>
@@ -345,6 +348,8 @@ function App() {
             id="extra-space"
             onEndFetch={fetchTopRated}
             type={"Series"}
+            favoritesList={favoritesList}
+            setFavoritesList={setFavoritesList}
           />
         </div>
 
