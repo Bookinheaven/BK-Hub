@@ -15,7 +15,6 @@ export default function CardManager({ movies, onEndFetch, type, favoritesList, s
         (entries) => {
           if (entries[0].isIntersecting) {
             onEndFetch(type);
-            console.log("reached end");
           }
         },
         { threshold: 0.1 }

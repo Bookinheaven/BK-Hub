@@ -2,55 +2,62 @@ import {
   fetchPopularMS,
   fetchTopRatedMS,
   fetchUpcomingMovies,
-  fetchMovieBySearch
+  fetchMovieBySearch,
+  fetchSeriesBySearch
 } from "../api/apidb";
 import { deduplicateMovies } from "./General";
 
-export async function loadPopular(type, page, setData, setAllData) {
+export async function loadPopular(type, page, setData) {
   const data = await fetchPopularMS(page, type);
   if (Array.isArray(data)) {
     const uniqueNew = deduplicateMovies(data);
     setData(prev => deduplicateMovies([...prev, ...uniqueNew]));
-    setAllData(prev => deduplicateMovies([...prev, ...uniqueNew]));
     return true;
   }
   return false;
 }
 
-export async function loadTopRated(type, page, setData, setAllData) {
+export async function loadTopRated(type, page, setData) {
   const data = await fetchTopRatedMS(page, type);
   if (Array.isArray(data)) {
     const uniqueNew = deduplicateMovies(data);
     setData(prev => deduplicateMovies([...prev, ...uniqueNew]));
-    setAllData(prev => deduplicateMovies([...prev, ...uniqueNew]));
     return true;
   }
   return false;
 }
 
-export async function loadUpcoming(page, setData, setAllData) {
+export async function loadUpcoming(page, setData) {
   const data = await fetchUpcomingMovies(page);
   if (Array.isArray(data)) {
     const uniqueNew = deduplicateMovies(data);
     setData(prev => deduplicateMovies([...prev, ...uniqueNew]));
-    setAllData(prev => deduplicateMovies([...prev, ...uniqueNew]));
     return true;
   }
   return false;
 }
-
-export async function loadSearchResults(query, pageState, setMovies, setAllMovies, setShowNoResults) {
-  const data = await fetchMovieBySearch(query, pageState);
-  pageState[1] = data[1];
-
-  if (Array.isArray(data[0]) && data[0].length > 0 && pageState[0] <= pageState[1]) {
-    const uniqueNew = deduplicateMovies(data[0]);
+export async function loadSearchResults(query,pageState,setMovies,setShowNoResults,movieNoResultTimeout, type) {
+  if (movieNoResultTimeout.current) {
+    clearTimeout(movieNoResultTimeout.current);
+    movieNoResultTimeout.current = null;
+  }
+  
+  const data = (type == "Movies")  ? await fetchMovieBySearch(query, pageState) : await fetchSeriesBySearch(query, pageState);
+  const [results, totalPages] = data;
+  console.log(results)
+  pageState[1] = totalPages;
+  if (Array.isArray(results) && results.length > 0) {
+    const uniqueNew = deduplicateMovies(results);
     setMovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
-    setAllMovies(prev => deduplicateMovies([...prev, ...uniqueNew]));
     setShowNoResults(false);
     pageState[0]++;
   } else {
-    setShowNoResults(true);
-    setMovies([]);
+    if (pageState[0] === 1) {
+      movieNoResultTimeout.current = setTimeout(() => {
+        setShowNoResults(true);
+      }, 3000);
+    }
   }
 }
+
+

@@ -12,7 +12,6 @@
 }
 .search-results {
   width: 100%;
-  min-height: 98%;
   padding: 0.4rem 0rem 1rem 2rem;
   display: flex;
   flex-wrap: wrap;

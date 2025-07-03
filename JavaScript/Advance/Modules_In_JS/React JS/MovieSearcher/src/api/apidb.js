@@ -42,6 +42,8 @@ const formatTMDbMovies = (movies) => {
       title: movie.title || "",
       poster: `${TMDB_IMAGE_BASE}${movie.poster_path}`,
       year: movie.release_date?.split("-")[0] || "",
+      isMovie: true
+
     }));
 };
 
@@ -57,6 +59,8 @@ const formatTMDbSeries = (series) => {
       title: serie.name || "",
       poster: `${TMDB_IMAGE_BASE}${serie.poster_path}`,
       year: serie.first_air_date?.split("-")[0] || "",
+      isMovie: false
+
     }));
 };
 
@@ -73,6 +77,27 @@ const formatTMDbMoviesForSearch = (movies, max) => {
         title: movie.title || "",
         poster: `${TMDB_IMAGE_BASE}${movie.poster_path}`,
         year: movie.release_date?.split("-")[0] || "",
+        isMovie: true
+
+        })),
+    max,
+  ];
+};
+
+const formatTMDbSeriesForSearch = (series, max) => {
+  const seenIds = new Set();
+  return [
+    series
+      .filter(
+        (s) =>
+          s.poster_path && !seenIds.has(s.id) && seenIds.add(s.id)
+      )
+      .map((s) => ({
+        id: s.id || "",
+        title: s.name || "",
+        poster: `${TMDB_IMAGE_BASE}${s.poster_path}`,
+        year: s.first_air_date?.split("-")[0] || "",
+        isMovie: false
       })),
     max,
   ];
@@ -85,6 +110,16 @@ export const fetchMovieBySearch = async (query, page = 1) => {
   const json = await fetchFromAPI(url, TMDB_HEADERS);
   return json?.results
     ? formatTMDbMoviesForSearch(json.results, json.total_pages)
+    : [];
+};
+export const fetchSeriesBySearch = async (query, page = 1) => {
+  const url = `${TMDB_BASE_URL}/search/tv?query=${encodeURIComponent(
+    query
+  )}&include_adult=false&language=en-US&page=${page}`;
+  const json = await fetchFromAPI(url, TMDB_HEADERS);
+  console.log(json.results)
+  return json?.results
+    ? formatTMDbSeriesForSearch(json.results, json.total_pages)
     : [];
 };
 
@@ -107,12 +142,6 @@ export const fetchTopRatedMS = async (page = 1, type = "Movies") => {
     ? formatTMDbMovies(results)
     : formatTMDbSeries(results);
 };
-
-// export const fetchTopRatedMovies = async (page = 1) => {
-//   const url = `${TMDB_BASE_URL}/movie/top_rated?language=en-US&page=${page}`;
-//   const json = await fetchFromAPI(url, TMDB_HEADERS);
-//   return json?.results ? formatTMDbMovies(json.results) : [];
-// };
 
 export const fetchUpcomingMovies = async (page = 1) => {
   const url = `${TMDB_BASE_URL}/movie/upcoming?language=en-US&page=${page}`;

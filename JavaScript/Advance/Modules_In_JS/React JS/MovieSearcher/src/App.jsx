@@ -1,31 +1,24 @@
 import { useRef, useState, useEffect } from "react";
-
 import "./App.css";
 import CardManager from "./Components/CardManager.jsx";
 import browserSvg from './assets/browser.svg';
 import { fetchLocalData } from "./utils/General.js";
-import {
-  loadPopular,
-  loadTopRated,
-  loadUpcoming,
-  loadSearchResults
-} from "./utils/dataLoaders";
-
+import { loadPopular, loadTopRated, loadUpcoming, loadSearchResults } from "./utils/dataLoaders";
 
 function App() {
+  const [appLoading, setAppLoading] = useState(true);
   const [query, setQuery] = useState("Search");
   const [movies, setMovies] = useState([]);
-
+  const [series, setSeries] = useState([]);
   const [Popularmovies, setPopularmovies] = useState([]);
   const [PopularSeries, setPopularSeries] = useState([]);
   const [TopRatedMovies, setTopRatedMovies] = useState([]);
   const [TopRatedSeries, setTopRatedSeries] = useState([]);
   const [UpcomingMovies, setUpcomingMovies] = useState([]);
 
-  const [PagesManager, setPagesManager] = useState({});
-  const [allMoviesData, setAllMoviesData] = useState([]);
   const [favoritesList, setFavoritesList] = useState({});
-
+  
+  const movieNoResultTimeout = useRef(null);
   const [showNoResultsSVG, setShowNoResultsSVG] = useState(false);
   const [isSearchHidden, setIsSearchHidden] = useState(false);
   const [searching, setSearching] = useState(false);
@@ -48,8 +41,15 @@ function App() {
       "Top Rated": 1,
       UpComing: 1,
     },
-    Search: [1, 1],
+    Search: {
+      Movies: [1, 1],
+      Series: [1, 1]
+    }
   };
+  function fetchSearch() {
+    fetchSeries()
+    fetchMovies()
+  }
   const handleInput = (e) => {
     setQuery(e.target.value);
     if (e.target.value.trim() === "") {
@@ -60,16 +60,24 @@ function App() {
     }
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      fetchMovies();
+      fetchSearch()
     }, 500);
   };
   const fetchMovies = async () => {
     if (query !== prevSearch) {
       setPrevSearch(query);
-      pages.Search[0] = 1;
+      pages.Search.Movies[0] = 1;
       setMovies([]);
     }
-    await loadSearchResults(query, pages.Search, setMovies, setAllMoviesData, setShowNoResultsSVG);
+    await loadSearchResults(query, pages.Search.Movies, setMovies, setShowNoResultsSVG, movieNoResultTimeout, "Movies");
+  };
+  const fetchSeries = async () => {
+    if (query !== prevSearch) {
+      setPrevSearch(query);
+      pages.Search.Series[0] = 1;
+      setSeries([]);
+    }
+    await loadSearchResults(query, pages.Search.Series, setSeries, setShowNoResultsSVG, movieNoResultTimeout, "Series");
   };
 
   const fetchPopular = async (type) => {
@@ -77,7 +85,6 @@ function App() {
       type,
       pages[type]["Popular"],
       type === "Movies" ? setPopularmovies : setPopularSeries,
-      setAllMoviesData
     );
     pages[type]["Popular"]++;
   };
@@ -87,7 +94,6 @@ function App() {
       type,
       pages[type]["Top Rated"],
       type === "Movies" ? setTopRatedMovies : setTopRatedSeries,
-      setAllMoviesData
     );
     pages[type]["Top Rated"]++;
   };
@@ -96,11 +102,9 @@ function App() {
     await loadUpcoming(
       pages.Movies.UpComing,
       setUpcomingMovies,
-      setAllMoviesData
     );
     pages.Movies.UpComing++;
   };
-
 
   useEffect(() => {
     if (searching) {
@@ -110,28 +114,38 @@ function App() {
     }
   }, [searching]);
   
+  //I should have use Refs here
   useEffect(() => {
      if (inFavs) {
       document.body.classList.add("no-scroll");
+      document.getElementById("focus-area").classList.add("hide")
       document.getElementById("home-h").style.backgroundColor = "transparent"
       document.getElementById("fav-h").style.backgroundColor = "rgba(240, 248, 255, 0.192)"
 
     } else {
       document.body.classList.remove("no-scroll");
+      document.getElementById("focus-area").classList.remove("hide")
       document.getElementById("home-h").style.backgroundColor = "rgba(240, 248, 255, 0.192)"
       document.getElementById("fav-h").style.backgroundColor = "transparent"
     }
   }, [inFavs]);
 
   useEffect(() => {
-    fetchPopular("Movies");
-    fetchPopular("Series");
-    fetchTopRated("Movies");
-    fetchTopRated("Series");
-    fetchUpcoming();
+    async function fetchAllInitialData() {
+    await Promise.all([
+      fetchPopular("Movies"),
+      fetchPopular("Series"),
+      fetchTopRated("Movies"),
+      fetchTopRated("Series"),
+      fetchUpcoming()
+    ]);
     const favMovies = fetchLocalData("Movies") || [];
     const favSeries = fetchLocalData("Series") || [];
     setFavoritesList({ Movies: favMovies, Series: favSeries });
+    setTimeout(() => {
+      setAppLoading(false);
+    }, 3000);  }
+  fetchAllInitialData();
   }, []);
 
   const handleBlur = (e) => {
@@ -182,13 +196,21 @@ function App() {
     }
   }
   function onClickForHome() {
+    setQuery("Search")
+    setSeries([])
+    setMovies([])
+    setSearching(false)
     document.getElementById("fav-area").classList.remove("show")
     document.getElementById("fav-area").classList.add("hide")
     setInFavs(false)
   }
-
   return (
     <div id="main-section">
+      {appLoading && (<div id="app-loader">
+        <div id="loader"></div>
+        <p id="app-loader-p">Initializing App!</p>
+
+      </div>)}
       <div id="top-section">
         <div id="info-top" style={{ opacity: isSearchHidden ? 1 : 0 }}>
           <p>Hover top for search bar</p>
@@ -224,30 +246,56 @@ function App() {
           >
             <input
               id="query-box"
-              value={query}
+              value={inFavs ? "Can't Search Here": query}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={handleInput}
               autoComplete="off"
+              disabled={inFavs}
             />
           </div>
         </div>
       </div>
-      
+        
       <div id="fav-area" ref={favRef} className="hide">
-        <h1 className="header-fields">Favorites</h1>
-        <h2 className="header-fields">Movies</h2>
-        <CardManager 
-          movies={favoritesList.Movies || []} 
-          favoritesList={favoritesList}
-          setFavoritesList={setFavoritesList}
-        />
-        <h2 className="header-fields">Series</h2>
-        <CardManager 
-          movies={favoritesList.Series || []} 
-          favoritesList={favoritesList}
-          setFavoritesList={setFavoritesList}
-          />
+        {favoritesList &&
+        (favoritesList.Movies?.length > 0 || favoritesList.Series?.length > 0) ? (
+          <>
+            <h1 className="header-fields" style={{ fontSize: "3.4rem" }}>
+              Favorites
+            </h1>
+
+            {favoritesList.Movies?.length > 0 && (
+              <>
+                <h2 className="header-fields">Movies</h2>
+                <div className="extra-space">
+                  <CardManager
+                    movies={favoritesList.Movies}
+                    favoritesList={favoritesList}
+                    setFavoritesList={setFavoritesList}
+                  />
+                </div>
+              </>
+            )}
+
+            {favoritesList.Series?.length > 0 && (
+              <>
+                <h2 className="header-fields">Series</h2>
+                <div className="extra-space">
+                  <CardManager
+                    movies={favoritesList.Series}
+                    favoritesList={favoritesList}
+                    setFavoritesList={setFavoritesList}
+                  />
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <h1 className="header-fields" style={{ fontSize: "3.4rem" }}>
+            Add Favorites
+          </h1>
+        )}
       </div>
 
       <div id="focus-area">
@@ -255,39 +303,57 @@ function App() {
           <>
             <div className="backdrop" />
             <div id="search-area">
-              <h1 id="search-header" className="header-fields">
-                Search Results
-              </h1>
+              <h1 id="search-header" className="header-fields">Search Results</h1>
 
-              {movies.length > 0 ? (
+              {(movies.length > 0 || series.length > 0) ? (
                 <>
-                  <h1 className="header-fields" style={{margin:0}}>Movies</h1><br></br>
-                  <div className="search-results">
-                    <CardManager
-                      movies={movies}
-                      id="search-results"
-                      onEndFetch={fetchMovies}
-                      favoritesList={favoritesList}
-                      setFavoritesList={setFavoritesList}
-                    />
-                  </div>
+                  {movies && movies.length > 0 && (
+                    <>
+                      <h1 className="header-fields" style={{ margin: 0 }}>Movies</h1>
+                      <br />
+                      <div className="search-results">
+                        <CardManager
+                          movies={movies}
+                          id="search-results"
+                          onEndFetch={fetchMovies}
+                          favoritesList={favoritesList}
+                          setFavoritesList={setFavoritesList}
+                        />
+                      </div>
+                    </>
+                  )}
+                  {series && series.length > 0 && (
+                    <>
+                      <h1 className="header-fields" style={{ margin: 0 }}>Series</h1>
+                      <br />
+                      <div className="search-results">
+                        <CardManager
+                          movies={series}
+                          id="search-results"
+                          onEndFetch={fetchSeries}
+                          favoritesList={favoritesList}
+                          setFavoritesList={setFavoritesList}
+                        />
+                      </div>
+                    </>
+                  )}
                 </>
-
               ) : showNoResultsSVG ? (
                 <>
-                  {console.log("Rendering: No Results Found block")}
                   <div id="no-results-found">
-                    <h2 className="header-fields" style={{fontSize: "2rem"}}>Sorry I couldn't find "{query}" movie/series in the database. Please try something else.</h2>
-                      <img src={browserSvg} alt="Not Found" />
+                    <h2 className="header-fields" style={{ fontSize: "2rem" }}>
+                      Sorry I couldn't find "{query}" movie/series in the database. Please try something else.
+                    </h2>
+                    <img src={browserSvg} alt="Not Found" />
                   </div>
                 </>
               ) : (
-                // ""
-                  <div id="loader"></div>
+                <div id="loader"></div>
               )}
             </div>
           </>
         )}
+
         <h1 className="header-fields" style={{ fontSize: "3.5rem" }}>
           Movies
         </h1>
