@@ -1,6 +1,4 @@
-from fastapi import FastAPI
-from fastapi import Request
-from fastapi import Form
+from fastapi import FastAPI, Request, UploadFile, File, Form
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -56,3 +54,12 @@ async def get_raw_body(request: Request):
 @app.post("/login/")
 def login(username: str = Form(...), password: str = Form(...)): # Form(...) - required field
     return {"username": username, "password": password}
+
+
+
+@app.post("/upload/")
+async def upload_file(file: UploadFile = File(...)):
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type
+    }
