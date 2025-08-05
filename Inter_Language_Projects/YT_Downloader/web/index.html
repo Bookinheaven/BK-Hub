@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YTDownloader</title>
+    <link rel="stylesheet" href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap)">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loader-wrapper" class="hidden">
+        <div class="loader" ></div>
+    </div>
+    <div class="container">
+        <h1 class="main-title">YTDownloader</h1>
+
+        <div class="input-group">
+            <label for="url-input" class="input-label">Enter YouTube URL:</label>
+            <div class="flex-row">
+                <input type="text" id="url-input" placeholder="e.g., [https://www.youtube.com/watch?v=](https://www.youtube.com/watch?v=)...">
+                <button id="fetch-button">
+                    Fetch
+                </button>
+            </div>
+        </div>
+
+        <div id="metadata-container" class="metadata-container hidden">
+            <div class="metadata-card">
+                <div class="thumbnail-wrapper">
+                    <img id="thumbnail-preview" src="" alt="Video Thumbnail" class="thumbnail" loading="lazy">
+                </div>
+                <div class="metadata-editor">
+                    <h2 class="section-title">Edit Metadata</h2>
+                    
+                    <div class="form-group">
+                        <div>
+                            <label for="title-input" class="form-label">Title:</label>
+                            <input type="text" id="title-input">
+                        </div>
+                        <div>
+                            <label for="artist-input" class="form-label">Artist:</label>
+                            <input type="text" id="artist-input">
+                        </div>
+                        <div>
+                            <label for="album-input" class="form-label">Album:</label>
+                            <input type="text" id="album-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="options-group hidden">
+            <div class="flex-row">
+                <div class="option-item">
+                    <label for="format-selector" class="form-label">Format:</label>
+                    <select id="format-selector">
+                        <option value="mp3">MP3</option>
+                        <option value="m4a" selected>M4A</option>
+                        <option value="flac">FLAC</option>
+                        <option value="wav">WAV</option>
+                    </select>
+                </div>
+                <div class="option-item">
+                    <label for="bitrate-selector" class="form-label">Bitrate:</label>
+                    <select id="bitrate-selector">
+                        <option value="128k">128k</option>
+                        <option value="192k" selected>192k</option>
+                        <option value="256k">256k</option>
+                        <option value="320k">320k</option>
+                    </select>
+                </div>
+                <div class="option-item">
+                    <label for="save-folder-input" class="form-label">Save Folder:</label>
+                    <div class="flex-row">
+                        <input type="text" id="save-folder-input" readonly>
+                        <button id="browse-button" class="browse-button">
+                            Browse
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <div class="progress-bar-container hidden">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <p id="status-message" class="status-message">
+                Music is freedom Dude!.
+            </p>
+            <button id="download-button" class="download-button hidden" disabled>
+                Download
+            </button>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
