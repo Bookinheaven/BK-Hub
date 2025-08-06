@@ -4,30 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YTDownloader</title>
-    <link rel="stylesheet" href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap)">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="loader-wrapper" class="hidden">
-        <div class="loader" ></div>
+        <div class="loader" role="status" aria-label="Loading..."></div>
     </div>
-    <div class="container">
+    
+    <main class="container">
         <h1 class="main-title">YTDownloader</h1>
 
-        <div class="input-group">
-            <label for="url-input" class="input-label">Enter YouTube URL:</label>
+        <section class="input-group" aria-labelledby="urls-label">
+            <label id="url-label" for="urls-input" class="input-label">Enter YouTube URL(s):</label>
             <div class="flex-row">
-                <input type="text" id="url-input" placeholder="e.g., [https://www.youtube.com/watch?v=](https://www.youtube.com/watch?v=)...">
-                <button id="fetch-button">
+                <textarea id="urls-input" placeholder="Enter one or more YouTube URLs, each on a new line." aria-describedby="status-message"></textarea>
+                <button id="fetch-button" aria-controls="metadata-container options-group download-button">
                     Fetch
                 </button>
             </div>
-        </div>
+        </section>
 
-        <div id="metadata-container" class="metadata-container hidden">
+        <section id="metadata-container" class="metadata-container hidden" aria-hidden="true">
             <div class="metadata-card">
                 <div class="thumbnail-wrapper">
-                    <img id="thumbnail-preview" src="" alt="Video Thumbnail" class="thumbnail" loading="lazy">
+                    <img id="thumbnail-preview" src="" alt="Video thumbnail preview" class="thumbnail" loading="lazy">
+                    <div class="cover-editor">
+                        <label for="cover-upload" class="form-label">Change Cover:</label>
+                        <input type="file" id="cover-upload" accept="image/jpeg, image/png">
+                    </div>
                 </div>
                 <div class="metadata-editor">
                     <h2 class="section-title">Edit Metadata</h2>
@@ -35,35 +42,52 @@
                     <div class="form-group">
                         <div>
                             <label for="title-input" class="form-label">Title:</label>
-                            <input type="text" id="title-input">
+                            <input type="text" id="title-input" aria-label="Video Title">
                         </div>
                         <div>
                             <label for="artist-input" class="form-label">Artist:</label>
-                            <input type="text" id="artist-input">
+                            <input type="text" id="artist-input" aria-label="Video Artist">
                         </div>
                         <div>
                             <label for="album-input" class="form-label">Album:</label>
-                            <input type="text" id="album-input">
+                            <input type="text" id="album-input" aria-label="Video Album">
+                        </div>
+                        <div>
+                            <label for="genre-input" class="form-label">Genre:</label>
+                            <input type="text" id="genre-input" aria-label="Video Genre">
+                        </div>
+                        <div>
+                            <label for="year-input" class="form-label">Year:</label>
+                            <input type="date" id="year-input" aria-label="Video Year">
+                        </div>
+                        <div>
+                            <label for="track-input" class="form-label">Track #:</label>
+                            <input type="number" id="track-input" aria-label="Track Number">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="options-group hidden">
+        <section id="options-group" class="options-group hidden" aria-hidden="true">
             <div class="flex-row">
                 <div class="option-item">
                     <label for="format-selector" class="form-label">Format:</label>
-                    <select id="format-selector">
+                    <select id="format-selector" aria-label="Select Download Format">
                         <option value="mp3">MP3</option>
                         <option value="m4a" selected>M4A</option>
                         <option value="flac">FLAC</option>
                         <option value="wav">WAV</option>
+                        <option value="opus">Opus</option>
+                        <option value="aac">AAC</option>
+                        <option value="vorbis">Vorbis</option>
+                        <option value="alac">ALAC</option>
+                        <option value="webm">WebM</option>
                     </select>
                 </div>
                 <div class="option-item">
                     <label for="bitrate-selector" class="form-label">Bitrate:</label>
-                    <select id="bitrate-selector">
+                    <select id="bitrate-selector" aria-label="Select Audio Bitrate">
                         <option value="128k">128k</option>
                         <option value="192k" selected>192k</option>
                         <option value="256k">256k</option>
@@ -73,25 +97,37 @@
                 <div class="option-item">
                     <label for="save-folder-input" class="form-label">Save Folder:</label>
                     <div class="flex-row">
-                        <input type="text" id="save-folder-input" readonly>
-                        <button id="browse-button" class="browse-button">
+                        <input type="text" id="save-folder-input" readonly aria-label="Selected save folder path">
+                        <button id="browse-button" class="browse-button" title="Browse for a folder">
                             Browse
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="download-section">
-            <div class="progress-bar-container hidden">
-                <div id="progress-bar" class="progress-bar"></div>
+        <section class="download-section">
+            <div id="progress-bar-container" class="progress-bar-container hidden" aria-hidden="true">
+                <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <p id="status-message" class="status-message">
-                Music is freedom Dude!.
+            <p id="status-message" class="status-message" role="status" aria-live="polite">
+                Music is freedom, Dude!
             </p>
-            <button id="download-button" class="download-button hidden" disabled>
+            <button id="download-button" class="download-button hidden" disabled aria-disabled="true">
                 Download
             </button>
+        </section>
+
+        <section id="download-log-section" class="hidden">
+            <h2 class="section-title">Download Log</h2>
+            <div id="download-log-container" class="download-log-container">
+                </div>
+        </section>
+    </main>
+    
+    <div id="live-downloads-container" class="live-downloads-container hidden">
+        <h2 class="live-downloads-title">Downloading...</h2>
+        <div id="download-cards-container" class="download-cards-container">
         </div>
     </div>
     
