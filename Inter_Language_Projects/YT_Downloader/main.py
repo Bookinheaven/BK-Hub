@@ -1,3 +1,30 @@
+import multiprocessing
+import sys
+import subprocess
+
+def _update_modules_in_thread():
+    """Checks for and updates Python modules in a new thread."""
+    try:
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--upgrade", "pip"],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding='utf-8'
+        )
+        
+        modules_to_update = ["eel", "yt-dlp", "mutagen", "gevent", "gevent-websocket", "Pillow", "pyinstaller"]
+                
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--upgrade"] + modules_to_update,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding='utf-8'
+        )
+    except Exception as e:
+        print(f"Error during module update: {e}")
+
 import eel
 import os
 import threading
@@ -7,7 +34,6 @@ import shutil
 import re
 import random
 import string 
-import subprocess
 from tkinter import filedialog, Tk
 from mutagen.mp4 import MP4, MP4Cover
 from mutagen.id3 import ID3, TIT2, TPE1, TALB, TCON, TYER, TRCK, APIC
@@ -512,9 +538,12 @@ def start_initial_setup():
         return {"status": "error", "value": None, "message": str(e)}
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()
     _load_settings()
     eel.init("web")
     
+    threading.Thread(target=_update_modules_in_thread, daemon=True).start()
+
     window_width = 950
     window_height = 700
     
