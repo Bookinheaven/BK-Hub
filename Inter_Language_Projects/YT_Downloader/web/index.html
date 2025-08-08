@@ -56,15 +56,28 @@
                         </div>
                         <div>
                             <label for="genre-input" class="form-label">Genre:</label>
-                            <input type="text" id="genre-input" aria-label="Video Genre">
+                            <input type="text" id="genre-input" aria-label="Video Genre" list="genre-suggestions" autocomplete="off">
+               
                         </div>
-                        <div>
+                        <div class="custom-number-input-wrapper">
                             <label for="year-input" class="form-label">Year:</label>
-                            <input type="date" id="year-input" aria-label="Video Year">
+                            <div class="custom-number-input">
+                                <input type="number" id="year-input" aria-label="Video Year" min="1900" max="2100" step="1" pattern="\d{4}" placeholder="YYYY" class="styled-number-input">
+                                <div class="custom-arrows">
+                                    <button type="button" class="arrow up" tabindex="-1" aria-label="Increase"></button>
+                                    <button type="button" class="arrow down" tabindex="-1" aria-label="Decrease"></button>
+                                </div>
+                            </div>
                         </div>
-                        <div>
+                        <div class="custom-number-input-wrapper">
                             <label for="track-input" class="form-label">Track #:</label>
-                            <input type="number" id="track-input" aria-label="Track Number">
+                            <div class="custom-number-input">
+                                <input type="number" id="track-input" aria-label="Track Number" class="styled-number-input">
+                                <div class="custom-arrows">
+                                    <button type="button" class="arrow up" tabindex="-1" aria-label="Increase"></button>
+                                    <button type="button" class="arrow down" tabindex="-1" aria-label="Decrease"></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

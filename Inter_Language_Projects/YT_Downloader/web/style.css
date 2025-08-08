@@ -666,3 +666,63 @@ input::placeholder, textarea::placeholder {
         margin-bottom: 0.5rem;
     }
 }
+.styled-number-input::-webkit-inner-spin-button,
+.styled-number-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.styled-number-input[type=number] {
+    -moz-appearance: textfield;
+}
+.custom-number-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.custom-number-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.styled-number-input {
+    width: 80px;
+    padding-right: 32px;
+}
+.custom-arrows {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    gap: 2px;
+}
+.custom-arrows .arrow {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.custom-arrows .arrow.up::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #666;
+}
+.custom-arrows .arrow.down::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #666;
+}

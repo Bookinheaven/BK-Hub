@@ -1,10 +1,11 @@
-import multiprocessing
-import sys
 import subprocess
+import sys
 
 def _update_modules_in_thread():
     """Checks for and updates Python modules in a new thread."""
     try:
+        eel.update_status("Checking for module updates...", "yellow")
+
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "--upgrade", "pip"],
             check=True,
@@ -14,7 +15,7 @@ def _update_modules_in_thread():
         )
         
         modules_to_update = ["eel", "yt-dlp", "mutagen", "gevent", "gevent-websocket", "Pillow", "pyinstaller"]
-                
+        
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "--upgrade"] + modules_to_update,
             check=True,
@@ -22,8 +23,10 @@ def _update_modules_in_thread():
             text=True,
             encoding='utf-8'
         )
+        
+        eel.update_status("Modules updated successfully.", "green")
     except Exception as e:
-        print(f"Error during module update: {e}")
+        _handle_error("Error during module update. Check your internet connection.", e)
 
 import eel
 import os
@@ -34,6 +37,7 @@ import shutil
 import re
 import random
 import string 
+
 from tkinter import filedialog, Tk
 from mutagen.mp4 import MP4, MP4Cover
 from mutagen.id3 import ID3, TIT2, TPE1, TALB, TCON, TYER, TRCK, APIC
@@ -43,15 +47,32 @@ import urllib.request
 import zipfile
 import tempfile
 import base64
+import traceback
+import multiprocessing
 
-app_dir = os.path.dirname(os.path.abspath(__file__))
-settings_file = os.path.join(app_dir, "config.json")
-ffmpeg_path = os.path.join(app_dir, "ffmpeg.exe")
-ffprobe_path = os.path.join(app_dir, "ffprobe.exe")
+if getattr(sys, 'frozen', False):
+    app_base_path = os.path.dirname(sys.executable)
+else:
+    app_base_path = os.path.dirname(os.path.abspath(__file__))
+
+settings_file = os.path.join(app_base_path, "config.json")
+ffmpeg_path = os.path.join(app_base_path, "ffmpeg.exe")
+ffprobe_path = os.path.join(app_base_path, "ffprobe.exe")
 is_playlist = False
 settings = {}
-
 live_download_progress = {}
+
+def _handle_error(message, error, is_critical=False):
+    """Centralized error handling and reporting."""
+    print("--- Python Error ---")
+    print(f"Error: {message}")
+    print("Traceback:")
+    traceback.print_exc()
+    print("--------------------")
+    if is_critical:
+        eel.update_status(f"Critical Error: {message}. See console for details.", "red")
+    else:
+        eel.update_status(f"Warning: {message}", "yellow")
 
 def _load_settings():
     """Loads user settings from a local configuration file."""
@@ -64,22 +85,23 @@ def _load_settings():
             settings = {
                 "download_folder": os.path.join(os.path.expanduser("~"), "Downloads"),
                 "format": "m4a",
-                "bitrate": "192k",
+                "bitrate": "320k",
             }
     except Exception as e:
-        print(f"Error loading settings, using defaults: {e}")
+        _handle_error("Error loading settings, using defaults.", e)
         settings = {
             "download_folder": os.path.join(os.path.expanduser("~"), "Downloads"),
             "format": "m4a",
-            "bitrate": "192k",
+            "bitrate": "320k",
         }
+
 def _save_settings():
     """Saves user settings to a local configuration file."""
     try:
         with open(settings_file, "w") as f:
             json.dump(settings, f, indent=4)
     except Exception as e:
-        print(f"Error saving settings: {e}")
+        _handle_error(f"Error saving settings: {e}", e)
 
 def _sanitize_filename(filename):
     """Sanitizes a string to be a valid filename."""
@@ -96,15 +118,15 @@ def _progress_hook_for_live_card(d, download_id):
                 percent = float(cleaned_percent_str.strip('%').strip()) / 100
                 eel.updateLiveProgress(download_id, percent)
                 live_download_progress[download_id] = percent
-        except (ValueError, KeyError):
-            pass
+        except (ValueError, KeyError) as e:
+            _handle_error(f"Error parsing progress hook data: {e}", e)
     elif d['status'] == 'finished':
         eel.updateLiveProgress(download_id, 1)
 
 def _add_metadata(file_path, thumbnail_path, output_format, metadata):
     """Adds or updates metadata to an audio file."""
     if not os.path.isfile(file_path):
-        print(f"File not found: {file_path}")
+        _handle_error(f"File not found: {file_path}", FileNotFoundError())
         return
 
     try:
@@ -165,8 +187,7 @@ def _add_metadata(file_path, thumbnail_path, output_format, metadata):
             eel.update_status("WAV files do not support metadata. Skipping.", "yellow")
     
     except Exception as e:
-        print(f"Error adding metadata: {e}")
-        eel.update_status(f"Error adding metadata: {e}", "red")
+        _handle_error(f"Error adding metadata: {e}", e)
     finally:
         pass
 
@@ -249,10 +270,10 @@ def _download_single_video(url, metadata, save_folder, output_format, bitrate, c
         eel.update_status(f"Download of '{metadata['title']}' complete!", "green")
         
         eel.finishDownloadCard(download_id, metadata, final_destination)
-
+        
     except (yt_dlp.DownloadError, ValueError, FileNotFoundError, Exception) as e:
-        print(f"Download Error: {e}")
-        eel.update_status(f"Error with '{metadata['title']}': {e}", "red")
+        _handle_error(f"Download Error for '{metadata.get('title', 'video')}'", e)
+        eel.update_status(f"Error with '{metadata.get('title', 'video')}': {e}", "red")
     finally:
         if temp_dir and os.path.exists(temp_dir):
             shutil.rmtree(temp_dir, ignore_errors=True)
@@ -284,7 +305,7 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
         try:
             os.makedirs(playlist_folder, exist_ok=True)
         except OSError as e:
-            print(f"Error creating directory: {e}")
+            _handle_error(f"Error creating directory: {e}", e)
             eel.update_status(f"Error: Could not create folder at '{playlist_folder}'. Check permissions.", "red")
             eel.resetUI()
             return
@@ -320,12 +341,12 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
                     download_id=download_id
                 )
             except Exception as e:
-                print(f"Error processing video {url}: {e}")
+                _handle_error(f"Error processing video {url}: {e}", e)
                 eel.update_status(f"Error with video {i+1}: {e}", "red")
         
         eel.update_status("Playlist download finished!", "green")
     except Exception as e:
-        print(f"Playlist download error: {e}")
+        _handle_error(f"Playlist download error: {e}", e)
         eel.update_status(f"An error occurred during playlist download: {e}", "red")
     finally:
         eel.update_button_state(False)
@@ -333,6 +354,16 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
 
 def _download_ffmpeg_if_needed():
     """Downloads and extracts FFmpeg binaries if they don't exist."""
+    global ffmpeg_path, ffprobe_path
+    
+    if getattr(sys, 'frozen', False):
+        exe_dir = os.path.dirname(sys.executable)
+        ffmpeg_path = os.path.join(exe_dir, "ffmpeg.exe")
+        ffprobe_path = os.path.join(exe_dir, "ffprobe.exe")
+    else:
+        ffmpeg_path = os.path.join(app_base_path, "ffmpeg.exe")
+        ffprobe_path = os.path.join(app_base_path, "ffprobe.exe")
+
     try:
         if os.path.isfile(ffmpeg_path) and os.path.isfile(ffprobe_path):
             eel.update_status("App is ready to use.", "green")
@@ -341,21 +372,22 @@ def _download_ffmpeg_if_needed():
         def download_in_thread():
             eel.update_status("FFmpeg not found. Downloading and extracting...", "yellow")
             ffmpeg_url = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip"
-            download_path = os.path.join(app_dir, "ffmpeg.zip")
+            download_path = os.path.join(app_base_path, "ffmpeg.zip")
             try:
                 urllib.request.urlretrieve(ffmpeg_url, download_path)
                 eel.update_status("FFmpeg downloaded. Extracting...", "yellow")
                 with zipfile.ZipFile(download_path, 'r') as zip_ref:
-                    zip_ref.extractall(app_dir)
+                    zip_ref.extractall(app_base_path)
                 os.remove(download_path)
-                extracted_folder = next(f for f in os.listdir(app_dir) if f.startswith('ffmpeg-master-latest'))
-                extracted_bin_path = os.path.join(app_dir, extracted_folder, 'bin')
+                extracted_folder = next(f for f in os.listdir(app_base_path) if f.startswith('ffmpeg-master-latest'))
+                extracted_bin_path = os.path.join(app_base_path, extracted_folder, 'bin')
                 if os.path.exists(extracted_bin_path):
                     shutil.copy(os.path.join(extracted_bin_path, 'ffmpeg.exe'), ffmpeg_path)
                     shutil.copy(os.path.join(extracted_bin_path, 'ffprobe.exe'), ffprobe_path)
-                shutil.rmtree(os.path.join(app_dir, extracted_folder))
+                shutil.rmtree(os.path.join(app_base_path, extracted_folder))
                 eel.update_status("Setup completed!", "green")
             except Exception as e:
+                _handle_error(f"Error setting up FFmpeg: {e}", e)
                 eel.update_status(f"Error setting up FFmpeg: {e}", "red")
             finally:
                 eel.update_button_state(False)
@@ -365,9 +397,9 @@ def _download_ffmpeg_if_needed():
         return {"status": "in_progress", 'value': None}
 
     except Exception as e:
-        eel.update_status(f"Critical error during setup: {e}", "red")
+        _handle_error(f"Critical error during setup: {e}", e, is_critical=True)
         return {"status": "error", "message": str(e), 'value': None}
-
+    
 @eel.expose
 def get_initial_settings():
     """Returns the initial settings to the frontend."""
@@ -375,7 +407,7 @@ def get_initial_settings():
         _load_settings()
         return {"status": "success", "value": settings}
     except Exception as e:
-        print(f"Error in get_initial_settings: {e}")
+        _handle_error(f"Error in get_initial_settings: {e}", e)
         return {"status": "error", "value": None, "message": str(e)}
 
 @eel.expose
@@ -387,7 +419,7 @@ def save_settings(new_settings):
         _save_settings()
         return {"status": "success", 'value': None}
     except Exception as e:
-        print(f"Error in save_settings: {e}")
+        _handle_error(f"Error in save_settings: {e}", e)
         return {"status": "error", "value": None, "message": str(e)}
 
 @eel.expose
@@ -403,7 +435,7 @@ def browse_folder():
             _save_settings()
         return folder_selected if folder_selected else ""
     except Exception as e:
-        print(f"Error in browse_folder: {e}")
+        _handle_error(f"Error in browse_folder: {e}", e)
         return ""
 
 @eel.expose
@@ -457,7 +489,7 @@ def fetch_metadata(url_input):
             else:
                 return {'status': 'error', 'value': None, 'message': 'Could not fetch video information.'}
     except Exception as e:
-        print(f"Error fetching metadata: {e}")
+        _handle_error(f"Error fetching metadata: {e}", e)
         return {'status': 'error', 'value': None, 'message': str(e)}
 
 @eel.expose
@@ -488,7 +520,7 @@ def download_music(url_input, metadata, save_folder, selected_format, bitrate):
                 
                 is_playlist_url = 'entries' in info
             except Exception as e:
-                print(f"Error checking URL {url}: {e}")
+                _handle_error(f"Error checking URL {url}: {e}", e)
                 eel.update_status(f"Error checking URL {url}: {e}", "red")
                 continue
             
@@ -508,26 +540,8 @@ def download_music(url_input, metadata, save_folder, selected_format, bitrate):
 
         return {"status": "success", "value": None, "message": "Download process started."}
     except Exception as e:
-        print(f"Error in download_music: {e}")
+        _handle_error(f"Error in download_music: {e}", e)
         return {"status": "error", "value": None, "message": str(e)}
-    
-@eel.expose
-def openPathInExplorer(path):
-    """Opens a given file path in the system's default file explorer."""
-    print(f"Attempting to open path: {path}")
-    try:
-        if os.name == 'nt':  # For Windows
-            os.startfile(path)
-        elif os.uname().sysname == 'Darwin':  # For macOS
-            subprocess.Popen(['open', path])
-        else:  # For Linux and other POSIX systems
-            subprocess.Popen(['xdg-open', path])
-        
-        return {"status": "success", "message": f"Successfully opened {path}"}
-    except Exception as e:
-        print(f"Error opening path: {e}")
-        return {"status": "error", "message": f"Could not open path: {e}"}
-
 
 @eel.expose
 def start_initial_setup():
@@ -535,27 +549,57 @@ def start_initial_setup():
     try:
         return _download_ffmpeg_if_needed()
     except Exception as e:
+        _handle_error(f"Error starting initial setup: {e}", e, is_critical=True)
         return {"status": "error", "value": None, "message": str(e)}
+
+@eel.expose
+def addLiveDownloadCard(download_id, metadata):
+    """Exposed function to add a new live download card."""
+    pass
+
+@eel.expose
+def updateLiveProgress(download_id, percent):
+    """Exposed function to update a live download card's progress."""
+    pass
+
+@eel.expose
+def finishDownloadCard(download_id, metadata, path):
+    """Exposed function to finish a live download card."""
+    pass
+
+@eel.expose
+def openPathInExplorer(path):
+    """Opens a given file path in the system's default file explorer."""
+    print(f"Attempting to open path: {path}")
+    try:
+        if os.name == 'nt':
+            os.startfile(path)
+        elif os.uname().sysname == 'Darwin':
+            subprocess.Popen(['open', path])
+        else:
+            subprocess.Popen(['xdg-open', path])
+        
+        return {"status": "success", "message": f"Successfully opened {path}"}
+    except Exception as e:
+        _handle_error(f"Could not open path: {path}", e)
+        return {"status": "error", "message": f"Could not open path: {e}"}
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
+    threading.Thread(target=_update_modules_in_thread, daemon=True).start()
     _load_settings()
     eel.init("web")
-    
-    threading.Thread(target=_update_modules_in_thread, daemon=True).start()
 
     window_width = 950
     window_height = 700
-    
+
     root = Tk()
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     root.destroy()
-    
     x = int((screen_width - window_width) / 2)
     y = int((screen_height - window_height) / 2)
-
     try:
-        eel.start("index.html", size=(window_width, window_height), position=(x, y), mode='edge', host='localhost', block=True)
+        eel.start("index.html", size=(window_width, window_height), position=(x, y), host='localhost', block=True)
     except Exception as e:
         print(f"Error starting Eel: {e}")

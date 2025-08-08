@@ -301,6 +301,41 @@ function initialize() {
     document.getElementById('bitrate-selector').addEventListener('change', saveCurrentSettings);
     document.getElementById('save-folder-input').addEventListener('change', saveCurrentSettings);
 
+    document.querySelectorAll('.custom-number-input').forEach(function(wrapper) {
+        const input = wrapper.querySelector('input[type="number"]');
+        const up = wrapper.querySelector('.arrow.up');
+        const down = wrapper.querySelector('.arrow.down');
+        up.addEventListener('click', function() {
+            input.stepUp();
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        down.addEventListener('click', function() {
+            input.stepDown();
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+    });
+
+       const genres = [
+            "Pop", "Rock", "Hip-Hop", "Jazz", "Classical", "Electronic", "Country", "Reggae", "Blues", "Metal", "Folk",
+            "R&B", "Soul", "Dance", "Indie", "Soundtrack", "Alternative", "Punk", "Disco", "Gospel", "K-Pop", "Latin",
+            "Trap", "EDM", "House", "Techno", "Dubstep", "Ambient", "Trance", "Ska", "Grunge", "Emo", "Hardcore",
+            "Progressive Rock", "Opera", "Children's Music", "World", "New Age", "Chillout", "Lo-fi", "Synthwave",
+            "J-Pop", "Anime", "Holiday", "Christian", "Comedy", "Spoken Word", "Acoustic", "Instrumental", "Bluegrass",
+            "Motown", "Swing", "Big Band", "Easy Listening", "Experimental", "Industrial", "Garage", "Shoegaze",
+            "Post-Rock", "Reggaeton", "Afrobeat", "Salsa", "Bossa Nova", "Flamenco", "Celtic", "Marching Band",
+            "Drum & Bass", "Breakbeat", "Electro", "Funk", "Grime", "Hardstyle", "Krautrock", "Latin Jazz", "Mariachi",
+            "Merengue", "Polka", "Samba", "Tango", "Zydeco", "Chiptune", "Vaporwave", "Future Bass", "Glitch Hop",
+            "Math Rock", "Noise", "Post-Punk", "Shoegaze", "Soca", "Swing", "Synthpop", "Traditional", "UK Garage"
+        ];
+
+        const datalist = document.createElement('datalist');
+        datalist.id = "genre-suggestions";
+        genres.forEach(genre => {
+            const option = document.createElement('option');
+            option.value = genre;
+            datalist.appendChild(option);
+        });
+        document.body.appendChild(datalist);
     document.getElementById('fetch-button').addEventListener('click', async () => {
         const urls = document.getElementById('urls-input').value;
         await fetchVideoMetadata(urls);
