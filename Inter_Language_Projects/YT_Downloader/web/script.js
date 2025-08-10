@@ -226,7 +226,6 @@ function initialize() {
             disableUI(false);
         } else {
             currentMetadata = response.value;
-            console.log(currentMetadata);
 
             const metadataContainer = document.getElementById('metadata-container');
             const downloadButton = document.getElementById('download-button');
@@ -249,7 +248,7 @@ function initialize() {
                 const yearInput = document.getElementById('year-input');
                 const trackInput = document.getElementById('track-input');
                 const thumbnailPreview = document.getElementById('thumbnail-preview');
-
+                    
                 if (titleInput) titleInput.value = metadata.title;
                 if (artistInput) artistInput.value = metadata.artist;
                 if (albumInput) albumInput.value = metadata.album;
@@ -267,14 +266,12 @@ function initialize() {
     }
     
     async function init() {
-        console.log("here")
         const settings = await eel.get_initial_settings()();
         if (settings && settings.value) {
             document.getElementById('save-folder-input').value = settings.value.download_folder;
             document.getElementById('format-selector').value = settings.value.format;
             document.getElementById('bitrate-selector').value = settings.value.bitrate;
         }
-        console.log(settings)
         const setupResult = await eel.start_initial_setup()();
         if (setupResult && setupResult.status === "error") {
             update_status(`Setup Error: ${setupResult.message}`, "red");

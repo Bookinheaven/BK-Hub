@@ -319,15 +319,15 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
                 
                 video_metadata = {
                     'title': video_info.get('title', 'Unknown Title'),
-                    'artist': video_info.get('uploader', 'Unknown Artist'),
+                    'artist': ", ".join(video_info.get('artists', 'Unknown Artist')),
                     'album': album_name,
                     'genre': video_info.get('genre', ''),
-                    'year': video_info.get('upload_date', '')[:4],
+                    'year': video_info.get('release_date', '')[:4],
                     'track': str(i + 1),
                     'cover_data': metadata.get('cover_data'),
                     'thumbnail_url': video_info.get('thumbnail', '')
                 }
-                
+
                 eel.addLiveDownloadCard(download_id, video_metadata)
 
                 _download_single_video(
@@ -469,7 +469,7 @@ def fetch_metadata(url_input):
                         if entry and entry.get('url'):
                             download_queue.append({
                                 'title': entry.get('title', 'Unknown Title'),
-                                'artist': entry.get('uploader', 'Unknown Artist'),
+                                'artist': ", ".join(entry.get('artists', 'Unknown Artist')),
                                 'album': info_dict.get('title', 'Unknown Album'),
                                 'thumbnail_url': entry.get('thumbnail', ''),
                                 'url': entry.get('url', ''),
@@ -479,10 +479,11 @@ def fetch_metadata(url_input):
                     is_playlist = False
                     metadata = {
                         'title': info_dict.get('title', 'Unknown Title'),
-                        'artist': info_dict.get('uploader', 'Unknown Artist'),
+                        'artist': ", ".join(info_dict.get('artists', 'Unknown Artist')),
                         'album': info_dict.get('album', 'Unknown Album'),
                         'thumbnail_url': info_dict.get('thumbnail', ''),
                         'url': url,
+                        'year': info_dict.get('release_date', '')[:4],
                     }
                     download_queue = [metadata]
                     return {"status": "success", "value": {"type": "video", "metadata": metadata}}
