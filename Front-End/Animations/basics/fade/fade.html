@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="fade.css">
+</head>
+<body>
+    <div class="box-wrapper">
+        <div class="box show"></div>
+    </div>
+    <button onclick="toggleFade()" id="fade-button">Fade Out</button>
+    <script>
+        let state = false
+        function toggleFade() {
+            document.querySelector(".box").classList.toggle("show");
+            state = state ? false : true
+            document.getElementById("fade-button").textContent = `Fade ${state ? "In" : "Out"}`
+        }
+    </script>
+
+</body>
+</html>
