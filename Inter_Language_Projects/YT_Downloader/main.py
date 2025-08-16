@@ -280,28 +280,29 @@ def _download_single_video(url, metadata, save_folder, output_format, bitrate, c
         if current_count == total_count:
             eel.resetUI()
 
-def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url, metadata):
-    """Downloads all videos from a given playlist URL."""
+def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url, metadata, url_list=None, default_album_name=None):
+    """Downloads all videos from a given playlist URL or a pre-defined list of URLs."""
     try:
-        ydl_opts_meta = {
-            'quiet': True,
-            'extract_flat': True
-        }
-        with yt_dlp.YoutubeDL(ydl_opts_meta) as ydl_meta:
-            playlist_info = ydl_meta.extract_info(playlist_url, download=False)
-        
-        if not playlist_info or 'entries' not in playlist_info:
-            raise Exception("Could not retrieve playlist information.")
-        
-        urls = [entry.get('url') for entry in playlist_info['entries'] if entry.get('url')]
+        if not url_list:
+            ydl_opts_meta = {'quiet': True, 'extract_flat': True}
+            with yt_dlp.YoutubeDL(ydl_opts_meta) as ydl_meta:
+                playlist_info = ydl_meta.extract_info(playlist_url, download=False)
+            
+            if not playlist_info or 'entries' not in playlist_info:
+                raise Exception("Could not retrieve playlist information.")
+            
+            urls = [entry.get('url') for entry in playlist_info['entries'] if entry.get('url')]
+            album_name = _sanitize_filename(playlist_info.get('title', 'Playlist Download'))
+        else:
+            urls = url_list
+            album_name = _sanitize_filename(default_album_name or 'Batch Download')
+
         total_count = len(urls)
         
-        album_name = _sanitize_filename(playlist_info.get('title', 'Playlist Download'))
         if not album_name:
             album_name = 'Playlist Download'
         playlist_folder = os.path.join(save_folder, album_name)
         
-        print(f"Creating folder for album '{album_name}' at: {playlist_folder}")
         try:
             os.makedirs(playlist_folder, exist_ok=True)
         except OSError as e:
@@ -312,17 +313,16 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
         
         for i, url in enumerate(urls):
             try:
-                download_id = f"dl_{i}_{album_name}"
-                ydl_opts_video = {'quiet': True, 'extract_flat': 'in_playlist'}
-                with yt_dlp.YoutubeDL(ydl_opts_video) as ydl_video:
+                download_id = f"dl_{i}_{album_name.replace(' ', '')}"
+                with yt_dlp.YoutubeDL({'quiet': True}) as ydl_video:
                     video_info = ydl_video.extract_info(url, download=False)
                 
                 video_metadata = {
                     'title': video_info.get('title', 'Unknown Title'),
-                    'artist': ", ".join(video_info.get('artists', 'Unknown Artist')),
+                    'artist': ", ".join(video_info.get('artists', []) or [video_info.get('uploader', 'Unknown Artist')]),
                     'album': album_name,
                     'genre': video_info.get('genre', ''),
-                    'year': video_info.get('release_date', '')[:4],
+                    'year': (video_info.get('release_date') or '')[:4],
                     'track': str(i + 1),
                     'cover_data': metadata.get('cover_data'),
                     'thumbnail_url': video_info.get('thumbnail', '')
@@ -344,10 +344,10 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
                 _handle_error(f"Error processing video {url}: {e}", e)
                 eel.update_status(f"Error with video {i+1}: {e}", "red")
         
-        eel.update_status("Playlist download finished!", "green")
+        eel.update_status("Playlist/Batch download finished!", "green")
     except Exception as e:
-        _handle_error(f"Playlist download error: {e}", e)
-        eel.update_status(f"An error occurred during playlist download: {e}", "red")
+        _handle_error(f"Playlist/Batch download error: {e}", e)
+        eel.update_status(f"An error occurred during download: {e}", "red")
     finally:
         eel.update_button_state(False)
         eel.resetUI()
@@ -446,6 +446,8 @@ def fetch_metadata(url_input):
     urls = [u.strip() for u in url_input.split('\n') if u.strip()]
     if not urls:
         return {'status': 'error', 'value': None, 'message': 'URL is empty or invalid.'}
+    
+    is_batch_download = len(urls) > 1
     url = urls[0]
 
     try:
@@ -454,36 +456,39 @@ def fetch_metadata(url_input):
         if not (re.match(r'^https?://(www\.)?(youtube\.com|youtu\.be|music\.youtube\.com)/', url)):
             return {'status': 'error', 'value': None, 'message': 'URL must be from YouTube or YouTube Music.'}
 
-        ydl_opts = {
-            'quiet': True,
-            'extract_flat': True,
-        }
+        ydl_opts = {'quiet': True, 'extract_flat': True}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
             
             if info_dict:
-                if 'entries' in info_dict:
+                if 'entries' in info_dict and not is_batch_download:
                     is_playlist = True
                     download_queue = []
                     for entry in info_dict['entries']:
                         if entry and entry.get('url'):
                             download_queue.append({
                                 'title': entry.get('title', 'Unknown Title'),
-                                'artist': ", ".join(entry.get('artists', 'Unknown Artist')),
+                                'artist': ", ".join(entry.get('artists', []) or [entry.get('uploader', 'Unknown Artist')]),
                                 'album': info_dict.get('title', 'Unknown Album'),
                                 'thumbnail_url': entry.get('thumbnail', ''),
                                 'url': entry.get('url', ''),
                             })
                     return {"status": "success", "value": {"type": "playlist", "metadata": download_queue}}
+                
+                elif is_batch_download:
+                    is_playlist = False
+                    download_queue = [{'url': u} for u in urls]
+                    return {"status": "success", "value": {"type": "batch", "metadata": download_queue}}
+                
                 else:
                     is_playlist = False
                     metadata = {
                         'title': info_dict.get('title', 'Unknown Title'),
-                        'artist': ", ".join(info_dict.get('artists', 'Unknown Artist')),
+                        'artist': ", ".join(info_dict.get('artists', []) or [info_dict.get('uploader', 'Unknown Artist')]),
                         'album': info_dict.get('album', 'Unknown Album'),
                         'thumbnail_url': info_dict.get('thumbnail', ''),
                         'url': url,
-                        'year': info_dict.get('release_date', '')[:4],
+                        'year': (info_dict.get('release_date') or '')[:4],
                     }
                     download_queue = [metadata]
                     return {"status": "success", "value": {"type": "video", "metadata": metadata}}
@@ -495,7 +500,7 @@ def fetch_metadata(url_input):
 
 @eel.expose
 def download_music(url_input, metadata, save_folder, selected_format, bitrate):
-    """Starts the download process in a new thread with enhanced error handling."""
+    """Starts the download process based on the input type (single, playlist, or batch)."""
     try:
         urls = [u.strip() for u in url_input.split('\n') if u.strip()]
         if not urls:
@@ -513,37 +518,45 @@ def download_music(url_input, metadata, save_folder, selected_format, bitrate):
         if not isinstance(bitrate, str) or not re.match(r'^\d+k$', bitrate):
             return {"status": "error", "value": None, "message": "Bitrate must be in the format '192k', '320k', etc."}
         
-        for url in urls:
+        is_playlist_url = False
+        if len(urls) == 1:
             try:
-                ydl_opts_check = {'quiet': True, 'extract_flat': True}
-                with yt_dlp.YoutubeDL(ydl_opts_check) as ydl_check:
-                    info = ydl_check.extract_info(url, download=False)
-                
-                is_playlist_url = 'entries' in info
+                with yt_dlp.YoutubeDL({'quiet': True, 'extract_flat': True}) as ydl:
+                    info = ydl.extract_info(urls[0], download=False)
+                    if 'entries' in info:
+                        is_playlist_url = True
             except Exception as e:
-                _handle_error(f"Error checking URL {url}: {e}", e)
-                eel.update_status(f"Error checking URL {url}: {e}", "red")
-                continue
-            
-            if is_playlist_url:
-                download_thread = threading.Thread(
-                    target=_download_playlist_thread,
-                    args=(save_folder, selected_format, bitrate, url, metadata),
-                    daemon=True
-                )
-            else:
-                download_thread = threading.Thread(
-                    target=_download_single_video,
-                    args=(url, metadata, save_folder, selected_format, bitrate),
-                    daemon=True
-                )
-            download_thread.start()
+                _handle_error(f"Error checking URL type: {e}", e)
 
+        if is_playlist_url:
+            thread = threading.Thread(
+                target=_download_playlist_thread,
+                args=(save_folder, selected_format, bitrate, urls[0], metadata),
+                daemon=True
+            )
+            thread.start()
+        elif len(urls) > 1:
+            thread = threading.Thread(
+                target=_download_playlist_thread,
+                args=(save_folder, selected_format, bitrate, None, metadata, urls, "Batch Download"),
+                daemon=True
+            )
+            thread.start()
+        else:
+            download_id = f"dl_{_sanitize_filename(metadata.get('title', 'video'))}"
+            eel.addLiveDownloadCard(download_id, metadata)
+            thread = threading.Thread(
+                target=_download_single_video,
+                args=(urls[0], metadata, save_folder, selected_format, bitrate, 1, 1, download_id),
+                daemon=True
+            )
+            thread.start()
+            
         return {"status": "success", "value": None, "message": "Download process started."}
     except Exception as e:
         _handle_error(f"Error in download_music: {e}", e)
         return {"status": "error", "value": None, "message": str(e)}
-
+    
 @eel.expose
 def start_initial_setup():
     """Starts the initial setup tasks like checking for FFmpeg."""
@@ -552,21 +565,6 @@ def start_initial_setup():
     except Exception as e:
         _handle_error(f"Error starting initial setup: {e}", e, is_critical=True)
         return {"status": "error", "value": None, "message": str(e)}
-
-@eel.expose
-def addLiveDownloadCard(download_id, metadata):
-    """Exposed function to add a new live download card."""
-    pass
-
-@eel.expose
-def updateLiveProgress(download_id, percent):
-    """Exposed function to update a live download card's progress."""
-    pass
-
-@eel.expose
-def finishDownloadCard(download_id, metadata, path):
-    """Exposed function to finish a live download card."""
-    pass
 
 @eel.expose
 def openPathInExplorer(path):

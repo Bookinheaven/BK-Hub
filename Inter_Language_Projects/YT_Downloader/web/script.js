@@ -229,15 +229,18 @@ function initialize() {
 
             const metadataContainer = document.getElementById('metadata-container');
             const downloadButton = document.getElementById('download-button');
-            const optionsGroup = document.querySelector('.options-group');
+            const optionsGroup = document.getElementById('options-group');
 
-            if (currentMetadata.type === "playlist") {
+            if (currentMetadata.type === "playlist" || currentMetadata.type === "batch") {
                 const videoCount = currentMetadata.metadata.length;
-                update_status(`Found playlist with ${videoCount} videos. Click Download to start.`, "green");
+                const typeName = currentMetadata.type === 'playlist' ? 'playlist' : 'batch';
+                update_status(`Found ${typeName} with ${videoCount} videos. Click Download to start.`, "green");
+                
                 if (metadataContainer) metadataContainer.classList.add('hidden');
                 if (downloadButton) downloadButton.classList.remove('hidden');
                 if (optionsGroup) optionsGroup.classList.remove('hidden');
-            } else {
+
+            } else { 
                 update_status("Metadata fetched successfully.", "green");
                 const metadata = currentMetadata.metadata;
                 
@@ -248,7 +251,7 @@ function initialize() {
                 const yearInput = document.getElementById('year-input');
                 const trackInput = document.getElementById('track-input');
                 const thumbnailPreview = document.getElementById('thumbnail-preview');
-                    
+                        
                 if (titleInput) titleInput.value = metadata.title;
                 if (artistInput) artistInput.value = metadata.artist;
                 if (albumInput) albumInput.value = metadata.album;
