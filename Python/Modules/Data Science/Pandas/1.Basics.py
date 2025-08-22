@@ -90,9 +90,9 @@ if p.isfile(dataset_Path):
         how = 'all': all values must be null.
     """
     # Replacing with the value from the previous row or the next row
-    df1.fillna(method='ffill') # or df1.ffill(axis=?) 
-    df1.fillna(method='bfill') # or df1.bfill(axis=?) 
-     
+    df1 = df1.fillna(method='ffill') # or df1.ffill(axis=?) 
+    df1 = df1.fillna(method='bfill') # or df1.bfill(axis=?)  
+    
     # Interpolate
     df_inter = df1.interpolate(method="linear")
     """
