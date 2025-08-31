@@ -73,27 +73,33 @@ def _handle_error(message, error, is_critical=False):
         eel.update_status(f"Critical Error: {message}. See console for details.", "red")
     else:
         eel.update_status(f"Warning: {message}", "yellow")
-
 def _load_settings():
     """Loads user settings from a local configuration file."""
+    import os, json
     global settings
     try:
         if os.path.exists(settings_file):
             with open(settings_file, "r") as f:
                 settings = json.load(f)
         else:
+            download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
             settings = {
-                "download_folder": os.path.join(os.path.expanduser("~"), "Downloads"),
+                "download_folder": download_folder,
+                "cookies": os.path.join(download_folder, "cookies.txt"),
                 "format": "m4a",
                 "bitrate": "320k",
             }
+        print(settings["cookies"])
     except Exception as e:
         _handle_error("Error loading settings, using defaults.", e)
+        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
         settings = {
-            "download_folder": os.path.join(os.path.expanduser("~"), "Downloads"),
+            "download_folder": download_folder,
+            "cookies": os.path.join(download_folder, "cookies.txt"),
             "format": "m4a",
             "bitrate": "320k",
         }
+
 
 def _save_settings():
     """Saves user settings to a local configuration file."""
@@ -236,7 +242,11 @@ def _download_single_video(url, metadata, save_folder, output_format, bitrate, c
             'youtube_include_hls_manifest': False,
             'allow_sabr': True,
         }
-        
+        cookie_path = settings.get("cookies")
+        if cookie_path and os.path.exists(cookie_path) and os.path.getsize(cookie_path) > 0:
+            ydl_opts["cookiefile"] = cookie_path
+        else:
+            ydl_opts["cookiesfrombrowser"] = ("edge",)
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=True)
 
@@ -250,7 +260,6 @@ def _download_single_video(url, metadata, save_folder, output_format, bitrate, c
             
             if not final_file_path and possible_files:
                 final_file_path = os.path.join(temp_dir, possible_files[0])
-            
             if not final_file_path or not os.path.exists(final_file_path):
                 raise FileNotFoundError("Downloaded file not found after conversion.")
             
@@ -285,6 +294,12 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
     try:
         if not url_list:
             ydl_opts_meta = {'quiet': True, 'extract_flat': True}
+            cookie_path = settings.get("cookies")
+            if cookie_path and os.path.exists(cookie_path) and os.path.getsize(cookie_path) > 0:
+                ydl_opts_meta["cookiefile"] = cookie_path
+            else:
+                ydl_opts_meta["cookiesfrombrowser"] = ("edge",)
+
             with yt_dlp.YoutubeDL(ydl_opts_meta) as ydl_meta:
                 playlist_info = ydl_meta.extract_info(playlist_url, download=False)
             
@@ -314,7 +329,14 @@ def _download_playlist_thread(save_folder, output_format, bitrate, playlist_url,
         for i, url in enumerate(urls):
             try:
                 download_id = f"dl_{i}_{album_name.replace(' ', '')}"
-                with yt_dlp.YoutubeDL({'quiet': True}) as ydl_video:
+                cookie_path = settings.get("cookies")
+                ydl_opts = {'quite': True}
+                if cookie_path and os.path.exists(cookie_path) and os.path.getsize(cookie_path) > 0:
+                    ydl_opts["cookiefile"] = cookie_path
+                else:
+                    ydl_opts["cookiesfrombrowser"] = ("edge",)
+
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl_video:
                     video_info = ydl_video.extract_info(url, download=False)
                 
                 video_metadata = {
@@ -456,7 +478,14 @@ def fetch_metadata(url_input):
         if not (re.match(r'^https?://(www\.)?(youtube\.com|youtu\.be|music\.youtube\.com)/', url)):
             return {'status': 'error', 'value': None, 'message': 'URL must be from YouTube or YouTube Music.'}
 
-        ydl_opts = {'quiet': True, 'extract_flat': True}
+        ydl_opts = {'quiet': True, 'extract_flat': True,'geo_bypass': True,}
+        cookie_path = settings.get("cookies")
+        if cookie_path and os.path.exists(cookie_path) and os.path.getsize(cookie_path) > 0:
+            ydl_opts["cookiefile"] = cookie_path
+        else:
+            ydl_opts["cookiesfrombrowser"] = ("edge",)
+
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
             
