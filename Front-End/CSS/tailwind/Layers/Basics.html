@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layers</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="flex min-h-screen flex-col bg-white text-gray-800 transition-colors duration-500 dark:bg-gray-900 dark:text-gray-100">
+  <!-- Navbar -->
+  <header class="flex items-center justify-between bg-gray-100 px-6 py-4 shadow-md dark:bg-gray-800">
+    <h1 class="text-xl font-bold tracking-wide">BKWEB</h1>
+    <nav class="flex items-center gap-6">
+      <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Home</a>
+      <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Blog</a>
+      <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
+      <button onclick="document.documentElement.classList.toggle('dark')" class="rounded-lg bg-blue-500 px-3 py-1 text-white hover:bg-blue-600 dark:bg-yellow-400 dark:text-black dark:hover:bg-yellow-300">Toggle Theme</button>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
+    <h2 class="mb-4 text-4xl font-bold">Learn Tailwind CSS Fast</h2>
+    <p class="mb-6 max-w-xl text-gray-600 dark:text-gray-300">Practice every utility class by editing this template live. Experiment with layout, colors, typography, shadows, spacing, and dark mode.</p>
+    <button class="btn border-redu">Get Started</button>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="grid gap-8 bg-gray-50 px-6 py-12 md:grid-cols-3 dark:bg-gray-800">
+    <div class="rounded-2xl bg-white p-6 shadow-lg transition-transform hover:scale-105 dark:bg-gray-700">
+      <h3 class="mb-2 text-lg font-semibold">Utility Classes</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300">Everything in Tailwind is a class — no custom CSS needed. Combine them to style quickly.</p>
+    </div>
+
+    <div class="rounded-2xl bg-white p-6 shadow-lg transition-transform hover:scale-105 dark:bg-gray-700">
+      <h3 class="mb-2 text-lg font-semibold">Responsive Design</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300">Use prefixes like <code>sm:</code>, <code>md:</code>, <code>lg:</code> to make layouts adapt to screen sizes.</p>
+    </div>
+
+    <div class="rounded-2xl bg-white p-6 shadow-lg transition-transform hover:scale-105 dark:bg-gray-700">
+      <h3 class="mb-2 text-lg font-semibold">Dark Mode</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300">Try toggling dark mode and see how <code>dark:</code> classes work for colors and effects.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-4 text-center text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-400">© 2025 BKWEB — Built with ❤️ and Tailwind CSS</footer>
+</body>
+
+</html>
