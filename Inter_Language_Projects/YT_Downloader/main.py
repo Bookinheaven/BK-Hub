@@ -1,10 +1,30 @@
-import subprocess
 import sys
+import os
+import subprocess
+
+if os.name == "nt":
+    import ctypes
+    from ctypes import wintypes
+
+    mutex = ctypes.windll.kernel32.CreateMutexW(None, ctypes.c_bool(True), "YTDownloaderPlus_SingleInstance")
+    last_error = ctypes.windll.kernel32.GetLastError()
+
+    ERROR_ALREADY_EXISTS = 183
+    if last_error == ERROR_ALREADY_EXISTS:
+        sys.exit(0)
+else:
+    lock_file = "/tmp/YTDownloaderPlus.lock"
+    if os.path.exists(lock_file):
+        print("Another instance is already running.")
+        sys.exit(0)
+    else:
+        open(lock_file, "w").close()
+
 
 def _update_modules_in_thread():
     """Checks for and updates Python modules in a new thread."""
     try:
-        eel.update_status("Checking for module updates...", "yellow")
+        print("Checking for module updates...", "yellow")
 
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "--upgrade", "pip"],
@@ -24,12 +44,11 @@ def _update_modules_in_thread():
             encoding='utf-8'
         )
         
-        eel.update_status("Modules updated successfully.", "green")
+        print("Modules updated successfully.", "green")
     except Exception as e:
         _handle_error("Error during module update. Check your internet connection.", e)
 
 import eel
-import os
 import threading
 import json
 import yt_dlp
@@ -628,6 +647,6 @@ if __name__ == "__main__":
     x = int((screen_width - window_width) / 2)
     y = int((screen_height - window_height) / 2)
     try:
-        eel.start("index.html", size=(window_width, window_height), position=(x, y), host='localhost', block=True)
+        eel.start("index.html", size=(window_width, window_height), port=8081, block=True)
     except Exception as e:
         print(f"Error starting Eel: {e}")
